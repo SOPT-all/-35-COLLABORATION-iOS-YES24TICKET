@@ -5,7 +5,6 @@
 //  Created by 조성민 on 11/18/24.
 //
 
-import Foundation
 import UIKit
 
 extension NSAttributedString {
