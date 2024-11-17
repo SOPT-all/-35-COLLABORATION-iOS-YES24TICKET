@@ -1,5 +1,6 @@
 # 35-COLLABORATION-iOS-YES24TICKET
 | 35기 AND SOPT 합동세미나 모바일 앱 7팀 - YES24TICKET 🎫
+
 극강의 효율을 자랑하는 YES24TICKET iOS팀 입니다.🔋
 ![아요](https://hackmd.io/_uploads/H1rvqDwMkg.png)
 
