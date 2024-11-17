@@ -107,4 +107,4 @@ Issue를 통해 Branch 생성 (Branch Naming Convention 적용)
 
 ```
 
-<img src="https://github.com/user-attachments/assets/5c2d303a-b024-412a-82d9-75fa97dd0100" width="720" height="1024">
+<img src="https://github.com/user-attachments/assets/5c2d303a-b024-412a-82d9-75fa97dd0100" width="360">
