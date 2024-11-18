@@ -157,8 +157,6 @@
 /* Begin XCBuildConfiguration section */
 		592051352CE49F51002AE415 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 592051232CE49F4F002AE415 /* Yes24Ticket */;
-			baseConfigurationReferenceRelativePath = Resources/Secret.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
