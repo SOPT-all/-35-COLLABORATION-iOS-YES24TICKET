@@ -20,8 +20,8 @@ final class TabBarController: UITabBarController {
     
     private func setStyle() {
         tabBar.do {
-            $0.backgroundColor = .black
-            $0.tintColor = .white
+            $0.backgroundColor = .black0
+            $0.tintColor = .white0
         }
     }
     

@@ -43,11 +43,17 @@ extension TabBarItem {
     private var tabBarItem: UITabBarItem {
         let item = UITabBarItem(
             title: title,
-            image: image,
-            selectedImage: selectedImage
+            image: image?.withRenderingMode(.alwaysTemplate),
+            selectedImage: image?.withRenderingMode(.alwaysTemplate)
         )
-        item.setTitleTextAttributes([.font: UIFont.customFont(.caption_r_10)], for: .normal)
-        item.setTitleTextAttributes([.font: UIFont.customFont(.caption_r_10)], for: .selected)
+        item.setTitleTextAttributes(
+            [.font: UIFont.customFont(.caption_r_10)],
+            for: .normal
+        )
+        item.setTitleTextAttributes(
+            [.font: UIFont.customFont(.caption_r_10)],
+            for: .selected
+        )
         
         return item
     }
@@ -68,26 +74,13 @@ extension TabBarItem {
     private var image: UIImage? {
         switch self {
         case .home:
-                .icHomeGray24.withRenderingMode(.alwaysOriginal)
+                .icHomeGray24
         case .category:
-                .icCategoryGray24.withRenderingMode(.alwaysOriginal)
+                .icCategoryGray24
         case .search:
-                .icSearchGray24.withRenderingMode(.alwaysOriginal)
+                .icSearchGray24
         case .myPage:
-                .icMyGray24.withRenderingMode(.alwaysOriginal)
-        }
-    }
-    
-    private var selectedImage: UIImage? {
-        switch self {
-        case .home:
-                .icHomeWhite24.withRenderingMode(.alwaysOriginal)
-        case .category:
-                .icCategoryWhite24.withRenderingMode(.alwaysOriginal)
-        case .search:
-                .icSearchWhite24.withRenderingMode(.alwaysOriginal)
-        case .myPage:
-                .icMyWhite24.withRenderingMode(.alwaysOriginal)
+                .icMyGray24
         }
     }
     
