@@ -89,7 +89,7 @@ class Footer: UIView {
     }
     
     private let serviceTermsLabel = UILabel().then {
-        $0.text = "PC개인정보 처리방침"
+        $0.text = "이용약관"
         $0.font = UIFont.customFont(.body_sb_12)
         $0.textColor = .gray800
     }
@@ -258,7 +258,7 @@ class Footer: UIView {
         }
         main3VerticalStackView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(main2VerticalStackView.snp.bottom).offset(6)
+            $0.top.equalTo(main2VerticalStackView.snp.bottom).offset(2)
         }
         main4VerticalStackView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
