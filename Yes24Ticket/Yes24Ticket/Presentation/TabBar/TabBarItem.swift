@@ -18,8 +18,8 @@ enum TabBarItem: CaseIterable {
         let controller = UINavigationController(
             rootViewController: viewController
         )
-        
         controller.tabBarItem = tabBarItem
+        
         return controller
     }
     
