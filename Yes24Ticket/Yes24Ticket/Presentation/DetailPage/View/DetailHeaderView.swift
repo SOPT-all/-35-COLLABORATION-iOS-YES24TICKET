@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
+
 class DetailHeaderView: UITableViewHeaderFooterView {
     
     private lazy var containerView = UIView().then {
@@ -23,28 +24,23 @@ class DetailHeaderView: UITableViewHeaderFooterView {
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        setStyle()
-        setUI()
-        setLayout()
+        configureUI()
+        configureLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setStyle() {
-        
-    }
-    
-    func setUI() {
+    private func configureUI() {
         contentView.addSubview(containerView)
         containerView.addSubview(backButton)
     }
     
-    func setLayout() {
+    private func configureLayout() {
         containerView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(47)
-            $0.width.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(260)
         }
         
@@ -55,11 +51,6 @@ class DetailHeaderView: UITableViewHeaderFooterView {
         }
     }
     
-    @objc func handleDismiss() {
-        
+    @objc private func handleDismiss() {
     }
-}
-
-#Preview {
-    DetailHeaderView()
 }
