@@ -1,11 +1,11 @@
 {
   "images" : [
     {
+      "filename" : "icn_fill_up_i.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "icn_fill_up_i.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
