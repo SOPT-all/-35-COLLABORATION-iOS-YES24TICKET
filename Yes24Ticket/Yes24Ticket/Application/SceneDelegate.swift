@@ -21,13 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         window = UIWindow(windowScene: windowScene)
         
-        //TODO: TabBar로 변경
-        let rootController = UINavigationController(rootViewController: HomeViewController())
-        
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithDefaultBackground()
-        appearance.backgroundColor = .black
-        rootController.navigationBar.scrollEdgeAppearance = appearance
+        let rootController = UINavigationController(rootViewController: TabBarController())
         
         window?.rootViewController = rootController
         window?.makeKeyAndVisible()
