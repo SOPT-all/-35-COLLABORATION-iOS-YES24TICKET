@@ -41,11 +41,15 @@ extension TabBarItem {
     }
     
     private var tabBarItem: UITabBarItem {
-        UITabBarItem(
+        let item = UITabBarItem(
             title: title,
             image: image,
             selectedImage: selectedImage
         )
+        item.setTitleTextAttributes([.font: UIFont.customFont(.caption_r_10)], for: .normal)
+        item.setTitleTextAttributes([.font: UIFont.customFont(.caption_r_10)], for: .selected)
+        
+        return item
     }
     
     private var title: String {
