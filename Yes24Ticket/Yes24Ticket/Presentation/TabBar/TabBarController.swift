@@ -16,6 +16,8 @@ final class TabBarController: UITabBarController {
         super.viewDidLoad()
         setStyle()
         configureSubTabs()
+        setUI()
+        setLayout()
     }
     
     private func setStyle() {
@@ -24,6 +26,10 @@ final class TabBarController: UITabBarController {
             $0.tintColor = .white0
         }
     }
+    
+    private func setUI() { }
+    
+    private func setLayout() { }
     
     private func configureSubTabs() {
         setViewControllers(
