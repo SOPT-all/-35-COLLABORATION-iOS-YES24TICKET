@@ -28,22 +28,36 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         )
     }
     
+    private let showTypeBackgroundView = UIView().then {
+        $0.backgroundColor = .red100
+        $0.layer.cornerRadius = 2
+    }
+    
+    private let showTypeText = UILabel().then {
+        $0.text = "단독"
+        $0.textColor = .white0
+        $0.font = UIFont.customFont(.caption_b_10)
+        $0.textAlignment = .center
+    }
+    
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        configureUI()
-        configureLayout()
+        setUI()
+        setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureUI() {
+    private func setUI() {
         contentView.addSubview(containerView)
         containerView.addSubview(backButton)
+        containerView.addSubview(showTypeBackgroundView)
+        showTypeBackgroundView.addSubview(showTypeText)
     }
     
-    private func configureLayout() {
+    private func setLayout() {
         containerView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(47)
             $0.leading.trailing.equalToSuperview()
@@ -55,10 +69,27 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
             $0.leading.equalToSuperview().offset(10)
             $0.width.height.equalTo(24)
         }
+        
+        showTypeBackgroundView.snp.makeConstraints {
+            $0.top.equalTo(backButton.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(10)
+        }
+
+        showTypeText.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview().inset(3)
+            $0.horizontalEdges.equalToSuperview().inset(4)
+        }
     }
     
     @objc private func handleDismiss() {
         //TODO: 추 후 dismiss 연결해 줄 예정입니다.
     }
+    
+}
+
+
+#Preview {
+    
+    DetailHeaderView()
     
 }
