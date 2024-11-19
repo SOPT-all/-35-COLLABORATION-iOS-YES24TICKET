@@ -12,6 +12,8 @@ import Then
 
 final class DetailHeaderView: UITableViewHeaderFooterView {
     
+    private static let reuseIdentifier: String = "DetailHeaderView"
+    
     private let containerView = UIView().then {
         $0.backgroundColor = .white
     }
@@ -40,6 +42,17 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         $0.textAlignment = .center
     }
     
+    private let showTitle = UILabel().then {
+        $0.text = "HYPE UP FESTIVAL"
+        $0.textColor = .black0
+        $0.font = UIFont.customFont(.head_eb_20)
+        $0.numberOfLines = 0
+    }
+    
+    private let dividerView = UIView().then {
+        $0.backgroundColor = .gray200
+    }
+    
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setUI()
@@ -55,6 +68,8 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         containerView.addSubview(backButton)
         containerView.addSubview(showTypeBackgroundView)
         showTypeBackgroundView.addSubview(showTypeText)
+        containerView.addSubview(showTitle)
+        containerView.addSubview(dividerView)
     }
     
     private func setLayout() {
@@ -79,6 +94,18 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
             $0.verticalEdges.equalToSuperview().inset(3)
             $0.horizontalEdges.equalToSuperview().inset(4)
         }
+        
+        showTitle.snp.makeConstraints {
+            $0.leading.equalTo(showTypeBackgroundView.snp.trailing).offset(8)
+            $0.centerY.equalTo(showTypeText)
+        }
+        
+        dividerView.snp.makeConstraints {
+            $0.top.equalTo(showTitle.snp.bottom).offset(18)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        
     }
     
     @objc private func handleDismiss() {
@@ -87,6 +114,13 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
     
 }
 
+extension DetailHeaderView {
+    
+    func fetchData(with model: Concert) {
+        self.showTypeText.text = model.genre
+    }
+    
+}
 
 #Preview {
     
