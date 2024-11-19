@@ -210,48 +210,156 @@ final class Footer: UIView {
     }
     
     private func setUI() {
-        [(topVerticalStackView, [firstTitleStackView]),
-         (middleVerticalStackView, [secondTitleStackView, thirdTitleStackView]),
-         (bottomVerticalStackView, [forthTitleStackView, fifthTitleStackView]),
-         (lastVerticalStackView, [sixthTitleStackView, lastTitleStackView])
-        ].forEach { stackView, subviews in
-            subviews.forEach { stackView.addArrangedSubview($0) }
-            addSubview(stackView)
+        [
+            (
+                topVerticalStackView,
+                [firstTitleStackView]
+            ),
+            (
+                middleVerticalStackView,
+                [
+                    secondTitleStackView,
+                    thirdTitleStackView
+                ]
+            ),
+            (
+                bottomVerticalStackView,
+                [
+                    forthTitleStackView,
+                    fifthTitleStackView
+                ]
+            ),
+            (
+                lastVerticalStackView,
+                [
+                    sixthTitleStackView,
+                    lastTitleStackView
+                ]
+            )
+        ].forEach {
+            stackView,
+            subviews in
+            subviews
+                .forEach {
+                    stackView.addArrangedSubview(
+                        $0
+                    )
+                }
+            addSubview(
+                stackView
+            )
         }
         
-        [serviceLabel, numLabel, helpLabel, dividerImageView, pcLabel].forEach {
-            firstTitleStackView.addArrangedSubview($0)
+        [
+            serviceLabel,
+            numLabel,
+            helpLabel,
+            dividerImageView,
+            pcLabel
+        ].forEach {
+            firstTitleStackView
+                .addArrangedSubview(
+                    $0
+                )
         }
-        [personalLabel, divider2ImageView, serviceTermsLabel].forEach {
-            secondTitleStackView.addArrangedSubview($0)
+        [
+            personalLabel,
+            divider2ImageView,
+            serviceTermsLabel
+        ].forEach {
+            secondTitleStackView
+                .addArrangedSubview(
+                    $0
+                )
         }
-        [leaderLabel, addressLabel].forEach {
-            thirdTitleStackView.addArrangedSubview($0)
+        [
+            leaderLabel,
+            addressLabel
+        ].forEach {
+            thirdTitleStackView
+                .addArrangedSubview(
+                    $0
+                )
         }
-        [numberLabel, divider3ImageView, sellLabel].forEach {
-            forthTitleStackView.addArrangedSubview($0)
+        [
+            numberLabel,
+            divider3ImageView,
+            sellLabel
+        ].forEach {
+            forthTitleStackView
+                .addArrangedSubview(
+                    $0
+                )
         }
-        [emailLabel, divider4ImageView, companyLabel].forEach {
-            fifthTitleStackView.addArrangedSubview($0)
+        [
+            emailLabel,
+            divider4ImageView,
+            companyLabel
+        ].forEach {
+            fifthTitleStackView
+                .addArrangedSubview(
+                    $0
+                )
         }
-        sixthTitleStackView.addArrangedSubview(copyrightLabel)
-        [globalLabel, yes24Label].forEach {
-            lastTitleStackView.addArrangedSubview($0)
+        sixthTitleStackView
+            .addArrangedSubview(
+                copyrightLabel
+            )
+        [
+            globalLabel,
+            yes24Label
+        ].forEach {
+            lastTitleStackView
+                .addArrangedSubview(
+                    $0
+                )
         }
     }
     
     private func setLayout() {
-        [(topVerticalStackView, 20, nil),
-         (middleVerticalStackView, 10, topVerticalStackView),
-         (bottomVerticalStackView, 2, middleVerticalStackView),
-         (lastVerticalStackView, 2, bottomVerticalStackView)
-        ].forEach { stackView, topOffset, topAnchor in
-            stackView.snp.makeConstraints {
-                $0.centerX.equalToSuperview()
-                if let topAnchor = topAnchor {
-                    $0.top.equalTo(topAnchor.snp.bottom).offset(topOffset)
-                } else {
-                    $0.top.equalToSuperview().offset(topOffset)
+        [
+            (
+                topVerticalStackView,
+                20,
+                nil
+            ),
+            (
+                middleVerticalStackView,
+                10,
+                topVerticalStackView
+            ),
+            (
+                bottomVerticalStackView,
+                2,
+                middleVerticalStackView
+            ),
+            (
+                lastVerticalStackView,
+                2,
+                bottomVerticalStackView
+            )
+        ].forEach {
+            stackView,
+            topOffset,
+            topAnchor in
+            stackView.snp
+                .makeConstraints {
+                    $0.centerX
+                        .equalToSuperview()
+                    if let topAnchor = topAnchor {
+                        $0.top
+                            .equalTo(
+                                topAnchor.snp.bottom
+                            )
+                            .offset(
+                                topOffset
+                            )
+                    } else {
+                        $0.top
+                            .equalToSuperview()
+                            .offset(
+                                topOffset
+                            )
                 }
             }
         }
