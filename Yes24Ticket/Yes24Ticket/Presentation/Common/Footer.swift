@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class Footer: UIView {
+final class Footer: UIView {
     
     private let main1VerticalStackView = UIStackView().then {
         $0.axis = .vertical
