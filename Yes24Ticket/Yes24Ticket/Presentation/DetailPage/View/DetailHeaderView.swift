@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Then
 
-class DetailHeaderView: UITableViewHeaderFooterView {
+final class DetailHeaderView: UITableViewHeaderFooterView {
     
     private lazy var containerView = UIView().then {
         $0.backgroundColor = .white
