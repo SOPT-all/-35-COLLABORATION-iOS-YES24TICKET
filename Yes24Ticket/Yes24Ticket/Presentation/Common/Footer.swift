@@ -12,25 +12,25 @@ import Then
 
 final class Footer: UIView {
     
-    private let TopVerticalStackView = UIStackView().then {
+    private let topVerticalStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 10
         $0.alignment = .center
     }
     
-    private let MiddleVerticalStackView = UIStackView().then {
+    private let middleVerticalStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 6
         $0.alignment = .center
     }
     
-    private let BottomVerticalStackView = UIStackView().then {
+    private let bottomVerticalStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 2
         $0.alignment = .center
     }
     
-    private let LastVerticalStackView = UIStackView().then {
+    private let lastVerticalStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 14
         $0.alignment = .center
@@ -60,8 +60,8 @@ final class Footer: UIView {
         $0.textColor = .gray600
     }
     
-    private let vextorImageView = UIImageView().then {
-        $0.image = UIImage.vector34
+    private let dividerImageView = UIImageView().then {
+        $0.image = UIImage.divider
         $0.contentMode = .scaleAspectFit
     }
     
@@ -83,8 +83,8 @@ final class Footer: UIView {
         $0.textColor = .gray800
     }
     
-    private let vextor2ImageView = UIImageView().then {
-        $0.image = UIImage.vector34
+    private let divider2ImageView = UIImageView().then {
+        $0.image = UIImage.divider
         $0.contentMode = .scaleAspectFit
     }
     
@@ -124,8 +124,8 @@ final class Footer: UIView {
         $0.textColor = .gray400
     }
     
-    private let vextor3ImageView = UIImageView().then {
-        $0.image = UIImage.vector34
+    private let divider3ImageView = UIImageView().then {
+        $0.image = UIImage.divider
         $0.contentMode = .scaleAspectFit
     }
     
@@ -147,8 +147,8 @@ final class Footer: UIView {
         $0.textColor = .gray400
     }
     
-    private let vextor4ImageView = UIImageView().then {
-        $0.image = UIImage.vector34
+    private let divider4ImageView = UIImageView().then {
+        $0.image = UIImage.divider
         $0.contentMode = .scaleAspectFit
     }
     
@@ -206,32 +206,32 @@ final class Footer: UIView {
     
     private func setStyle() {
         firstTitleStackView.setCustomSpacing(7, after: helpLabel)
-        firstTitleStackView.setCustomSpacing(7, after: vextorImageView)
+        firstTitleStackView.setCustomSpacing(7, after: dividerImageView)
     }
     
     private func setUI() {
-        [(TopVerticalStackView, [firstTitleStackView]),
-         (MiddleVerticalStackView, [secondTitleStackView, thirdTitleStackView]),
-         (BottomVerticalStackView, [forthTitleStackView, fifthTitleStackView]),
-         (LastVerticalStackView, [sixthTitleStackView, lastTitleStackView])
+        [(topVerticalStackView, [firstTitleStackView]),
+         (middleVerticalStackView, [secondTitleStackView, thirdTitleStackView]),
+         (bottomVerticalStackView, [forthTitleStackView, fifthTitleStackView]),
+         (lastVerticalStackView, [sixthTitleStackView, lastTitleStackView])
         ].forEach { stackView, subviews in
             subviews.forEach { stackView.addArrangedSubview($0) }
             addSubview(stackView)
         }
         
-        [serviceLabel, numLabel, helpLabel, vextorImageView, pcLabel].forEach {
+        [serviceLabel, numLabel, helpLabel, dividerImageView, pcLabel].forEach {
             firstTitleStackView.addArrangedSubview($0)
         }
-        [personalLabel, vextor2ImageView, serviceTermsLabel].forEach {
+        [personalLabel, divider2ImageView, serviceTermsLabel].forEach {
             secondTitleStackView.addArrangedSubview($0)
         }
         [leaderLabel, addressLabel].forEach {
             thirdTitleStackView.addArrangedSubview($0)
         }
-        [numberLabel, vextor3ImageView, sellLabel].forEach {
+        [numberLabel, divider3ImageView, sellLabel].forEach {
             forthTitleStackView.addArrangedSubview($0)
         }
-        [emailLabel, vextor4ImageView, companyLabel].forEach {
+        [emailLabel, divider4ImageView, companyLabel].forEach {
             fifthTitleStackView.addArrangedSubview($0)
         }
         sixthTitleStackView.addArrangedSubview(copyrightLabel)
@@ -241,10 +241,10 @@ final class Footer: UIView {
     }
     
     private func setLayout() {
-        [(TopVerticalStackView, 20, nil),
-         (MiddleVerticalStackView, 10, TopVerticalStackView),
-         (BottomVerticalStackView, 2, MiddleVerticalStackView),
-         (LastVerticalStackView, 2, BottomVerticalStackView)
+        [(topVerticalStackView, 20, nil),
+         (middleVerticalStackView, 10, topVerticalStackView),
+         (bottomVerticalStackView, 2, middleVerticalStackView),
+         (lastVerticalStackView, 2, bottomVerticalStackView)
         ].forEach { stackView, topOffset, topAnchor in
             stackView.snp.makeConstraints {
                 $0.centerX.equalToSuperview()
