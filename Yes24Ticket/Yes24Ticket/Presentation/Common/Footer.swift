@@ -61,7 +61,7 @@ final class Footer: UIView {
     }
     
     private let vextorImageView = UIImageView().then {
-        $0.image = UIImage(named: "Vector34")
+        $0.image = UIImage.vector34
         $0.contentMode = .scaleAspectFit
     }
     
@@ -84,7 +84,7 @@ final class Footer: UIView {
     }
     
     private let vextor2ImageView = UIImageView().then {
-        $0.image = UIImage(named: "Vector34")
+        $0.image = UIImage.vector34
         $0.contentMode = .scaleAspectFit
     }
     
@@ -125,7 +125,7 @@ final class Footer: UIView {
     }
     
     private let vextor3ImageView = UIImageView().then {
-        $0.image = UIImage(named: "Vector34")
+        $0.image = UIImage.vector34
         $0.contentMode = .scaleAspectFit
     }
     
@@ -148,7 +148,7 @@ final class Footer: UIView {
     }
     
     private let vextor4ImageView = UIImageView().then {
-        $0.image = UIImage(named: "Vector34")
+        $0.image = UIImage.vector34
         $0.contentMode = .scaleAspectFit
     }
     
