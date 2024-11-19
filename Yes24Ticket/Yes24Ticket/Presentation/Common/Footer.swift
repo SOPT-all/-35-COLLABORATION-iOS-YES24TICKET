@@ -199,6 +199,17 @@ final class Footer: UIView {
     }
     
     private func setupViews() {
+        setStyle()
+        setUI()
+        setLayout()
+    }
+    
+    private func setStyle() {
+        firstTitleStackView.setCustomSpacing(7, after: helpLabel)
+        firstTitleStackView.setCustomSpacing(7, after: vextorImageView)
+    }
+    
+    private func setUI() {
         [(TopVerticalStackView, [firstTitleStackView]),
          (MiddleVerticalStackView, [secondTitleStackView, thirdTitleStackView]),
          (BottomVerticalStackView, [forthTitleStackView, fifthTitleStackView]),
@@ -208,40 +219,28 @@ final class Footer: UIView {
             addSubview(stackView)
         }
         
-        [serviceLabel, numLabel, helpLabel, vextorImageView, pcLabel
-        ].forEach {
+        [serviceLabel, numLabel, helpLabel, vextorImageView, pcLabel].forEach {
             firstTitleStackView.addArrangedSubview($0)
         }
-        firstTitleStackView.setCustomSpacing(7, after: helpLabel)
-        firstTitleStackView.setCustomSpacing(7, after: vextorImageView)
-        
-        [personalLabel, vextor2ImageView, serviceTermsLabel
-        ].forEach {
+        [personalLabel, vextor2ImageView, serviceTermsLabel].forEach {
             secondTitleStackView.addArrangedSubview($0)
         }
-        
-        [leaderLabel, addressLabel
-        ].forEach {
+        [leaderLabel, addressLabel].forEach {
             thirdTitleStackView.addArrangedSubview($0)
         }
-        
-        [numberLabel, vextor3ImageView, sellLabel
-        ].forEach {
+        [numberLabel, vextor3ImageView, sellLabel].forEach {
             forthTitleStackView.addArrangedSubview($0)
         }
-        
-        [emailLabel, vextor4ImageView, companyLabel
-        ].forEach {
+        [emailLabel, vextor4ImageView, companyLabel].forEach {
             fifthTitleStackView.addArrangedSubview($0)
         }
-        
         sixthTitleStackView.addArrangedSubview(copyrightLabel)
-        
-        [globalLabel, yes24Label
-        ].forEach {
+        [globalLabel, yes24Label].forEach {
             lastTitleStackView.addArrangedSubview($0)
         }
-        
+    }
+    
+    private func setLayout() {
         [(TopVerticalStackView, 20, nil),
          (MiddleVerticalStackView, 10, TopVerticalStackView),
          (BottomVerticalStackView, 2, MiddleVerticalStackView),
