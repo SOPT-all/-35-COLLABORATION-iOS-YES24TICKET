@@ -73,7 +73,7 @@ final class Footer: UIView {
     
     private let secondTitleStackView = UIStackView().then {
         $0.axis = .horizontal
-        $0.spacing = 2
+        $0.spacing = 8
         $0.alignment = .center
     }
     
@@ -96,7 +96,7 @@ final class Footer: UIView {
     
     private let thirdTitleStackView = UIStackView().then {
         $0.axis = .horizontal
-        $0.spacing = 2
+        $0.spacing = 9
         $0.alignment = .center
     }
     
@@ -114,7 +114,7 @@ final class Footer: UIView {
     
     private let forthTitleStackView = UIStackView().then {
         $0.axis = .horizontal
-        $0.spacing = 2
+        $0.spacing = 6
         $0.alignment = .center
     }
     
@@ -160,7 +160,7 @@ final class Footer: UIView {
     
     private let sixthTitleStackView = UIStackView().then {
         $0.axis = .horizontal
-        $0.spacing = 2
+        $0.spacing = 6
         $0.alignment = .center
     }
     
@@ -172,7 +172,7 @@ final class Footer: UIView {
     
     private let lastTitleStackView = UIStackView().then {
         $0.axis = .horizontal
-        $0.spacing = 2
+        $0.spacing = 24
         $0.alignment = .center
     }
     
@@ -199,70 +199,62 @@ final class Footer: UIView {
     }
     
     private func setupViews() {
-        TopVerticalStackView.addArrangedSubview(firstTitleStackView)
-        MiddleVerticalStackView.addArrangedSubview(secondTitleStackView)
-        MiddleVerticalStackView.addArrangedSubview(thirdTitleStackView)
-        BottomVerticalStackView.addArrangedSubview(forthTitleStackView)
-        BottomVerticalStackView.addArrangedSubview(fifthTitleStackView)
-        LastVerticalStackView.addArrangedSubview(sixthTitleStackView)
-        LastVerticalStackView.addArrangedSubview(lastTitleStackView)
+        [(TopVerticalStackView, [firstTitleStackView]),
+         (MiddleVerticalStackView, [secondTitleStackView, thirdTitleStackView]),
+         (BottomVerticalStackView, [forthTitleStackView, fifthTitleStackView]),
+         (LastVerticalStackView, [sixthTitleStackView, lastTitleStackView])
+        ].forEach { stackView, subviews in
+            subviews.forEach { stackView.addArrangedSubview($0) }
+            addSubview(stackView)
+        }
         
-        addSubview(TopVerticalStackView)
-        addSubview(MiddleVerticalStackView)
-        addSubview(BottomVerticalStackView)
-        addSubview(LastVerticalStackView)
-        
-        firstTitleStackView.addArrangedSubview(serviceLabel)
-        firstTitleStackView.addArrangedSubview(numLabel)
-        firstTitleStackView.addArrangedSubview(helpLabel)
-        firstTitleStackView.addArrangedSubview(vextorImageView)
-        firstTitleStackView.addArrangedSubview(pcLabel)
+        [serviceLabel, numLabel, helpLabel, vextorImageView, pcLabel
+        ].forEach {
+            firstTitleStackView.addArrangedSubview($0)
+        }
         firstTitleStackView.setCustomSpacing(7, after: helpLabel)
         firstTitleStackView.setCustomSpacing(7, after: vextorImageView)
         
-        secondTitleStackView.addArrangedSubview(personalLabel)
-        secondTitleStackView.addArrangedSubview(vextor2ImageView)
-        secondTitleStackView.addArrangedSubview(serviceTermsLabel)
-        secondTitleStackView.setCustomSpacing(8, after: personalLabel)
-        secondTitleStackView.setCustomSpacing(8, after: vextor2ImageView)
+        [personalLabel, vextor2ImageView, serviceTermsLabel
+        ].forEach {
+            secondTitleStackView.addArrangedSubview($0)
+        }
         
-        thirdTitleStackView.addArrangedSubview(leaderLabel)
-        thirdTitleStackView.addArrangedSubview(addressLabel)
-        thirdTitleStackView.setCustomSpacing(9, after: leaderLabel)
+        [leaderLabel, addressLabel
+        ].forEach {
+            thirdTitleStackView.addArrangedSubview($0)
+        }
         
-        forthTitleStackView.addArrangedSubview(numberLabel)
-        forthTitleStackView.addArrangedSubview(vextor3ImageView)
-        forthTitleStackView.addArrangedSubview(sellLabel)
-        forthTitleStackView.setCustomSpacing(6, after: numberLabel)
-        forthTitleStackView.setCustomSpacing(6, after: vextor3ImageView)
+        [numberLabel, vextor3ImageView, sellLabel
+        ].forEach {
+            forthTitleStackView.addArrangedSubview($0)
+        }
         
-        fifthTitleStackView.addArrangedSubview(emailLabel)
-        fifthTitleStackView.addArrangedSubview(vextor4ImageView)
-        fifthTitleStackView.addArrangedSubview(companyLabel)
-        fifthTitleStackView.setCustomSpacing(6, after: emailLabel)
-        fifthTitleStackView.setCustomSpacing(6, after: vextor4ImageView)
+        [emailLabel, vextor4ImageView, companyLabel
+        ].forEach {
+            fifthTitleStackView.addArrangedSubview($0)
+        }
         
         sixthTitleStackView.addArrangedSubview(copyrightLabel)
         
-        lastTitleStackView.addArrangedSubview(globalLabel)
-        lastTitleStackView.addArrangedSubview(yes24Label)
-        lastTitleStackView.setCustomSpacing(24, after: globalLabel)
+        [globalLabel, yes24Label
+        ].forEach {
+            lastTitleStackView.addArrangedSubview($0)
+        }
         
-        TopVerticalStackView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().offset(20)
-        }
-        MiddleVerticalStackView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalTo(TopVerticalStackView.snp.bottom).offset(10)
-        }
-        BottomVerticalStackView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalTo(MiddleVerticalStackView.snp.bottom).offset(2)
-        }
-        LastVerticalStackView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalTo(BottomVerticalStackView.snp.bottom).offset(2)
+        [(TopVerticalStackView, 20, nil),
+         (MiddleVerticalStackView, 10, TopVerticalStackView),
+         (BottomVerticalStackView, 2, MiddleVerticalStackView),
+         (LastVerticalStackView, 2, BottomVerticalStackView)
+        ].forEach { stackView, topOffset, topAnchor in
+            stackView.snp.makeConstraints {
+                $0.centerX.equalToSuperview()
+                if let topAnchor = topAnchor {
+                    $0.top.equalTo(topAnchor.snp.bottom).offset(topOffset)
+                } else {
+                    $0.top.equalToSuperview().offset(topOffset)
+                }
+            }
         }
     }
 }
