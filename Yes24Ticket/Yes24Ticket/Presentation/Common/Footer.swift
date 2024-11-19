@@ -194,8 +194,7 @@ final class Footer: UIView {
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupViews()
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupViews() {
@@ -205,33 +204,90 @@ final class Footer: UIView {
     }
     
     private func setStyle() {
-        firstTitleStackView.setCustomSpacing(7, after: helpLabel)
-        firstTitleStackView.setCustomSpacing(7, after: dividerImageView)
     }
     
     private func setUI() {
-        let stackViewPairs = [
-            (topVerticalStackView, [firstTitleStackView]),
-            (middleVerticalStackView, [secondTitleStackView, thirdTitleStackView]),
-            (bottomVerticalStackView, [forthTitleStackView, fifthTitleStackView]),
-            (lastVerticalStackView, [sixthTitleStackView, lastTitleStackView])
-        ]
-        
-        stackViewPairs.forEach { stackView, subviews in
-            subviews.forEach { stackView.addArrangedSubview($0) }
+        [
+            topVerticalStackView,
+            middleVerticalStackView,
+            bottomVerticalStackView,
+            lastTitleStackView
+        ].forEach {
+            addSubview($0)
         }
         
-        stackViewPairs.forEach { stackView, _ in
-            addSubview(stackView)
+        topVerticalStackView.addArrangedSubview(firstTitleStackView)
+        [
+            secondTitleStackView,
+            thirdTitleStackView
+        ].forEach {
+            middleVerticalStackView.addArrangedSubview($0)
         }
         
-        [serviceLabel, numLabel, helpLabel, dividerImageView, pcLabel].forEach { firstTitleStackView.addArrangedSubview($0) }
-        [personalLabel, divider2ImageView, serviceTermsLabel].forEach { secondTitleStackView.addArrangedSubview($0) }
-        [leaderLabel, addressLabel].forEach { thirdTitleStackView.addArrangedSubview($0) }
-        [numberLabel, divider3ImageView, sellLabel].forEach { forthTitleStackView.addArrangedSubview($0) }
-        [emailLabel, divider4ImageView, companyLabel].forEach { fifthTitleStackView.addArrangedSubview($0) }
+        [
+            forthTitleStackView,
+            fifthTitleStackView
+        ].forEach {
+            bottomVerticalStackView.addArrangedSubview($0)
+        }
+        
+        [
+            sixthTitleStackView,
+            lastTitleStackView
+        ].forEach {
+            lastTitleStackView.addArrangedSubview($0)
+        }
+        
+        [
+            serviceLabel,
+            numLabel,
+            helpLabel,
+            dividerImageView,
+            pcLabel
+        ].forEach {
+            firstTitleStackView.addArrangedSubview($0)
+        }
+        firstTitleStackView.setCustomSpacing(7, after: helpLabel)
+        firstTitleStackView.setCustomSpacing(7, after: dividerImageView)
+        
+        [
+            personalLabel,
+            divider2ImageView,
+            serviceTermsLabel
+        ].forEach {
+            secondTitleStackView.addArrangedSubview($0)
+        }
+        
+        [
+            leaderLabel,
+            addressLabel
+        ].forEach {
+            thirdTitleStackView.addArrangedSubview($0)
+        }
+        
+        [
+            numberLabel,
+            divider3ImageView,
+            sellLabel
+        ].forEach {
+            forthTitleStackView.addArrangedSubview($0)
+        }
+        
+        [
+            emailLabel,
+            divider4ImageView,
+            companyLabel
+        ].forEach {
+            fifthTitleStackView.addArrangedSubview($0)
+        }
+        
         sixthTitleStackView.addArrangedSubview(copyrightLabel)
-        [globalLabel, yes24Label].forEach { lastTitleStackView.addArrangedSubview($0) }
+        [
+            globalLabel,
+            yes24Label
+        ].forEach {
+            lastTitleStackView.addArrangedSubview($0)
+        }
     }
     
     private func setLayout() {
@@ -255,4 +311,5 @@ final class Footer: UIView {
             }
         }
     }
+    
 }
