@@ -10,7 +10,6 @@ import UIKit
 import SnapKit
 import Then
 
-
 class DetailHeaderView: UITableViewHeaderFooterView {
     
     private lazy var containerView = UIView().then {
@@ -18,8 +17,15 @@ class DetailHeaderView: UITableViewHeaderFooterView {
     }
     
     private lazy var backButton = UIButton().then {
-        $0.setImage(UIImage(resource: .icnArrowLeft24), for: .normal)
-        $0.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
+        $0.setImage(
+            UIImage(resource: .icnArrowLeft24),
+            for: .normal
+        )
+        $0.addTarget(
+            self,
+            action: #selector(handleDismiss),
+            for: .touchUpInside
+        )
     }
     
     override init(reuseIdentifier: String?) {
@@ -52,5 +58,7 @@ class DetailHeaderView: UITableViewHeaderFooterView {
     }
     
     @objc private func handleDismiss() {
+        //TODO: 추 후 dismiss 연결해 줄 예정입니다.
     }
+    
 }
