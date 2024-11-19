@@ -12,7 +12,7 @@ import Then
 
 final class DetailHeaderView: UITableViewHeaderFooterView {
     
-    private lazy var containerView = UIView().then {
+    private let containerView = UIView().then {
         $0.backgroundColor = .white
     }
     
