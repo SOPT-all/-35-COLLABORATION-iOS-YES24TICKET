@@ -12,25 +12,25 @@ import Then
 
 final class Footer: UIView {
     
-    private let main1VerticalStackView = UIStackView().then {
+    private let TopVerticalStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 10
         $0.alignment = .center
     }
     
-    private let main2VerticalStackView = UIStackView().then {
+    private let MiddleVerticalStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 6
         $0.alignment = .center
     }
     
-    private let main3VerticalStackView = UIStackView().then {
+    private let BottomVerticalStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 2
         $0.alignment = .center
     }
     
-    private let main4VerticalStackView = UIStackView().then {
+    private let LastVerticalStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 14
         $0.alignment = .center
@@ -199,18 +199,18 @@ final class Footer: UIView {
     }
     
     private func setupViews() {
-        main1VerticalStackView.addArrangedSubview(firstTitleStackView)
-        main2VerticalStackView.addArrangedSubview(secondTitleStackView)
-        main2VerticalStackView.addArrangedSubview(thirdTitleStackView)
-        main3VerticalStackView.addArrangedSubview(forthTitleStackView)
-        main3VerticalStackView.addArrangedSubview(fifthTitleStackView)
-        main4VerticalStackView.addArrangedSubview(sixthTitleStackView)
-        main4VerticalStackView.addArrangedSubview(lastTitleStackView)
+        TopVerticalStackView.addArrangedSubview(firstTitleStackView)
+        MiddleVerticalStackView.addArrangedSubview(secondTitleStackView)
+        MiddleVerticalStackView.addArrangedSubview(thirdTitleStackView)
+        BottomVerticalStackView.addArrangedSubview(forthTitleStackView)
+        BottomVerticalStackView.addArrangedSubview(fifthTitleStackView)
+        LastVerticalStackView.addArrangedSubview(sixthTitleStackView)
+        LastVerticalStackView.addArrangedSubview(lastTitleStackView)
         
-        addSubview(main1VerticalStackView)
-        addSubview(main2VerticalStackView)
-        addSubview(main3VerticalStackView)
-        addSubview(main4VerticalStackView)
+        addSubview(TopVerticalStackView)
+        addSubview(MiddleVerticalStackView)
+        addSubview(BottomVerticalStackView)
+        addSubview(LastVerticalStackView)
         
         firstTitleStackView.addArrangedSubview(serviceLabel)
         firstTitleStackView.addArrangedSubview(numLabel)
@@ -248,21 +248,21 @@ final class Footer: UIView {
         lastTitleStackView.addArrangedSubview(yes24Label)
         lastTitleStackView.setCustomSpacing(24, after: globalLabel)
         
-        main1VerticalStackView.snp.makeConstraints {
+        TopVerticalStackView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().offset(20)
         }
-        main2VerticalStackView.snp.makeConstraints {
+        MiddleVerticalStackView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(main1VerticalStackView.snp.bottom).offset(10)
+            $0.top.equalTo(TopVerticalStackView.snp.bottom).offset(10)
         }
-        main3VerticalStackView.snp.makeConstraints {
+        BottomVerticalStackView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(main2VerticalStackView.snp.bottom).offset(2)
+            $0.top.equalTo(MiddleVerticalStackView.snp.bottom).offset(2)
         }
-        main4VerticalStackView.snp.makeConstraints {
+        LastVerticalStackView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(main3VerticalStackView.snp.bottom).offset(2)
+            $0.top.equalTo(BottomVerticalStackView.snp.bottom).offset(2)
         }
     }
 }
