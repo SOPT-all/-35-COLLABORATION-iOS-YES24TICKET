@@ -202,9 +202,6 @@ final class Footer: UIView {
         setLayout()
     }
     
-    private func setStyle() {
-    }
-    
     private func setUI() {
         [
             topVerticalStackView,
@@ -318,4 +315,5 @@ final class Footer: UIView {
             $0.trailing.equalToSuperview().offset(-20)
         }
     }
+    
 }
