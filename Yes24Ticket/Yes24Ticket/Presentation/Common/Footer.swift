@@ -198,7 +198,6 @@ final class Footer: UIView {
     }
     
     private func setupViews() {
-        setStyle()
         setUI()
         setLayout()
     }
@@ -291,25 +290,32 @@ final class Footer: UIView {
     }
     
     private func setLayout() {
-        let layoutData = [
-            (topVerticalStackView, 20, nil),
-            (middleVerticalStackView, 10, topVerticalStackView),
-            (bottomVerticalStackView, 2, middleVerticalStackView),
-            (lastVerticalStackView, 2, bottomVerticalStackView)
-        ]
+        topVerticalStackView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
         
-        layoutData.forEach { stackView, topOffset, topAnchor in
-            stackView.snp.makeConstraints {
-                $0.centerX.equalToSuperview()
-                if let topAnchor = topAnchor {
-                    $0.top.equalTo(topAnchor.snp.bottom).offset(topOffset)
-                } else {
-                    $0.top.equalToSuperview().offset(topOffset)
-                }
-                $0.leading.equalToSuperview().offset(20)
-                $0.trailing.equalToSuperview().offset(-20)
-            }
+        middleVerticalStackView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(topVerticalStackView.snp.bottom).offset(10)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+        
+        bottomVerticalStackView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(middleVerticalStackView.snp.bottom).offset(2)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+        
+        lastVerticalStackView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(bottomVerticalStackView.snp.bottom).offset(2)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
         }
     }
-    
 }
