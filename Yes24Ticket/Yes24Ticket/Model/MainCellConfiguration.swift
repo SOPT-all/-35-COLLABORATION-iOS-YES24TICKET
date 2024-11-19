@@ -29,13 +29,13 @@ extension MainCellConfiguration {
             title: "뮤지컬 시지프스2",
             area: "예스24스테이지 2관",
             date: "2024.12 - 2025.02",
-            image: .logoYes24Ios
+            image: .icSitBlue18
         ),
         .init(
             title: "뮤지컬 시지프스3",
             area: "예스24스테이지 3관",
             date: "2024.12 - 2025.03",
-            image: .logoYes24Ios
+            image: .icSitMint18
         )
     ]
     
