@@ -6,10 +6,11 @@
 //
 
 import UIKit
+
 import SnapKit
 import Then
 
-class ClosedSearchBarView: UIView {
+final class ClosedSearchBarView: UIView {
 
     private let statusBarView = UIView().then {
         $0.backgroundColor = .black
@@ -21,25 +22,33 @@ class ClosedSearchBarView: UIView {
 
     private let logoButton = UIButton().then {
         var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(named: "logoYes24Ios")
+        configuration.image = UIImage.logoYes24Ios
         $0.configuration = configuration
     }
 
     private let searchButton = UIButton().then {
-        $0.setImage(UIImage(named: "icSearchGray24"), for: .normal)
+        $0
+            .setImage(
+                .icSearchGray24,
+                for: .normal
+            )
     }
 
     init() {
         super.init(frame: .zero)
+        setStyle()
         setUI()
         setLayout()
-        backgroundColor = .black
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    private func setStyle() {
+          backgroundColor = .black
+      }
+    
     private func setUI() {
         addSubview(statusBarView)
         addSubview(containerView)
@@ -72,4 +81,5 @@ class ClosedSearchBarView: UIView {
             $0.width.height.equalTo(24)
         }
     }
+    
 }
