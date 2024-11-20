@@ -8,6 +8,7 @@
 import Foundation
 
 struct Concert {
+    
     let image: String
     let title: String
     let genre: String
@@ -20,19 +21,23 @@ struct Concert {
     let notice: [String]
     let performenceTime: [String]
     let pricing: [Ticket]
+    
 }
 
 struct Ticket {
+    
     let type: String
     let price: String
     let color: Int
+    
 }
 
 
 extension Concert {
+    
     static func dummyData() -> Self {
         return .init(
-            image: "",
+            image: "http://tkfile.yes24.com/upload2/PerfBlog/202409/20240906/20240906-50930.jpg",
             title: "HYPE UP FESTIVAL",
             genre: "콘서트",
             date: "2024.11.10 ~ 2024.11.10",
@@ -58,4 +63,5 @@ extension Concert {
             ]
         )
     }
+    
 }

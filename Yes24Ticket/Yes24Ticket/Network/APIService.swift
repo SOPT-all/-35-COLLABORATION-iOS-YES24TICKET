@@ -32,4 +32,26 @@ final class APIService {
         }
     }
     
+    func downloadImage(
+            from urlString: String,
+            completion: @escaping (Result<Data, ExampleError>) -> Void
+        ) {
+            guard let url = URL(string: urlString) else {
+                completion(.failure(.wrongPath))
+                return
+            }
+            
+            AF.request(url)
+                .validate()
+                .responseData { response in
+                    switch response.result {
+                    case .success(let data):
+                        completion(.success(data))
+                    case .failure(let error):
+                        print("error: \(error.localizedDescription)")
+                        completion(.failure(.unknown))
+                    }
+                }
+        }
+    
 }

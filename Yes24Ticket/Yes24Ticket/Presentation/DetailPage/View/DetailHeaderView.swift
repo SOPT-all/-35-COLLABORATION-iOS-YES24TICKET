@@ -53,9 +53,52 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         $0.backgroundColor = .gray200
     }
     
+    private let showImage = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+        $0.clipsToBounds = true
+        $0.backgroundColor = .black
+    }
+    
+    private let genre = UILabel().then {
+        $0.text = "장르"
+        $0.textColor = .black0
+        $0.font = UIFont.customFont(.body_sb_12)
+    }
+    
+    private let date = UILabel().then {
+        $0.text = "일시"
+        $0.textColor = .black0
+        $0.font = UIFont.customFont(.body_sb_12)
+    }
+    
+    private let location = UILabel().then {
+        $0.text = "장소"
+        $0.textColor = .black0
+        $0.font = UIFont.customFont(.body_sb_12)
+    }
+    
+    private let age = UILabel().then {
+        $0.text = "관람등급"
+        $0.textColor = .black0
+        $0.font = UIFont.customFont(.body_sb_12)
+    }
+    
+    private let duration = UILabel().then {
+        $0.text = "관람시간"
+        $0.textColor = .black0
+        $0.font = UIFont.customFont(.body_sb_12)
+    }
+    
+    private let genreValue = UILabel().then {
+        $0.text = "콘서트"
+        $0.textColor = .gray800
+        $0.font = UIFont.customFont(.body_r_13)
+    }
+    
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setUI()
+        setStyle()
         setLayout()
     }
     
@@ -63,13 +106,25 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func setStyle() {
+        
+    }
+    
     private func setUI() {
+        
         contentView.addSubview(containerView)
         containerView.addSubview(backButton)
         containerView.addSubview(showTypeBackgroundView)
         showTypeBackgroundView.addSubview(showTypeText)
         containerView.addSubview(showTitle)
         containerView.addSubview(dividerView)
+        containerView.addSubview(showImage)
+        containerView.addSubview(genre)
+        containerView.addSubview(date)
+        containerView.addSubview(location)
+        containerView.addSubview(age)
+        containerView.addSubview(duration)
+
     }
     
     private func setLayout() {
@@ -105,6 +160,39 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(1)
         }
+        
+        showImage.snp.makeConstraints {
+            $0.top.equalTo(dividerView.snp.bottom).offset(18)
+            $0.leading.equalToSuperview().offset(10)
+            $0.width.equalTo(100)
+            $0.height.equalTo(140)
+        }
+        
+        genre.snp.makeConstraints {
+            $0.top.equalTo(dividerView.snp.bottom).offset(18)
+            $0.leading.equalTo(showImage.snp.trailing).offset(16)
+        }
+        
+        date.snp.makeConstraints {
+            $0.top.equalTo(genre.snp.bottom).offset(6)
+            $0.leading.equalTo(genre)
+        }
+        
+        location.snp.makeConstraints {
+            $0.top.equalTo(date.snp.bottom).offset(6)
+            $0.leading.equalTo(genre)
+        }
+        
+        age.snp.makeConstraints {
+            $0.top.equalTo(location.snp.bottom).offset(6)
+            $0.leading.equalTo(genre)
+        }
+        
+        duration.snp.makeConstraints {
+            $0.top.equalTo(age.snp.bottom).offset(6)
+            $0.leading.equalTo(genre)
+        }
+        
         
     }
     

@@ -286,7 +286,7 @@ enum AppleSandolGothic {
 extension UIFont {
     
     static func customFont(_ font: AppleSandolGothic) -> UIFont {
-        UIFont(name: font.name, size: font.size) ?? UIFont.systemFont(ofSize: font.size)
+        UIFont(name: font.name, size: font.size)!
     }
     
 }
