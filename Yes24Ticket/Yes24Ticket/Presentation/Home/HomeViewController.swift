@@ -33,6 +33,10 @@ final class HomeViewController: UIViewController {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
             withReuseIdentifier: MainFooterView.reusableViewIdentifier
         )
+        $0.register(
+            CategoryCollectionViewCell.self,
+            forCellWithReuseIdentifier: CategoryCollectionViewCell.cellIdentifier
+        )
         $0.dataSource = self
         $0.delegate = self
     }
@@ -45,7 +49,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func setStyle() {
-        view.backgroundColor = .systemGray
+        view.backgroundColor = .gray100
     }
     
     private func setUI() {
@@ -85,6 +89,8 @@ final class HomeViewController: UIViewController {
             switch sectionIndex {
             case 0:
                 return createMainSectionLayout()
+            case 1:
+                return createCategorySectionLayout()
             default:
                 return nil
             }
@@ -112,7 +118,6 @@ final class HomeViewController: UIViewController {
                 0,
                 round(offset.x / env.container.contentSize.width)
             ))
-            
             self?.mainFooter?.changeIndex(currentIndex: currentPage + 1)
         }
         section.boundarySupplementaryItems = [
@@ -133,23 +138,69 @@ final class HomeViewController: UIViewController {
         return section
     }
     
+    private func createCategorySectionLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0/3.0),
+            heightDimension: .fractionalHeight(1.0)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .absolute(40)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitems: [item, item, item]
+        )
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(
+            top: 0,
+            leading: 0,
+            bottom: 8,
+            trailing: 0
+        )
+        
+        return section
+    }
+    
 }
 
 extension HomeViewController: UICollectionViewDelegate {
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        switch indexPath.section {
+        case 1:
+            if indexPath.row == 0 {
+                // TODO: present Concert ViewController
+            }
+        default:
+            break
+        }
+    }
     
 }
 
 extension HomeViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return 2
     }
     
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        MainCellConfiguration.mockData.count
+        switch section {
+        case 0:
+            MainCellConfiguration.mockData.count
+        case 1:
+            CategoryCellConfiguration.mockData.count
+        default:
+            0
+        }
     }
     
     func collectionView(
@@ -181,15 +232,30 @@ extension HomeViewController: UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: MainCollectionViewCell.cellIdentifier,
-            for: indexPath
-        ) as? MainCollectionViewCell else {
+        switch indexPath.section {
+        case 0:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: MainCollectionViewCell.cellIdentifier,
+                for: indexPath
+            ) as? MainCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.configure(MainCellConfiguration.mockData[indexPath.row])
+            
+            return cell
+        case 1:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: CategoryCollectionViewCell.cellIdentifier,
+                for: indexPath
+            ) as? CategoryCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.configure(CategoryCellConfiguration.mockData[indexPath.row])
+            
+            return cell
+        default:
             return UICollectionViewCell()
         }
-        cell.configure(MainCellConfiguration.mockData[indexPath.row])
-        
-        return cell
     }
     
 }
