@@ -197,7 +197,7 @@ extension HomeViewController: UICollectionViewDataSource {
         case 0:
             MainCellConfiguration.mockData.count
         case 1:
-            6
+            CategoryCellConfiguration.mockData.count
         default:
             0
         }
