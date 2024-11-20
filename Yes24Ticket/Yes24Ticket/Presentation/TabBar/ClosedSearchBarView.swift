@@ -27,8 +27,7 @@ final class ClosedSearchBarView: UIView {
     }
 
     private let searchButton = UIButton().then {
-        $0
-            .setImage(
+        $0.setImage(
                 .icSearchGray24,
                 for: .normal
             )
@@ -46,8 +45,8 @@ final class ClosedSearchBarView: UIView {
     }
     
     private func setStyle() {
-          backgroundColor = .black
-      }
+        backgroundColor = .black
+    }
     
     private func setUI() {
         addSubview(statusBarView)
