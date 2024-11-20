@@ -162,6 +162,20 @@ final class HomeViewController: UIViewController {
 
 extension HomeViewController: UICollectionViewDelegate {
     
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        switch indexPath.section {
+        case 1:
+            if indexPath.row == 0 {
+                // TODO: present Concert ViewController
+            }
+        default:
+            break
+        }
+    }
+    
 }
 
 extension HomeViewController: UICollectionViewDataSource {
