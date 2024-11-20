@@ -153,7 +153,12 @@ final class HomeViewController: UIViewController {
             subitems: [item, item, item]
         )
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 0, leading: 0, bottom: 8, trailing: 0)
+        section.contentInsets = .init(
+            top: 0,
+            leading: 0,
+            bottom: 8,
+            trailing: 0
+        )
         
         return section
     }
