@@ -107,7 +107,6 @@ final class HomeViewController: UIViewController {
         )
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
-        
         section.visibleItemsInvalidationHandler = { [weak self] (visibleItems, offset, env) in
             let currentPage = Int(max(
                 0,
@@ -116,7 +115,6 @@ final class HomeViewController: UIViewController {
             
             self?.mainFooter?.changeIndex(currentIndex: currentPage + 1)
         }
-        
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(
                 layoutSize: .init(
@@ -168,11 +166,11 @@ extension HomeViewController: UICollectionViewDataSource {
             ) as? MainFooterView else {
                 return UICollectionReusableView()
             }
-            
             // TODO: API 데이터로 수정
             footer.setMaxIndex(MainCellConfiguration.mockData.count)
             footer.changeIndex(currentIndex: 1)
             mainFooter = footer
+            
             return footer
         default:
             return UICollectionReusableView()
