@@ -14,8 +14,16 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
     
     private static let reuseIdentifier: String = "DetailHeaderView"
     
+    private let imageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+    }
+    
+    private let gradationView = UIImageView().then {
+        $0.image = .whiteGd
+    }
+    
     private let containerView = UIView().then {
-        $0.backgroundColor = .white
+        $0.backgroundColor = .clear
     }
     
     private lazy var backButton = UIButton().then {
@@ -95,10 +103,72 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         $0.font = UIFont.customFont(.body_r_13)
     }
     
+    private let dateValue = UILabel().then {
+        $0.text = "2024.11.10 ~ 2024.11.10"
+        $0.textColor = .gray800
+        $0.font = UIFont.customFont(.body_r_13)
+    }
+    
+    private let locationValue = UIButton().then {
+        $0.setTitle(
+            "YES24 LIVE HALL ▸",
+            for: .normal
+        )
+        $0.setTitleColor(
+            .blue100,
+            for: .normal
+        )
+        $0.titleLabel?.font = UIFont.customFont(.body_b_13)
+    }
+    
+    private let ageValue = UILabel().then {
+        $0.text = "7세 이상"
+        $0.textColor = .gray800
+        $0.font = UIFont.customFont(.body_r_13)
+    }
+    
+    private let durationValue = UILabel().then {
+        $0.text = "총 180분"
+        $0.textColor = .gray800
+        $0.font = UIFont.customFont(.body_r_13)
+    }
+    
+    private lazy var likeButton = UIButton().then {
+        $0.setImage(
+            .icHeartGray36,
+            for: .normal
+        )
+        $0.setImage(
+            .icHeart36,
+            for: .selected
+        )
+        $0.addTarget(
+            self,
+            action: #selector(likeButtonTapped),
+            for: .touchUpInside
+        )
+    }
+    
+    private let likeLabel = UILabel().then {
+        $0.text = "162"
+        $0.font = UIFont.customFont(.body_b_14)
+        $0.textColor = .gray600
+    }
+    
+    private lazy var shareButton = UIButton().then {
+        $0.setImage(
+            .icIShare36,
+            for: .normal
+        )
+    }
+    
+    private let bottonDivierView = UIView().then {
+        $0.backgroundColor = .gray200
+    }
+    
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setUI()
-        setStyle()
         setLayout()
     }
     
@@ -106,32 +176,56 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setStyle() {
-        
-    }
-    
     private func setUI() {
+        [
+            imageView,
+            gradationView,
+            containerView
+        ].forEach {
+            contentView.addSubview($0)
+        }
         
-        contentView.addSubview(containerView)
-        containerView.addSubview(backButton)
-        containerView.addSubview(showTypeBackgroundView)
+        [
+            backButton,
+            showTypeBackgroundView,
+            showTitle,
+            dividerView,
+            showImage,
+            genre,
+            date,
+            location,
+            age,
+            duration,
+            genreValue,
+            dateValue,
+            locationValue,
+            ageValue,
+            durationValue,
+            likeButton,
+            likeLabel,
+            shareButton,
+            bottonDivierView
+        ].forEach {
+            containerView.addSubview($0)
+        }
+        
         showTypeBackgroundView.addSubview(showTypeText)
-        containerView.addSubview(showTitle)
-        containerView.addSubview(dividerView)
-        containerView.addSubview(showImage)
-        containerView.addSubview(genre)
-        containerView.addSubview(date)
-        containerView.addSubview(location)
-        containerView.addSubview(age)
-        containerView.addSubview(duration)
-
     }
     
     private func setLayout() {
         containerView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(47)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(260)
+            $0.height.equalTo(268)
+        }
+        
+        gradationView.snp.makeConstraints {
+            $0.edges.equalTo(containerView)
+        }
+        
+        imageView.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(containerView)
+            $0.height.equalTo(containerView)
         }
         
         backButton.snp.makeConstraints {
@@ -144,7 +238,7 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
             $0.top.equalTo(backButton.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(10)
         }
-
+        
         showTypeText.snp.makeConstraints {
             $0.verticalEdges.equalToSuperview().inset(3)
             $0.horizontalEdges.equalToSuperview().inset(4)
@@ -193,6 +287,51 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
             $0.leading.equalTo(genre)
         }
         
+        genreValue.snp.makeConstraints {
+            $0.centerY.equalTo(genre.snp.centerY)
+            $0.leading.equalTo(genre.snp.leading).offset(54)
+        }
+        
+        dateValue.snp.makeConstraints {
+            $0.centerY.equalTo(date.snp.centerY)
+            $0.leading.equalTo(genreValue)
+        }
+        
+        locationValue.snp.makeConstraints {
+            $0.centerY.equalTo(location.snp.centerY)
+            $0.leading.equalTo(genreValue)
+        }
+        
+        ageValue.snp.makeConstraints {
+            $0.centerY.equalTo(age.snp.centerY)
+            $0.leading.equalTo(genreValue)
+        }
+        
+        durationValue.snp.makeConstraints {
+            $0.centerY.equalTo(duration.snp.centerY)
+            $0.leading.equalTo(genreValue)
+        }
+        
+        likeButton.snp.makeConstraints {
+            $0.top.equalTo(dividerView.snp.bottom).offset(132)
+            $0.trailing.equalTo(likeLabel.snp.leading).offset(-0.43)
+        }
+        
+        shareButton.snp.makeConstraints {
+            $0.top.equalTo(dividerView.snp.bottom).offset(132)
+            $0.trailing.equalToSuperview().inset(8)
+        }
+        
+        likeLabel.snp.makeConstraints {
+            $0.top.equalTo(dividerView.snp.bottom).offset(141.5)
+            $0.trailing.equalTo(shareButton.snp.leading).offset(-10)
+        }
+        
+        bottonDivierView.snp.makeConstraints {
+            $0.bottom.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(1)
+        }
         
     }
     
@@ -200,18 +339,36 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         //TODO: 추 후 dismiss 연결해 줄 예정입니다.
     }
     
+    @objc private func likeButtonTapped() {
+        //TODO: 추 후 서버로 통신하는 과정 구현해 줄 예정입니다.
+        likeButton.isSelected.toggle()
+    }
+    
 }
 
 extension DetailHeaderView {
     
     func fetchData(with model: Concert) {
+        self.imageView.image = model.image
         self.showTypeText.text = model.genre
+        self.showTitle.text = model.title
+        self.showTypeText.text = model.genre
+        self.dateValue.text = model.date
+        self.locationValue.setTitle(
+            "\(model.area) ▸",
+            for: .normal
+        )
+        self.ageValue.text = model.age
+        self.durationValue.text = model.duration
     }
     
 }
 
 #Preview {
     
-    DetailHeaderView()
+    let view = DetailHeaderView().then {
+        $0.fetchData(with: .dummyData())
+    }
+    view
     
 }

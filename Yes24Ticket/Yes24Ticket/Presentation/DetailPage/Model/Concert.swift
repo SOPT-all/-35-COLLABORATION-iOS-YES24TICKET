@@ -5,11 +5,11 @@
 //  Created by 송여경 on 11/20/24.
 //
 
-import Foundation
+import UIKit
 
 struct Concert {
     
-    let image: String
+    let image: UIImage
     let title: String
     let genre: String
     let date: String
@@ -32,12 +32,11 @@ struct Ticket {
     
 }
 
-
 extension Concert {
     
     static func dummyData() -> Self {
         return .init(
-            image: "http://tkfile.yes24.com/upload2/PerfBlog/202409/20240906/20240906-50930.jpg",
+            image: .icSitBlue18,
             title: "HYPE UP FESTIVAL",
             genre: "콘서트",
             date: "2024.11.10 ~ 2024.11.10",
@@ -46,20 +45,28 @@ extension Concert {
             duration: "총 180분",
             hypertext: "HYPE UP FESTIVAL 바로가기",
             hyperlink: "https://www.hypefestival.de/",
-            notice: ["※ 본 공연은 네이버 쿠폰이 적용되지 않습니다.",
-                     "※ 본 공연은 YES74공연에서 진행하는 할인쿠폰이벤트 대상에서 제외됩니다.",
-                     "※ 매수제한: 공연별 1인 4매"],
-            performenceTime: ["2024-11-20 (수) 13:00",
-                              "2024-11-21 (목) 15:00",
-                              "2024-11-22 (금) 14:00",
-                              "2024-11-23 (금) 15:00"],
+            notice: [
+                "※ 본 공연은 네이버 쿠폰이 적용되지 않습니다.",
+                "※ 본 공연은 YES74공연에서 진행하는 할인쿠폰이벤트 대상에서 제외됩니다.",
+                "※ 매수제한: 공연별 1인 4매"
+            ],
+            performenceTime: [
+                "2024-11-20 (수) 13:00",
+                "2024-11-21 (목) 15:00",
+                "2024-11-22 (금) 14:00",
+                "2024-11-23 (금) 15:00"
+            ],
             pricing: [
-                Ticket(type: "R석",
-                       price: "88,000원",
-                       color: 2),
-                Ticket(type: "S석",
-                       price: "77,000원",
-                       color: 3)
+                Ticket(
+                    type: "R석",
+                    price: "88,000원",
+                    color: 2
+                ),
+                Ticket(
+                    type: "S석",
+                    price: "77,000원",
+                    color: 3
+                )
             ]
         )
     }
