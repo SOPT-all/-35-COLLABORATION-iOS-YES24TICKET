@@ -32,7 +32,7 @@ final class APIService {
         }
     }
     
-    func downloadImage(
+    func fetchImage(
             from urlString: String,
             completion: @escaping (Result<Data, ExampleError>) -> Void
         ) {

@@ -30,20 +30,18 @@ struct Ticket {
     let price: String
     let color: Int
     
-    static var dummyPricing : [Ticket] {
-        return [
-            Ticket(
-                type: "R석",
-                price: "88.000 원",
-                color: 2
-            ),
-            Ticket(
-                type: "S석",
-                price: "77,000원",
-                color: 3
-            )
-        ]
-    }
+    static let dummyPricing : [Ticket] = [
+        Ticket(
+            type: "R석",
+            price: "88.000 원",
+            color: 2
+        ),
+        Ticket(
+            type: "S석",
+            price: "77,000원",
+            color: 3
+        )
+    ]
 }
 
 extension Concert {
