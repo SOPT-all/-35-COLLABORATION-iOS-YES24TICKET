@@ -32,6 +32,11 @@ final class ConcertNavigationBar: UIView {
         )
     }
     
+    @objc private func handleDismiss() {
+        print("Dismiss button tapped")
+        // TODO: ViewController에서 dismiss를 호출하거나 NavigationController pop을 연결합니다.
+    }
+    
     private let concertTitleLabel = UILabel().then {
         $0.text = "콘서트"
         $0.textColor = .gray700
@@ -80,9 +85,5 @@ final class ConcertNavigationBar: UIView {
         }
     }
     
-    @objc private func handleDismiss() {
-        print("Dismiss button tapped")
-        // TODO: ViewController에서 dismiss를 호출하거나 NavigationController pop을 연결합니다.
-    }
 }
 
