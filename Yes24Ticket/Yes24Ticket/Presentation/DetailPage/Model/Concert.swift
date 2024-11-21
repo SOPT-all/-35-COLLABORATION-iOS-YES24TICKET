@@ -42,6 +42,7 @@ struct Ticket {
             color: 3
         )
     ]
+    
 }
 
 extension Concert {
