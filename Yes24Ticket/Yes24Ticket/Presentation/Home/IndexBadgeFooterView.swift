@@ -1,5 +1,5 @@
 //
-//  MainFooterView.swift
+//  IndexBadgeFooterView.swift
 //  Yes24Ticket
 //
 //  Created by 조성민 on 11/20/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MainFooterView: UICollectionReusableView {
+final class IndexBadgeFooterView: UICollectionReusableView {
     
     private var maxIndex: Int?
     
@@ -28,12 +28,7 @@ final class MainFooterView: UICollectionReusableView {
     }
     
     private func setStyle() {
-        backgroundColor = .whiteDim
         layer.cornerRadius = 10
-        layer.shadowColor = UIColor.black0.cgColor
-        layer.shadowOffset = .init(width: 0, height: 4)
-        layer.shadowOpacity = 0.25
-        layer.shadowRadius = 4
     }
     
     private func setUI() {
@@ -56,6 +51,18 @@ final class MainFooterView: UICollectionReusableView {
     
     func setMaxIndex(_ maxIndex: Int) {
         self.maxIndex = maxIndex
+    }
+    
+    func setDimMode(isWhite: Bool) {
+        if isWhite {
+            backgroundColor = .whiteDim
+            layer.shadowColor = UIColor.black0.cgColor
+            layer.shadowOffset = .init(width: 0, height: 4)
+            layer.shadowOpacity = 0.25
+            layer.shadowRadius = 4
+        } else {
+            backgroundColor = .blackDim
+        }
     }
     
 }

@@ -71,7 +71,7 @@ final class TicketRankCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configure(_ configuration: TicketRankConfiguration) {
+    func configure(_ configuration: TicketRankCellConfiguration) {
         imageView.image = configuration.image
         rankLabel.text = "\(configuration.rank)"
     }

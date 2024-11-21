@@ -1,5 +1,5 @@
 //
-//  TicketRankConfiguration.swift
+//  TicketRankCellConfiguration.swift
 //  Yes24Ticket
 //
 //  Created by 조성민 on 11/21/24.
@@ -7,16 +7,16 @@
 
 import UIKit
 
-struct TicketRankConfiguration {
+struct TicketRankCellConfiguration {
     
     let image: UIImage
     let rank: Int
     
 }
 
-extension TicketRankConfiguration {
+extension TicketRankCellConfiguration {
     
-    static let mockData: [TicketRankConfiguration] = [
+    static let mockData: [TicketRankCellConfiguration] = [
         .init(image: .icSitBlue18, rank: 1),
         .init(image: .icnX18, rank: 2),
         .init(image: .icIShare36, rank: 3),
