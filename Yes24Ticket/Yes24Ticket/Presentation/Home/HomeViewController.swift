@@ -10,6 +10,7 @@ import UIKit
 final class HomeViewController: UIViewController {
     
     private var mainFooter: IndexBadgeFooterView?
+    private var adFooter: IndexBadgeFooterView?
     
     private let scrollView = UIScrollView()
     
@@ -50,6 +51,10 @@ final class HomeViewController: UIViewController {
             TicketRankFooterView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
             withReuseIdentifier: TicketRankFooterView.reusableViewIdentifier
+        )
+        $0.register(
+            AdCollectionViewCell.self,
+            forCellWithReuseIdentifier: AdCollectionViewCell.cellIdentifier
         )
         $0.dataSource = self
         $0.delegate = self
@@ -107,6 +112,8 @@ final class HomeViewController: UIViewController {
                 return createCategorySectionLayout()
             case 2:
                 return createTicketRankSectionLayout()
+            case 3:
+                return createAdSectionLayout()
             default:
                 return nil
             }
@@ -239,6 +246,53 @@ final class HomeViewController: UIViewController {
         return section
     }
     
+    private func createAdSectionLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(1.0)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(160)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitems: [item]
+        )
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(
+            top: 8,
+            leading: 0,
+            bottom: 0,
+            trailing: 0
+        )
+        section.orthogonalScrollingBehavior = .groupPaging
+        section.visibleItemsInvalidationHandler = { [weak self] (visibleItems, offset, env) in
+            let currentPage = Int(max(
+                0,
+                round(offset.x / env.container.contentSize.width)
+            ))
+            self?.adFooter?.changeIndex(currentIndex: currentPage + 1)
+        }
+        section.boundarySupplementaryItems = [
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: .init(
+                    widthDimension: .absolute(40),
+                    heightDimension: .absolute(20)
+                ),
+                elementKind: UICollectionView.elementKindSectionFooter,
+                alignment: .bottomTrailing,
+                absoluteOffset: CGPoint(
+                    x: -20,
+                    y: -40
+                )
+            )
+        ]
+        
+        return section
+    }
+    
 }
 
 extension HomeViewController: UICollectionViewDelegate {
@@ -262,7 +316,7 @@ extension HomeViewController: UICollectionViewDelegate {
 extension HomeViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        return 4
     }
     
     func collectionView(
@@ -275,7 +329,9 @@ extension HomeViewController: UICollectionViewDataSource {
         case 1:
             CategoryCellConfiguration.mockData.count
         case 2:
-            TicketRankConfiguration.mockData.count
+            TicketRankCellConfiguration.mockData.count
+        case 3:
+            AdCellConfiguration.mockData.count
         default:
             0
         }
@@ -296,6 +352,7 @@ extension HomeViewController: UICollectionViewDataSource {
                 return UICollectionReusableView()
             }
             // TODO: API 데이터로 수정
+            footer.setDimMode(isWhite: true)
             footer.setMaxIndex(MainCellConfiguration.mockData.count)
             footer.changeIndex(currentIndex: 1)
             mainFooter = footer
@@ -326,6 +383,21 @@ extension HomeViewController: UICollectionViewDataSource {
             default:
                 return UICollectionReusableView()
             }
+        case 3:
+            guard let footer = collectionView.dequeueReusableSupplementaryView(
+                ofKind: UICollectionView.elementKindSectionFooter,
+                withReuseIdentifier: IndexBadgeFooterView.reusableViewIdentifier,
+                for: indexPath
+            ) as? IndexBadgeFooterView else {
+                return UICollectionReusableView()
+            }
+            // TODO: API 데이터로 수정
+            footer.setMaxIndex(AdCellConfiguration.mockData.count)
+            footer.changeIndex(currentIndex: 1)
+            footer.setDimMode(isWhite: false)
+            adFooter = footer
+            
+            return footer
         default:
             return UICollectionReusableView()
         }
@@ -363,7 +435,17 @@ extension HomeViewController: UICollectionViewDataSource {
             ) as? TicketRankCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            cell.configure(TicketRankConfiguration.mockData[indexPath.row])
+            cell.configure(TicketRankCellConfiguration.mockData[indexPath.row])
+            
+            return cell
+        case 3:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: AdCollectionViewCell.cellIdentifier,
+                for: indexPath
+            ) as? AdCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.configure(AdCellConfiguration.mockData[indexPath.row])
             
             return cell
         default:
