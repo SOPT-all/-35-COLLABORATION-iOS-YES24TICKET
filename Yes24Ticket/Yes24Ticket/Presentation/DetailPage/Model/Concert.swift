@@ -30,7 +30,7 @@ struct Ticket {
     let price: String
     let color: Int
     
-    static let dummyPricing : [Ticket] = [
+    static let mockPricing : [Ticket] = [
         Ticket(
             type: "R석",
             price: "88.000 원",
@@ -47,7 +47,7 @@ struct Ticket {
 
 extension Concert {
     
-    static let dummyData: Self = .init (
+    static let mockData: Self = .init (
         image: .icSitBlue18,
         title: "HYPE UP FESTIVAL",
         genre: "콘서트",
@@ -68,7 +68,7 @@ extension Concert {
             "2024-11-22 (금) 14:00",
             "2024-11-23 (금) 15:00"
         ],
-        pricing: Ticket.dummyPricing
+        pricing: Ticket.mockPricing
     )
     
 }

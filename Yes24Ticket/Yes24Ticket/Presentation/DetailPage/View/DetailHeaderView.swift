@@ -367,7 +367,7 @@ extension DetailHeaderView {
 #Preview {
     
     let view = DetailHeaderView().then {
-        $0.fetchData(with: .dummyData)
+        $0.fetchData(with: .mockData)
     }
     view
 
