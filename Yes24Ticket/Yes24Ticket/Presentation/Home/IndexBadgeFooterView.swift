@@ -1,5 +1,5 @@
 //
-//  MainFooterView.swift
+//  IndexBadgeFooterView.swift
 //  Yes24Ticket
 //
 //  Created by 조성민 on 11/20/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MainFooterView: UICollectionReusableView {
+final class IndexBadgeFooterView: UICollectionReusableView {
     
     private var maxIndex: Int?
     

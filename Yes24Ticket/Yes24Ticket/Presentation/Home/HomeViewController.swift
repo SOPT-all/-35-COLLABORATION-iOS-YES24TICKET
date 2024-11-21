@@ -9,7 +9,7 @@ import UIKit
 
 final class HomeViewController: UIViewController {
     
-    private var mainFooter: MainFooterView?
+    private var mainFooter: IndexBadgeFooterView?
     
     private let scrollView = UIScrollView()
     
@@ -29,9 +29,9 @@ final class HomeViewController: UIViewController {
             forCellWithReuseIdentifier: MainCollectionViewCell.cellIdentifier
         )
         $0.register(
-            MainFooterView.self,
+            IndexBadgeFooterView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-            withReuseIdentifier: MainFooterView.reusableViewIdentifier
+            withReuseIdentifier: IndexBadgeFooterView.reusableViewIdentifier
         )
         $0.register(
             CategoryCollectionViewCell.self,
@@ -290,9 +290,9 @@ extension HomeViewController: UICollectionViewDataSource {
         case 0:
             guard let footer = collectionView.dequeueReusableSupplementaryView(
                 ofKind: UICollectionView.elementKindSectionFooter,
-                withReuseIdentifier: MainFooterView.reusableViewIdentifier,
+                withReuseIdentifier: IndexBadgeFooterView.reusableViewIdentifier,
                 for: indexPath
-            ) as? MainFooterView else {
+            ) as? IndexBadgeFooterView else {
                 return UICollectionReusableView()
             }
             // TODO: API 데이터로 수정
