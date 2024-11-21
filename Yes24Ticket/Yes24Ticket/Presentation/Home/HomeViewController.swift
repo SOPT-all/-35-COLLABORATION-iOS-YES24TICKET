@@ -37,6 +37,20 @@ final class HomeViewController: UIViewController {
             CategoryCollectionViewCell.self,
             forCellWithReuseIdentifier: CategoryCollectionViewCell.cellIdentifier
         )
+        $0.register(
+            TicketRankCollectionViewCell.self,
+            forCellWithReuseIdentifier: TicketRankCollectionViewCell.cellIdentifier
+        )
+        $0.register(
+            TicketRankHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: TicketRankHeaderView.reusableViewIdentifier
+        )
+        $0.register(
+            TicketRankFooterView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: TicketRankFooterView.reusableViewIdentifier
+        )
         $0.dataSource = self
         $0.delegate = self
     }
@@ -82,7 +96,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        UICollectionViewCompositionalLayout { [weak self] (sectionIndex, _) -> NSCollectionLayoutSection? in
+        let layout = UICollectionViewCompositionalLayout { [weak self] (sectionIndex, _) -> NSCollectionLayoutSection? in
             guard let self else {
                 return nil
             }
@@ -91,10 +105,18 @@ final class HomeViewController: UIViewController {
                 return createMainSectionLayout()
             case 1:
                 return createCategorySectionLayout()
+            case 2:
+                return createTicketRankSectionLayout()
             default:
                 return nil
             }
         }
+        layout.register(
+            TicketRankSectionBackgroundView.self,
+            forDecorationViewOfKind: "ticket-background"
+        )
+        
+        return layout
     }
     
     private func createMainSectionLayout() -> NSCollectionLayoutSection {
@@ -163,6 +185,60 @@ final class HomeViewController: UIViewController {
         return section
     }
     
+    private func createTicketRankSectionLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(120),
+            heightDimension: .absolute(170)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(132),
+            heightDimension: .absolute(170)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitems: [item]
+        )
+        group.contentInsets = .init(
+            top: 0,
+            leading: 10,
+            bottom: 0,
+            trailing: 2
+        )
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuous
+        section.contentInsets = .init(
+            top: 12,
+            leading: 0,
+            bottom: 12,
+            trailing: 0
+        )
+        
+        section.boundarySupplementaryItems = [
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: .init(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .absolute(30)
+                ),
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .topLeading
+            ),
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: .init(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .absolute(36)
+                ),
+                elementKind: UICollectionView.elementKindSectionFooter,
+                alignment: .bottom
+            )
+        ]
+        section.decorationItems = [
+            NSCollectionLayoutDecorationItem.background(elementKind: "ticket-background")
+        ]
+        
+        return section
+    }
+    
 }
 
 extension HomeViewController: UICollectionViewDelegate {
@@ -186,7 +262,7 @@ extension HomeViewController: UICollectionViewDelegate {
 extension HomeViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 3
     }
     
     func collectionView(
@@ -198,6 +274,8 @@ extension HomeViewController: UICollectionViewDataSource {
             MainCellConfiguration.mockData.count
         case 1:
             CategoryCellConfiguration.mockData.count
+        case 2:
+            TicketRankConfiguration.mockData.count
         default:
             0
         }
@@ -223,6 +301,31 @@ extension HomeViewController: UICollectionViewDataSource {
             mainFooter = footer
             
             return footer
+        case 2:
+            switch kind {
+            case UICollectionView.elementKindSectionHeader:
+                guard let header = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: UICollectionView.elementKindSectionHeader,
+                    withReuseIdentifier: TicketRankHeaderView.reusableViewIdentifier,
+                    for: indexPath
+                ) as? TicketRankHeaderView else {
+                    return UICollectionReusableView()
+                }
+                
+                return header
+            case UICollectionView.elementKindSectionFooter:
+                guard let footer = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: UICollectionView.elementKindSectionFooter,
+                    withReuseIdentifier: TicketRankFooterView.reusableViewIdentifier,
+                    for: indexPath
+                ) as? TicketRankFooterView else {
+                    return UICollectionReusableView()
+                }
+                
+                return footer
+            default:
+                return UICollectionReusableView()
+            }
         default:
             return UICollectionReusableView()
         }
@@ -251,6 +354,16 @@ extension HomeViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             cell.configure(CategoryCellConfiguration.mockData[indexPath.row])
+            
+            return cell
+        case 2:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: TicketRankCollectionViewCell.cellIdentifier,
+                for: indexPath
+            ) as? TicketRankCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.configure(TicketRankConfiguration.mockData[indexPath.row])
             
             return cell
         default:
