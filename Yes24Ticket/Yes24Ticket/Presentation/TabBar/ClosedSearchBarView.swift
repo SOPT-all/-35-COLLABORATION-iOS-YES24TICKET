@@ -28,7 +28,7 @@ final class ClosedSearchBarView: UIView {
     
     private let searchButton = UIButton().then {
         $0.setImage(
-            .icSearchGray24,
+            .icSearchWhite24,
             for: .normal
         )
     }
