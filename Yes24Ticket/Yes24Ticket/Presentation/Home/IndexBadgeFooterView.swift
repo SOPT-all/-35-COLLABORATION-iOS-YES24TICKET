@@ -28,12 +28,7 @@ final class IndexBadgeFooterView: UICollectionReusableView {
     }
     
     private func setStyle() {
-        backgroundColor = .whiteDim
         layer.cornerRadius = 10
-        layer.shadowColor = UIColor.black0.cgColor
-        layer.shadowOffset = .init(width: 0, height: 4)
-        layer.shadowOpacity = 0.25
-        layer.shadowRadius = 4
     }
     
     private func setUI() {
@@ -56,6 +51,18 @@ final class IndexBadgeFooterView: UICollectionReusableView {
     
     func setMaxIndex(_ maxIndex: Int) {
         self.maxIndex = maxIndex
+    }
+    
+    func setDimMode(isWhite: Bool) {
+        if isWhite {
+            backgroundColor = .whiteDim
+            layer.shadowColor = UIColor.black0.cgColor
+            layer.shadowOffset = .init(width: 0, height: 4)
+            layer.shadowOpacity = 0.25
+            layer.shadowRadius = 4
+        } else {
+            backgroundColor = .blackDim
+        }
     }
     
 }
