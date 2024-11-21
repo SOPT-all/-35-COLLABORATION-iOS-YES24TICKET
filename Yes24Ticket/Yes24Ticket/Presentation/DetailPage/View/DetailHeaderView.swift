@@ -26,6 +26,62 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         $0.backgroundColor = .clear
     }
     
+    private let ticketDetailView = UIView().then {
+        $0.backgroundColor = .gray100
+    }
+    
+    private let priceLabel = UILabel().then {
+        $0.text = "티켓등급별 가격"
+        $0.font = UIFont.customFont(.title_b_15)
+        $0.textColor = .blue100
+    }
+    
+    private let standingImage = UIImageView().then {
+        $0.image = UIImage.icSitMint18
+        $0.contentMode = .scaleAspectFit
+    }
+    
+    private let standingLabel = UILabel().then {
+        $0.text = "스탠딩석"
+        $0.textColor = .gray700
+        $0.font = UIFont.customFont(.body_b_12)
+    }
+    
+    private let standingPriceLabel = UILabel().then {
+        $0.text = "132,000원"
+        $0.textColor = .black0
+        $0.font = UIFont.customFont(.body_b_12)
+    }
+    
+    private let pinnedImage = UIImageView().then {
+        $0.image = UIImage.icSitBlue18
+        $0.contentMode = .scaleAspectFit
+    }
+    
+    private let pinnedLabel = UILabel().then {
+        $0.text = "지정석"
+        $0.textColor = .gray700
+        $0.font = UIFont.customFont(.body_b_12)
+    }
+    
+    private let pinnedPriceLabel = UILabel().then {
+        $0.text = "132,000원"
+        $0.textColor = .black0
+        $0.font = UIFont.customFont(.body_b_12)
+    }
+    
+    private let performanceTimeLabel = UILabel().then {
+        $0.text = "공연시간"
+        $0.textColor = .blue100
+        $0.font = UIFont.customFont(.title_b_15)
+    }
+    
+    private let timeDetailLabel = UILabel().then {
+        $0.font = UIFont.customFont(.body_m_13)
+        $0.textColor = .gray700
+        $0.text = "2024년 11월 10일(일) 5시 30분"
+    }
+    
     private lazy var backButton = UIButton().then {
         $0.setImage(
             UIImage(resource: .icnArrowLeft24),
@@ -180,9 +236,24 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         [
             imageView,
             gradationView,
-            containerView
+            containerView,
+            ticketDetailView
         ].forEach {
             contentView.addSubview($0)
+        }
+        
+        [
+            priceLabel,
+            standingImage,
+            standingLabel,
+            standingPriceLabel,
+            pinnedImage,
+            pinnedLabel,
+            pinnedPriceLabel,
+            performanceTimeLabel,
+            timeDetailLabel
+        ].forEach{
+            ticketDetailView.addSubview($0)
         }
         
         [
@@ -210,12 +281,13 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         }
         
         showTypeBackgroundView.addSubview(showTypeText)
+        
     }
     
     private func setLayout() {
         containerView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(47)
-            $0.leading.trailing.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(268)
         }
         
@@ -333,6 +405,61 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
             $0.height.equalTo(1)
         }
         
+        ticketDetailView.snp.makeConstraints {
+            $0.top.equalTo(containerView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(162)
+        }
+        
+        priceLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(15)
+            $0.leading.equalToSuperview().offset(14)
+        }
+        
+        standingImage.snp.makeConstraints {
+            $0.top.equalTo(priceLabel.snp.bottom).offset(10)
+            $0.leading.equalToSuperview().offset(10)
+        }
+        
+        standingLabel.snp.makeConstraints {
+            $0.top.equalTo(priceLabel.snp.bottom).offset(10)
+            $0.centerY.equalTo(standingImage.snp.centerY)
+            $0.leading.equalTo(standingImage.snp.trailing).offset(4)
+        }
+        
+        standingPriceLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(43)
+            $0.centerY.equalTo(standingImage.snp.centerY)
+            $0.leading.equalTo(standingLabel.snp.trailing).offset(33)
+        }
+        
+        pinnedImage.snp.makeConstraints {
+            $0.top.equalTo(standingImage.snp.bottom).offset(4)
+            $0.leading.equalToSuperview().offset(10)
+        }
+        
+        pinnedLabel.snp.makeConstraints {
+            $0.top.equalTo(standingLabel.snp.bottom).offset(6)
+            $0.centerY.equalTo(pinnedImage.snp.centerY)
+            $0.leading.equalTo(pinnedImage.snp.trailing).offset(4)
+        }
+        
+        pinnedPriceLabel.snp.makeConstraints {
+            $0.top.equalTo(standingPriceLabel.snp.bottom).offset(8)
+            $0.centerY.equalTo(pinnedImage.snp.centerY)
+            $0.leading.equalTo(pinnedLabel.snp.trailing).offset(43)
+        }
+        
+        performanceTimeLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(103)
+            $0.leading.equalToSuperview().offset(14)
+        }
+        
+        timeDetailLabel.snp.makeConstraints {
+            $0.top.equalTo(performanceTimeLabel.snp.bottom).offset(10)
+            $0.leading.equalToSuperview().offset(14)
+        }
+        
     }
     
     @objc private func handleDismiss() {
@@ -360,6 +487,9 @@ extension DetailHeaderView {
         )
         self.ageValue.text = model.age
         self.durationValue.text = model.duration
+        self.standingPriceLabel.text = model.pricing[0].price
+        self.pinnedPriceLabel.text = model.pricing[1].price
+        self.timeDetailLabel.text = model.performenceTime[0]
     }
     
 }

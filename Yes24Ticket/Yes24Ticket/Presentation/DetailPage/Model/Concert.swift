@@ -33,7 +33,7 @@ struct Ticket {
     static let mockPricing : [Ticket] = [
         Ticket(
             type: "R석",
-            price: "88.000 원",
+            price: "88,000원",
             color: 2
         ),
         Ticket(
