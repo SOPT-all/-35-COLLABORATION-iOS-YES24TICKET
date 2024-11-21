@@ -12,11 +12,7 @@ import Then
 
 final class ConcertNavigationBar: UIView {
     
-    private let containerView = UIView().then {
-        $0.backgroundColor = .gray50
-    }
-    
-    private let bottomBorder = UIView().then{
+    private let bottomBorder = UIView().then {
         $0.backgroundColor = .gray200
     }
     
@@ -33,17 +29,15 @@ final class ConcertNavigationBar: UIView {
     }
     
     @objc private func handleDismiss() {
-        print("Dismiss button tapped")
         // TODO: ViewController에서 dismiss를 호출하거나 NavigationController pop을 연결합니다.
     }
     
     private let concertTitleLabel = UILabel().then {
         $0.text = "콘서트"
         $0.textColor = .gray700
-        $0.font = .customFont(.title_b_12)
+        $0.font = .customFont(.head_b_15)
     }
-
-        
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUI()
@@ -55,18 +49,13 @@ final class ConcertNavigationBar: UIView {
     }
     
     private func setUI() {
-        addSubview(containerView)
-        containerView.addSubview(bottomBorder)
-        containerView.addSubview(backButton)
-        containerView.addSubview(concertTitleLabel)
+        backgroundColor = .gray50
+        addSubview(bottomBorder)
+        addSubview(backButton)
+        addSubview(concertTitleLabel)
     }
     
     private func setLayout() {
-        containerView.snp.makeConstraints {
-            $0.top.leading.trailing.bottom.equalToSuperview()
-            $0.height.equalTo(39.5)
-        }
-        
         bottomBorder.snp.makeConstraints {
             $0.bottom.leading.trailing.equalToSuperview()
             $0.height.equalTo(1)
@@ -78,7 +67,7 @@ final class ConcertNavigationBar: UIView {
             $0.width.height.equalTo(24)
         }
         
-        concertTitleLabel.snp.makeConstraints{
+        concertTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(8)
             $0.centerX.equalToSuperview()
             $0.centerY.equalToSuperview()
@@ -86,4 +75,3 @@ final class ConcertNavigationBar: UIView {
     }
     
 }
-
