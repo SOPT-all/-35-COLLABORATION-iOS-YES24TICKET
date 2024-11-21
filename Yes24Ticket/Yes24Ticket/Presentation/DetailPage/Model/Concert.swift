@@ -1,5 +1,5 @@
 //
-//  DetailViewModel.swift
+//  Concert.swift
 //  Yes24Ticket
 //
 //  Created by 송여경 on 11/20/24.
@@ -30,6 +30,20 @@ struct Ticket {
     let price: String
     let color: Int
     
+    static var dummyPricing : [Ticket] {
+        return [
+            Ticket(
+                type: "R석",
+                price: "88.000 원",
+                color: 2
+            ),
+            Ticket(
+                type: "S석",
+                price: "77,000원",
+                color: 3
+            )
+        ]
+    }
 }
 
 extension Concert {
@@ -56,18 +70,7 @@ extension Concert {
                 "2024-11-22 (금) 14:00",
                 "2024-11-23 (금) 15:00"
             ],
-            pricing: [
-                Ticket(
-                    type: "R석",
-                    price: "88,000원",
-                    color: 2
-                ),
-                Ticket(
-                    type: "S석",
-                    price: "77,000원",
-                    color: 3
-                )
-            ]
+            pricing: Ticket.dummyPricing
         )
     }
     
