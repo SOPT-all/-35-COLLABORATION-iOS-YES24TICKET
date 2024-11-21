@@ -48,11 +48,15 @@ final class ConcertNavigationBar: UIView {
     private func setUI() {
         addSubview(backButton)
         addSubview(concertTitleLabel)
-        addBottomBorder(color: .gray200, height: 1)
     }
     
     private func setStyle(){
         backgroundColor = .gray50
+        addBorders(
+            edges: [.bottom],
+            color: .gray200,
+            width: 1
+        )
     }
     
     private func setLayout() {
@@ -69,16 +73,4 @@ final class ConcertNavigationBar: UIView {
         }
     }
     
-}
-
-private extension UIView {
-    func addBottomBorder(color: UIColor, height: CGFloat) {
-        let border = UIView()
-        border.backgroundColor = color
-        addSubview(border)
-        border.snp.makeConstraints {
-            $0.bottom.leading.trailing.equalToSuperview()
-            $0.height.equalTo(height)
-        }
-    }
 }
