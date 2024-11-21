@@ -266,7 +266,7 @@ enum AppleSandolGothic {
                 .head_eb_24, .head_eb_20, .head_eb_17,
                 .title_eb_17, .title_eb_12, .button_eb_18,
                 .caption_eb_12:
-            return "AppleSDGothicNeoEB00"
+            return "AppleSDGothicNeo-Bold"
         case
                 .title_sb_22, .title_sb_20, .body_sb_12,
                 .button_sb_19, .caption_sb_10:
