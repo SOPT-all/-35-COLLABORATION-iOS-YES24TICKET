@@ -56,6 +56,15 @@ final class HomeViewController: UIViewController {
             AdCollectionViewCell.self,
             forCellWithReuseIdentifier: AdCollectionViewCell.cellIdentifier
         )
+        $0.register(
+            WhatsHotCollectionViewCell.self,
+            forCellWithReuseIdentifier: WhatsHotCollectionViewCell.cellIdentifier
+        )
+        $0.register(
+            WhatsHotHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: WhatsHotHeaderView.reusableViewIdentifier
+        )
         $0.dataSource = self
         $0.delegate = self
     }
@@ -114,6 +123,8 @@ final class HomeViewController: UIViewController {
                 return createTicketRankSectionLayout()
             case 3:
                 return createAdSectionLayout()
+            case 4:
+                return createWhatsHotSectionLayout()
             default:
                 return nil
             }
@@ -293,6 +304,43 @@ final class HomeViewController: UIViewController {
         return section
     }
     
+    private func createWhatsHotSectionLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(231)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(231)
+        )
+        let group = NSCollectionLayoutGroup.vertical(
+            layoutSize: groupSize,
+            subitems: [item]
+        )
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 12
+        section.contentInsets = .init(
+            top: 0,
+            leading: 5,
+            bottom: 0,
+            trailing: 5
+        )
+        section.boundarySupplementaryItems = [
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: .init(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .absolute(74)
+                ),
+                elementKind: UICollectionView.elementKindSectionHeader,
+                alignment: .top
+            )
+        ]
+        
+        return section
+    }
+    
 }
 
 extension HomeViewController: UICollectionViewDelegate {
@@ -316,7 +364,7 @@ extension HomeViewController: UICollectionViewDelegate {
 extension HomeViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 4
+        return 5
     }
     
     func collectionView(
@@ -332,6 +380,8 @@ extension HomeViewController: UICollectionViewDataSource {
             TicketRankCellConfiguration.mockData.count
         case 3:
             AdCellConfiguration.mockData.count
+        case 4:
+            WhatsHotCellConfiguration.mockData.count
         default:
             0
         }
@@ -398,6 +448,16 @@ extension HomeViewController: UICollectionViewDataSource {
             adFooter = footer
             
             return footer
+        case 4:
+            guard let header = collectionView.dequeueReusableSupplementaryView(
+                ofKind: UICollectionView.elementKindSectionHeader,
+                withReuseIdentifier: WhatsHotHeaderView.reusableViewIdentifier,
+                for: indexPath
+            ) as? WhatsHotHeaderView else {
+                return UICollectionReusableView()
+            }
+            
+            return header
         default:
             return UICollectionReusableView()
         }
@@ -446,6 +506,16 @@ extension HomeViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             cell.configure(AdCellConfiguration.mockData[indexPath.row])
+            
+            return cell
+        case 4:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: WhatsHotCollectionViewCell.cellIdentifier,
+                for: indexPath
+            ) as? WhatsHotCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.configure(WhatsHotCellConfiguration.mockData[indexPath.row])
             
             return cell
         default:
