@@ -21,6 +21,7 @@ final class HomeViewController: UIViewController {
         $0.showsHorizontalScrollIndicator = false
         $0.showsVerticalScrollIndicator = false
         $0.clipsToBounds = true
+        $0.bounces = false
         $0.register(
             MainCollectionViewCell.self,
             forCellWithReuseIdentifier: MainCollectionViewCell.cellIdentifier
