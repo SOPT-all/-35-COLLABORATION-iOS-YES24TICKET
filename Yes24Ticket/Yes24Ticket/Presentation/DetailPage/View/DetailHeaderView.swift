@@ -252,7 +252,7 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
             pinnedPriceLabel,
             performanceTimeLabel,
             timeDetailLabel
-        ].forEach{
+        ].forEach {
             ticketDetailView.addSubview($0)
         }
         
