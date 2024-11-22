@@ -12,9 +12,7 @@ import Then
 
 final class HeaderDetailView: UIView {
     
-    private let backgroundImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
+    private let gradientImageView = UIImageView().then {
         $0.image = .whiteGd
     }
     
@@ -74,9 +72,19 @@ final class HeaderDetailView: UIView {
     }
     
     private let locationValue = UIButton().then {
-        $0.setTitle("YES24 LIVE HALL ▸", for: .normal)
-        $0.setTitleColor(.blue100, for: .normal)
-        $0.titleLabel?.font = UIFont.customFont(.body_b_13)
+        var configuration = UIButton.Configuration.plain()
+        configuration.baseForegroundColor = .blue100
+        configuration.image = UIImage(resource: .icArrowRightBlue16)
+        configuration.imagePlacement = .trailing
+        configuration.imagePadding = 0
+        let title = "YES24 LIVE HALL"
+        let attributedString = AttributedString(
+            title,
+            attributes: AttributeContainer([.font: UIFont.customFont(.body_b_13)])
+        )
+        configuration.attributedTitle = attributedString
+        $0.configuration = configuration
+        $0.contentHorizontalAlignment = .leading
     }
     
     private let ageLabel = UILabel().then {
@@ -118,9 +126,9 @@ final class HeaderDetailView: UIView {
     }
     
     private func setUI() {
-        addSubview(backgroundImageView)
         
         [
+            gradientImageView,
             showTypeBackgroundView,
             showTitle,
             dividerView,
@@ -141,8 +149,13 @@ final class HeaderDetailView: UIView {
     }
     
     private func setLayout() {
+        
+        gradientImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
         showTypeBackgroundView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
+            $0.top.equalToSuperview().offset(48)
             $0.leading.equalToSuperview().offset(10)
         }
         
@@ -197,7 +210,7 @@ final class HeaderDetailView: UIView {
         
         locationValue.snp.makeConstraints {
             $0.centerY.equalTo(locationLabel)
-            $0.leading.equalTo(genreValue)
+            $0.leading.equalTo(genreValue).offset(-12)
         }
         
         ageLabel.snp.makeConstraints {
@@ -229,7 +242,7 @@ final class HeaderDetailView: UIView {
         genreValue.text = model.genre
         dateValue.text = model.date
         locationValue.setTitle(
-            "\(model.area) ▸",
+            "\(model.area)",
             for: .normal
         )
         ageValue.text = model.age

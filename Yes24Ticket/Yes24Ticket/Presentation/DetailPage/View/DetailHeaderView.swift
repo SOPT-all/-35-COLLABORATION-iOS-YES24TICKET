@@ -14,6 +14,11 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
     
     private static let reuseIdentifier: String = "DetailHeaderView"
     
+    private let backgroundImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
+        $0.image = .icHeart36
+    }
+    
     private let headerDetailView = HeaderDetailView()
     
     private let ticketDetailView = TicketDetailView()
@@ -62,16 +67,22 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setUI()
+        setStyle()
         setLayout()
-        setBorder()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func setStyle() {
+        setBorder()
+    }
+    
     private func setUI() {
+        
         [
+            backgroundImageView,
             headerDetailView,
             ticketDetailView,
             backButton,
@@ -81,19 +92,27 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         ].forEach {
             contentView.addSubview($0)
         }
+        
     }
     
     private func setLayout() {
+        
+        backgroundImageView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(headerDetailView)
+        }
+        
         backButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(8)
+            $0.top.equalTo(headerDetailView.snp.top).offset(8)
             $0.leading.equalToSuperview().offset(10)
             $0.width.height.equalTo(24)
         }
         
         headerDetailView.snp.makeConstraints {
-            $0.top.equalTo(backButton.snp.bottom).offset(8)
+            $0.top.equalToSuperview().offset(8)
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalTo(230)
+            $0.height.equalTo(260)
         }
         
         ticketDetailView.snp.makeConstraints {
@@ -136,7 +155,7 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         ticketDetailView.configure(with: model)
     }
     
-}
+} 
 
 #Preview {
     
