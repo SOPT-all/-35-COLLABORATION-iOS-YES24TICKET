@@ -103,7 +103,6 @@ final class WhatsHotCollectionViewCell: UICollectionViewCell {
             $0.centerY.equalTo(areaLabel)
             $0.leading.equalTo(dividerImageView.snp.trailing).offset(8)
         }
-        
     }
     
     func configure(_ configuration: WhatsHotCellConfiguration) {
