@@ -235,11 +235,5 @@ final class HeaderDetailView: UIView {
         ageValue.text = model.age
         durationValue.text = model.duration
     }
-}
-
-#Preview {
-    let view = HeaderDetailView().then {
-        $0.configure(with: .mockData)
-    }
-    view
+    
 }

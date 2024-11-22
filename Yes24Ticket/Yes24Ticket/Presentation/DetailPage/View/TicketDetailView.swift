@@ -147,11 +147,5 @@ final class TicketDetailView: UIView {
         pinnedPriceLabel.text = model.pricing[1].price
         timeDetailLabel.text = model.performenceTime[0]
     }
-}
-
-#Preview {
-    let view = TicketDetailView().then {
-        $0.configure(with: .mockData)
-    }
-    view
+    
 }

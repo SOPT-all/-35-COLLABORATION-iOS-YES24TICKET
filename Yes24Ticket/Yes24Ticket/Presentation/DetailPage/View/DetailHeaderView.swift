@@ -63,6 +63,7 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         super.init(reuseIdentifier: reuseIdentifier)
         setUI()
         setLayout()
+        setBorder()
     }
     
     required init?(coder: NSCoder) {
@@ -117,6 +118,10 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         }
     }
     
+    private func setBorder() {
+        ticketDetailView.addBorders(edges: [.top, .bottom], color: .gray200, width: 1.0)
+    }
+    
     @objc private func handleDismiss() {
         // TODO: 추 후 연결 예정
     }
@@ -130,6 +135,7 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         headerDetailView.configure(with: model)
         ticketDetailView.configure(with: model)
     }
+    
 }
 
 #Preview {
