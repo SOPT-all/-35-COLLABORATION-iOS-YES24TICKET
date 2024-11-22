@@ -12,7 +12,7 @@ import Then
 
 final class DetailHeaderView: UITableViewHeaderFooterView {
     
-    private static let reuseIdentifier: String = "DetailHeaderView"
+    static let reuseIdentifier: String = "DetailHeaderView"
     
     private let backgroundImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
