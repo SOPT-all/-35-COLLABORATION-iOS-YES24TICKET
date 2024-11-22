@@ -126,7 +126,6 @@ final class HeaderDetailView: UIView {
     }
     
     private func setUI() {
-        
         [
             gradientImageView,
             showTypeBackgroundView,
@@ -149,7 +148,6 @@ final class HeaderDetailView: UIView {
     }
     
     private func setLayout() {
-        
         gradientImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -232,21 +230,20 @@ final class HeaderDetailView: UIView {
             $0.centerY.equalTo(durationLabel)
             $0.leading.equalTo(genreValue)
         }
-        
     }
     
-    func configure(with model: ConcertConfiguration) {
-        showTypeText.text = model.genre
-        showTitle.text = model.title
-        showImage.image = model.image
-        genreValue.text = model.genre
-        dateValue.text = model.date
+    func configure(with configuration: ConcertConfiguration) {
+        showTypeText.text = configuration.genre
+        showTitle.text = configuration.title
+        showImage.image = configuration.image
+        genreValue.text = configuration.genre
+        dateValue.text = configuration.date
         locationValue.setTitle(
-            "\(model.area)",
+            "\(configuration.area)",
             for: .normal
         )
-        ageValue.text = model.age
-        durationValue.text = model.duration
+        ageValue.text = configuration.age
+        durationValue.text = configuration.duration
     }
     
 }

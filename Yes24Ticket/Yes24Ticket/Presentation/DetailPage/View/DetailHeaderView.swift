@@ -80,7 +80,6 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
     }
     
     private func setUI() {
-        
         [
             backgroundImageView,
             headerDetailView,
@@ -92,11 +91,9 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         ].forEach {
             contentView.addSubview($0)
         }
-        
     }
     
     private func setLayout() {
-        
         backgroundImageView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
@@ -150,9 +147,9 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         // TODO: 추 후 로직 연결 예정
     }
     
-    func configure(with model: ConcertConfiguration) {
-        headerDetailView.configure(with: model)
-        ticketDetailView.configure(with: model)
+    func configure(with configuration: ConcertConfiguration) {
+        headerDetailView.configure(with: configuration)
+        ticketDetailView.configure(with: configuration)
     }
     
 } 

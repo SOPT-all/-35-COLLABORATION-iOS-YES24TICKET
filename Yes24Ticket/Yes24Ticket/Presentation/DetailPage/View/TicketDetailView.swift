@@ -142,10 +142,10 @@ final class TicketDetailView: UIView {
         }
     }
     
-    func configure(with model: ConcertConfiguration) {
-        standingPriceLabel.text = model.pricing[0].price
-        pinnedPriceLabel.text = model.pricing[1].price
-        timeDetailLabel.text = model.performanceTime[0]
+    func configure(with configuration: ConcertConfiguration) {
+        standingPriceLabel.text = configuration.pricing[0].price
+        pinnedPriceLabel.text = configuration.pricing[1].price
+        timeDetailLabel.text = configuration.performanceTime[0]
     }
     
 }
