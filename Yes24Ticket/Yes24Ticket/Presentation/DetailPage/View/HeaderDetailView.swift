@@ -18,6 +18,18 @@ final class HeaderDetailView: UIView {
         $0.image = .whiteGd
     }
     
+    private let showTypeBackgroundView = UIView().then {
+        $0.backgroundColor = .red100
+        $0.layer.cornerRadius = 2
+    }
+    
+    private let showTypeText = UILabel().then {
+        $0.text = "단독"
+        $0.textColor = .white0
+        $0.font = UIFont.customFont(.caption_b_10)
+        $0.textAlignment = .center
+    }
+    
     private let showTitle = UILabel().then {
         $0.text = "HYPE UP FESTIVAL"
         $0.textColor = .black0
@@ -91,6 +103,10 @@ final class HeaderDetailView: UIView {
         $0.font = UIFont.customFont(.body_r_13)
     }
     
+    private let dividerView = UIView().then {
+        $0.backgroundColor = .gray200
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUI()
@@ -105,7 +121,9 @@ final class HeaderDetailView: UIView {
         addSubview(backgroundImageView)
         
         [
+            showTypeBackgroundView,
             showTitle,
+            dividerView,
             showImage,
             genreLabel,
             genreValue,
@@ -118,18 +136,35 @@ final class HeaderDetailView: UIView {
             durationLabel,
             durationValue
         ].forEach { addSubview($0) }
+        
+        showTypeBackgroundView.addSubview(showTypeText)
     }
     
     private func setLayout() {
-        
-        showTitle.snp.makeConstraints {
+        showTypeBackgroundView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16)
             $0.leading.equalToSuperview().offset(10)
+        }
+        
+        showTypeText.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview().inset(3)
+            $0.horizontalEdges.equalToSuperview().inset(4)
+        }
+        
+        dividerView.snp.makeConstraints {
+            $0.top.equalTo(showTypeBackgroundView.snp.bottom).offset(16)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(1)
+        }
+        
+        showTitle.snp.makeConstraints {
+            $0.leading.equalTo(showTypeBackgroundView.snp.trailing).offset(8)
+            $0.centerY.equalTo(showTypeBackgroundView)
             $0.trailing.equalToSuperview().offset(-10)
         }
         
         showImage.snp.makeConstraints {
-            $0.top.equalTo(showTitle.snp.bottom).offset(16)
+            $0.top.equalTo(dividerView.snp.bottom).offset(18)
             $0.leading.equalToSuperview().offset(10)
             $0.width.equalTo(100)
             $0.height.equalTo(140)
@@ -142,7 +177,7 @@ final class HeaderDetailView: UIView {
         
         genreValue.snp.makeConstraints {
             $0.centerY.equalTo(genreLabel)
-            $0.leading.equalTo(genreLabel.snp.trailing).offset(10)
+            $0.leading.equalTo(genreLabel.snp.trailing).offset(34)
         }
         
         dateLabel.snp.makeConstraints {
@@ -152,7 +187,7 @@ final class HeaderDetailView: UIView {
         
         dateValue.snp.makeConstraints {
             $0.centerY.equalTo(dateLabel)
-            $0.leading.equalTo(dateLabel.snp.trailing).offset(10)
+            $0.leading.equalTo(genreValue)
         }
         
         locationLabel.snp.makeConstraints {
@@ -162,7 +197,7 @@ final class HeaderDetailView: UIView {
         
         locationValue.snp.makeConstraints {
             $0.centerY.equalTo(locationLabel)
-            $0.leading.equalTo(locationLabel.snp.trailing).offset(10)
+            $0.leading.equalTo(genreValue)
         }
         
         ageLabel.snp.makeConstraints {
@@ -172,7 +207,7 @@ final class HeaderDetailView: UIView {
         
         ageValue.snp.makeConstraints {
             $0.centerY.equalTo(ageLabel)
-            $0.leading.equalTo(ageLabel.snp.trailing).offset(10)
+            $0.leading.equalTo(genreValue)
         }
         
         durationLabel.snp.makeConstraints {
@@ -182,11 +217,13 @@ final class HeaderDetailView: UIView {
         
         durationValue.snp.makeConstraints {
             $0.centerY.equalTo(durationLabel)
-            $0.leading.equalTo(durationLabel.snp.trailing).offset(10)
+            $0.leading.equalTo(genreValue)
         }
+        
     }
     
     func configure(with model: Concert) {
+        showTypeText.text = model.genre
         showTitle.text = model.title
         showImage.image = model.image
         genreValue.text = model.genre
