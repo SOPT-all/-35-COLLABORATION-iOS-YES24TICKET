@@ -76,7 +76,6 @@ final class HeaderDetailView: UIView {
         configuration.baseForegroundColor = .blue100
         configuration.image = UIImage(resource: .icArrowRightBlue16)
         configuration.imagePlacement = .trailing
-        configuration.imagePadding = 0
         let title = "YES24 LIVE HALL"
         let attributedString = AttributedString(
             title,

@@ -76,7 +76,11 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
     }
     
     private func setStyle() {
-        setBorder()
+        ticketDetailView.addBorders(
+            edges: [.top, .bottom],
+            color: .gray200,
+            width: 1.0
+        )
     }
     
     private func setUI() {
@@ -134,10 +138,6 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         }
     }
     
-    private func setBorder() {
-        ticketDetailView.addBorders(edges: [.top, .bottom], color: .gray200, width: 1.0)
-    }
-    
     @objc private func handleDismiss() {
         // TODO: 추 후 연결 예정
     }
@@ -152,7 +152,7 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         ticketDetailView.configure(with: configuration)
     }
     
-} 
+}
 
 #Preview {
     
