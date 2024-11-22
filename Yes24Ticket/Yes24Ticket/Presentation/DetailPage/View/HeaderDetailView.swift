@@ -38,7 +38,7 @@ final class HeaderDetailView: UIView {
     private let showImage = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
-        $0.backgroundColor = .black
+        $0.backgroundColor = .black0
     }
     
     private let genreLabel = UILabel().then {
