@@ -77,7 +77,10 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
     
     private func setStyle() {
         ticketDetailView.addBorders(
-            edges: [.top, .bottom],
+            edges: [
+                .top,
+                .bottom
+            ],
             color: .gray200,
             width: 1.0
         )
