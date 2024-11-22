@@ -1,13 +1,13 @@
 //
-//  Concert.swift
+//  ConcertConfiguration.swift
 //  Yes24Ticket
 //
-//  Created by 송여경 on 11/20/24.
+//  Created by 송여경 on 11/22/24.
 //
 
 import UIKit
 
-struct Concert {
+struct ConcertConfiguration {
     
     let image: UIImage
     let title: String
@@ -19,35 +19,22 @@ struct Concert {
     let hypertext: String
     let hyperlink: String
     let notice: [String]
-    let performenceTime: [String]
-    let pricing: [Ticket]
+    let performanceTime: [String]
+    let pricing: [TicketConfiguration]
     
 }
 
-struct Ticket {
+struct TicketConfiguration {
     
     let type: String
     let price: String
     let color: Int
     
-    static let mockPricing : [Ticket] = [
-        Ticket(
-            type: "R석",
-            price: "88,000원",
-            color: 2
-        ),
-        Ticket(
-            type: "S석",
-            price: "77,000원",
-            color: 3
-        )
-    ]
-    
 }
 
-extension Concert {
+extension ConcertConfiguration {
     
-    static let mockData: Self = .init (
+    static let mockData: ConcertConfiguration = .init(
         image: .icSitBlue18,
         title: "HYPE UP FESTIVAL",
         genre: "콘서트",
@@ -62,14 +49,20 @@ extension Concert {
             "※ 본 공연은 YES74공연에서 진행하는 할인쿠폰이벤트 대상에서 제외됩니다.",
             "※ 매수제한: 공연별 1인 4매"
         ],
-        performenceTime: [
+        performanceTime: [
             "2024-11-20 (수) 13:00",
             "2024-11-21 (목) 15:00",
             "2024-11-22 (금) 14:00",
             "2024-11-23 (금) 15:00"
         ],
-        pricing: Ticket.mockPricing
+        pricing: TicketConfiguration.mockData
     )
-    
 }
 
+extension TicketConfiguration {
+    
+    static let mockData: [TicketConfiguration] = [
+        .init(type: "R석", price: "88,000원", color: 2),
+        .init(type: "S석", price: "77,000원", color: 3)
+    ]
+}

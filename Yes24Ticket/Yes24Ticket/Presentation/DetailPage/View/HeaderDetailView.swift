@@ -235,7 +235,7 @@ final class HeaderDetailView: UIView {
         
     }
     
-    func configure(with model: Concert) {
+    func configure(with model: ConcertConfiguration) {
         showTypeText.text = model.genre
         showTitle.text = model.title
         showImage.image = model.image

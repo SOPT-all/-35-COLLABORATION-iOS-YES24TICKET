@@ -150,7 +150,7 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         // TODO: 추 후 로직 연결 예정
     }
     
-    func configure(with model: Concert) {
+    func configure(with model: ConcertConfiguration) {
         headerDetailView.configure(with: model)
         ticketDetailView.configure(with: model)
     }
