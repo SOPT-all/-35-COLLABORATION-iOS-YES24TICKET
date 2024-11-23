@@ -9,8 +9,8 @@ import UIKit
 
 final class HomeViewController: UIViewController {
     
-    private var mainFooter: IndexBadgeFooterView?
-    private var adFooter: IndexBadgeFooterView?
+    private weak var mainBadgeDelegate: FooterBadgeDelegate?
+    private weak var adBadgeDelegate: FooterBadgeDelegate?
     
     private lazy var mainCollectionView = UICollectionView(
         frame: .zero,
@@ -142,7 +142,7 @@ final class HomeViewController: UIViewController {
                 0,
                 round(offset.x / env.container.contentSize.width)
             ))
-            self?.mainFooter?.changeIndex(currentIndex: currentPage + 1)
+            self?.mainBadgeDelegate?.badgeIndexChanged(currentPage + 1)
         }
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(
@@ -268,7 +268,7 @@ final class HomeViewController: UIViewController {
                 0,
                 round(offset.x / env.container.contentSize.width)
             ))
-            self?.adFooter?.changeIndex(currentIndex: currentPage + 1)
+            self?.adBadgeDelegate?.badgeIndexChanged(currentPage + 1)
         }
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(
@@ -396,8 +396,7 @@ extension HomeViewController: UICollectionViewDataSource {
             // TODO: API 데이터로 수정
             footer.setDimMode(isWhite: true)
             footer.setMaxIndex(MainCellConfiguration.mockData.count)
-            footer.changeIndex(currentIndex: 1)
-            mainFooter = footer
+            mainBadgeDelegate = footer
             
             return footer
         case 2:
@@ -435,9 +434,8 @@ extension HomeViewController: UICollectionViewDataSource {
             }
             // TODO: API 데이터로 수정
             footer.setMaxIndex(AdCellConfiguration.mockData.count)
-            footer.changeIndex(currentIndex: 1)
             footer.setDimMode(isWhite: false)
-            adFooter = footer
+            adBadgeDelegate = footer
             
             return footer
         case 4:

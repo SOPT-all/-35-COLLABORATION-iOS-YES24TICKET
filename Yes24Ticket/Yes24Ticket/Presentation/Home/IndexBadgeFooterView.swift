@@ -51,6 +51,7 @@ final class IndexBadgeFooterView: UICollectionReusableView {
     
     func setMaxIndex(_ maxIndex: Int) {
         self.maxIndex = maxIndex
+        indexLabel.text = "1/\(maxIndex)"
     }
     
     func setDimMode(isWhite: Bool) {
@@ -64,5 +65,23 @@ final class IndexBadgeFooterView: UICollectionReusableView {
             backgroundColor = .blackDim
         }
     }
+    
+}
+
+extension IndexBadgeFooterView: FooterBadgeDelegate {
+    
+    func badgeIndexChanged(_ index: Int) {
+        if let maxIndex {
+            indexLabel.text = "\(index)/\(maxIndex)"
+        } else {
+            indexLabel.text = ""
+        }
+    }
+    
+}
+
+protocol FooterBadgeDelegate: AnyObject {
+    
+    func badgeIndexChanged(_ index: Int)
     
 }
