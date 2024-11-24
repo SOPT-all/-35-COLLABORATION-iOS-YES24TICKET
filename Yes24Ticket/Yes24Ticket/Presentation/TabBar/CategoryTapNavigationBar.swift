@@ -60,23 +60,23 @@ final class CategoryTapNavigationBar: UIView {
     
     private func setupLayout() {
         recommendButton.snp.makeConstraints {
-            $0.leading.equalToSuperview()
             $0.top.equalToSuperview()
             $0.bottom.equalToSuperview()
+            $0.leading.equalToSuperview()
             $0.width.equalToSuperview().dividedBy(3)
         }
         
         rankingButton.snp.makeConstraints {
-            $0.leading.equalTo(recommendButton.snp.trailing)
             $0.top.equalToSuperview()
             $0.bottom.equalToSuperview()
+            $0.leading.equalTo(recommendButton.snp.trailing)
             $0.width.equalToSuperview().dividedBy(3)
         }
         
         listButton.snp.makeConstraints {
-            $0.leading.equalTo(rankingButton.snp.trailing)
             $0.top.equalToSuperview()
             $0.bottom.equalToSuperview()
+            $0.leading.equalTo(rankingButton.snp.trailing)
             $0.trailing.equalToSuperview()
         }
     }
