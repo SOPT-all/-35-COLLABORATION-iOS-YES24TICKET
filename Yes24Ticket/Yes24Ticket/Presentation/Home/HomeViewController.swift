@@ -9,12 +9,8 @@ import UIKit
 
 final class HomeViewController: UIViewController {
     
-    private var mainFooter: IndexBadgeFooterView?
-    private var adFooter: IndexBadgeFooterView?
-    
-    private let scrollView = UIScrollView()
-    
-    private let containerView = UIView()
+    private weak var mainBadgeDelegate: FooterBadgeDelegate?
+    private weak var adBadgeDelegate: FooterBadgeDelegate?
     
     private lazy var mainCollectionView = UICollectionView(
         frame: .zero,
@@ -25,6 +21,7 @@ final class HomeViewController: UIViewController {
         $0.showsHorizontalScrollIndicator = false
         $0.showsVerticalScrollIndicator = false
         $0.clipsToBounds = true
+        $0.bounces = false
         $0.register(
             MainCollectionViewCell.self,
             forCellWithReuseIdentifier: MainCollectionViewCell.cellIdentifier
@@ -65,6 +62,11 @@ final class HomeViewController: UIViewController {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: WhatsHotHeaderView.reusableViewIdentifier
         )
+        $0.register(
+            FooterReusableView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: FooterReusableView.reusableViewIdentifier
+        )
         $0.dataSource = self
         $0.delegate = self
     }
@@ -81,31 +83,13 @@ final class HomeViewController: UIViewController {
     }
     
     private func setUI() {
-        view.addSubview(scrollView)
-        scrollView.addSubview(containerView)
-        [
-            mainCollectionView
-        ].forEach {
-            containerView.addSubview($0)
-        }
+        view.addSubview(mainCollectionView)
     }
     
     private func setLayout() {
-        scrollView.snp.makeConstraints {
+        mainCollectionView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).inset(61-44)
             $0.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
-        }
-        
-        containerView.snp.makeConstraints {
-            $0.edges.equalTo(scrollView.frameLayoutGuide)
-        }
-        
-        mainCollectionView.snp.makeConstraints {
-            $0.top.horizontalEdges.equalTo(containerView)
-        }
-        
-        containerView.snp.makeConstraints {
-            $0.bottom.equalTo(mainCollectionView.snp.bottom)
         }
     }
     
@@ -158,7 +142,7 @@ final class HomeViewController: UIViewController {
                 0,
                 round(offset.x / env.container.contentSize.width)
             ))
-            self?.mainFooter?.changeIndex(currentIndex: currentPage + 1)
+            self?.mainBadgeDelegate?.badgeIndexChanged(currentPage + 1)
         }
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(
@@ -284,7 +268,7 @@ final class HomeViewController: UIViewController {
                 0,
                 round(offset.x / env.container.contentSize.width)
             ))
-            self?.adFooter?.changeIndex(currentIndex: currentPage + 1)
+            self?.adBadgeDelegate?.badgeIndexChanged(currentPage + 1)
         }
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(
@@ -318,15 +302,15 @@ final class HomeViewController: UIViewController {
             layoutSize: groupSize,
             subitems: [item]
         )
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 12
-        section.contentInsets = .init(
+        group.contentInsets = .init(
             top: 0,
             leading: 5,
             bottom: 0,
             trailing: 5
         )
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 12
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(
                 layoutSize: .init(
@@ -335,6 +319,14 @@ final class HomeViewController: UIViewController {
                 ),
                 elementKind: UICollectionView.elementKindSectionHeader,
                 alignment: .top
+            ),
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: .init(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .absolute(179)
+                ),
+                elementKind: UICollectionView.elementKindSectionFooter,
+                alignment: .bottom
             )
         ]
         
@@ -404,8 +396,7 @@ extension HomeViewController: UICollectionViewDataSource {
             // TODO: API 데이터로 수정
             footer.setDimMode(isWhite: true)
             footer.setMaxIndex(MainCellConfiguration.mockData.count)
-            footer.changeIndex(currentIndex: 1)
-            mainFooter = footer
+            mainBadgeDelegate = footer
             
             return footer
         case 2:
@@ -443,21 +434,35 @@ extension HomeViewController: UICollectionViewDataSource {
             }
             // TODO: API 데이터로 수정
             footer.setMaxIndex(AdCellConfiguration.mockData.count)
-            footer.changeIndex(currentIndex: 1)
             footer.setDimMode(isWhite: false)
-            adFooter = footer
+            adBadgeDelegate = footer
             
             return footer
         case 4:
-            guard let header = collectionView.dequeueReusableSupplementaryView(
-                ofKind: UICollectionView.elementKindSectionHeader,
-                withReuseIdentifier: WhatsHotHeaderView.reusableViewIdentifier,
-                for: indexPath
-            ) as? WhatsHotHeaderView else {
+            switch kind {
+            case UICollectionView.elementKindSectionHeader:
+                guard let header = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: UICollectionView.elementKindSectionHeader,
+                    withReuseIdentifier: WhatsHotHeaderView.reusableViewIdentifier,
+                    for: indexPath
+                ) as? WhatsHotHeaderView else {
+                    return UICollectionReusableView()
+                }
+                
+                return header
+            case UICollectionView.elementKindSectionFooter:
+                guard let footer = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: UICollectionView.elementKindSectionFooter,
+                    withReuseIdentifier: FooterReusableView.reusableViewIdentifier,
+                    for: indexPath
+                ) as? FooterReusableView else {
+                    return UICollectionReusableView()
+                }
+                
+                return footer
+            default:
                 return UICollectionReusableView()
             }
-            
-            return header
         default:
             return UICollectionReusableView()
         }

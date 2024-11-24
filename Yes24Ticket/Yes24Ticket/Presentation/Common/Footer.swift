@@ -12,33 +12,35 @@ import Then
 
 final class Footer: UIView {
     
-    private let topVerticalStackView = UIStackView().then {
-        $0.axis = .vertical
-        $0.spacing = 10
+    private let firstStackView = UIStackView().then {
+        $0.spacing = 2
         $0.alignment = .center
     }
     
-    private let middleVerticalStackView = UIStackView().then {
-        $0.axis = .vertical
+    private let secondStackView = UIStackView().then {
+        $0.spacing = 8
+        $0.alignment = .center
+    }
+    
+    private let thirdStackView = UIStackView().then {
+        $0.spacing = 9
+        $0.alignment = .center
+    }
+    
+    private let fourthStackView = UIStackView().then {
         $0.spacing = 6
         $0.alignment = .center
     }
     
-    private let bottomVerticalStackView = UIStackView().then {
-        $0.axis = .vertical
-        $0.spacing = 2
+    private let fifthStackView = UIStackView().then {
+        $0.spacing = 6
         $0.alignment = .center
     }
     
-    private let lastVerticalStackView = UIStackView().then {
-        $0.axis = .vertical
-        $0.spacing = 14
-        $0.alignment = .center
-    }
+    private let sixthStackView = UIStackView()
     
-    private let firstTitleStackView = UIStackView().then {
-        $0.axis = .horizontal
-        $0.spacing = 2
+    private let lastStackView = UIStackView().then {
+        $0.spacing = 24
         $0.alignment = .center
     }
     
@@ -71,12 +73,6 @@ final class Footer: UIView {
         $0.textColor = .gray600
     }
     
-    private let secondTitleStackView = UIStackView().then {
-        $0.axis = .horizontal
-        $0.spacing = 8
-        $0.alignment = .center
-    }
-    
     private let personalLabel = UILabel().then {
         $0.text = "개인정보 처리방침"
         $0.font = UIFont.customFont(.body_sb_12)
@@ -94,12 +90,6 @@ final class Footer: UIView {
         $0.textColor = .gray800
     }
     
-    private let thirdTitleStackView = UIStackView().then {
-        $0.axis = .horizontal
-        $0.spacing = 9
-        $0.alignment = .center
-    }
-    
     private let leaderLabel = UILabel().then {
         $0.text = "대표 : 김석환, 최세라"
         $0.font = UIFont.customFont(.caption_sb_10)
@@ -110,12 +100,6 @@ final class Footer: UIView {
         $0.text = "주소 : 서울시 영등포구 은행로11, 5~6층 (여의도동, 일신빌딩)"
         $0.font = UIFont.customFont(.caption_sb_10 )
         $0.textColor = .gray400
-    }
-    
-    private let forthTitleStackView = UIStackView().then {
-        $0.axis = .horizontal
-        $0.spacing = 6
-        $0.alignment = .center
     }
     
     private let numberLabel = UILabel().then {
@@ -135,12 +119,6 @@ final class Footer: UIView {
         $0.textColor = .gray400
     }
     
-    private let fifthTitleStackView = UIStackView().then {
-        $0.axis = .horizontal
-        $0.spacing = 2
-        $0.alignment = .center
-    }
-    
     private let emailLabel = UILabel().then {
         $0.text = "이메일 : yes24help@yes24.com"
         $0.font = UIFont.customFont(.caption_sb_10)
@@ -158,22 +136,10 @@ final class Footer: UIView {
         $0.textColor = .gray400
     }
     
-    private let sixthTitleStackView = UIStackView().then {
-        $0.axis = .horizontal
-        $0.spacing = 6
-        $0.alignment = .center
-    }
-    
     private let copyrightLabel = UILabel().then {
         $0.text = "Copyright ⓒ YES24 Corp. All Rights Reserved."
         $0.font = UIFont.customFont(.caption_sb_10)
         $0.textColor = .gray400
-    }
-    
-    private let lastTitleStackView = UIStackView().then {
-        $0.axis = .horizontal
-        $0.spacing = 24
-        $0.alignment = .center
     }
     
     private let globalLabel = UILabel().then {
@@ -189,49 +155,40 @@ final class Footer: UIView {
     }
     
     override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
+        super.init(frame: .zero)
+        setStyle()
+        setUI()
+        setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupViews() {
-        setUI()
-        setLayout()
+    override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
+        addBorders(
+            edges: [.top],
+            color: .gray200,
+            width: 1
+        )
+    }
+    
+    private func setStyle() {
+        backgroundColor = .gray50
     }
     
     private func setUI() {
         [
-            topVerticalStackView,
-            middleVerticalStackView,
-            bottomVerticalStackView,
-            lastTitleStackView
+            firstStackView,
+            secondStackView,
+            thirdStackView,
+            fourthStackView,
+            fifthStackView,
+            sixthStackView,
+            lastStackView
         ].forEach {
             addSubview($0)
-        }
-        
-        topVerticalStackView.addArrangedSubview(firstTitleStackView)
-        [
-            secondTitleStackView,
-            thirdTitleStackView
-        ].forEach {
-            middleVerticalStackView.addArrangedSubview($0)
-        }
-        
-        [
-            forthTitleStackView,
-            fifthTitleStackView
-        ].forEach {
-            bottomVerticalStackView.addArrangedSubview($0)
-        }
-        
-        [
-            sixthTitleStackView,
-            lastTitleStackView
-        ].forEach {
-            lastTitleStackView.addArrangedSubview($0)
         }
         
         [
@@ -241,24 +198,22 @@ final class Footer: UIView {
             dividerImageView,
             pcLabel
         ].forEach {
-            firstTitleStackView.addArrangedSubview($0)
+            firstStackView.addArrangedSubview($0)
         }
-        firstTitleStackView.setCustomSpacing(7, after: helpLabel)
-        firstTitleStackView.setCustomSpacing(7, after: dividerImageView)
         
         [
             personalLabel,
             divider2ImageView,
             serviceTermsLabel
         ].forEach {
-            secondTitleStackView.addArrangedSubview($0)
+            secondStackView.addArrangedSubview($0)
         }
         
         [
             leaderLabel,
             addressLabel
         ].forEach {
-            thirdTitleStackView.addArrangedSubview($0)
+            thirdStackView.addArrangedSubview($0)
         }
         
         [
@@ -266,7 +221,7 @@ final class Footer: UIView {
             divider3ImageView,
             sellLabel
         ].forEach {
-            forthTitleStackView.addArrangedSubview($0)
+            fourthStackView.addArrangedSubview($0)
         }
         
         [
@@ -274,45 +229,53 @@ final class Footer: UIView {
             divider4ImageView,
             companyLabel
         ].forEach {
-            fifthTitleStackView.addArrangedSubview($0)
+            fifthStackView.addArrangedSubview($0)
         }
         
-        sixthTitleStackView.addArrangedSubview(copyrightLabel)
+        sixthStackView.addArrangedSubview(copyrightLabel)
+        
         [
             globalLabel,
             yes24Label
         ].forEach {
-            lastTitleStackView.addArrangedSubview($0)
+            lastStackView.addArrangedSubview($0)
         }
     }
     
     private func setLayout() {
-        topVerticalStackView.snp.makeConstraints {
+        firstStackView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().offset(20)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
         }
         
-        middleVerticalStackView.snp.makeConstraints {
+        secondStackView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(topVerticalStackView.snp.bottom).offset(10)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.top.equalTo(firstStackView.snp.bottom).offset(10)
         }
         
-        bottomVerticalStackView.snp.makeConstraints {
+        thirdStackView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(middleVerticalStackView.snp.bottom).offset(2)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.top.equalTo(secondStackView.snp.bottom).offset(6)
         }
         
-        lastVerticalStackView.snp.makeConstraints {
+        fourthStackView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(bottomVerticalStackView.snp.bottom).offset(2)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.top.equalTo(thirdStackView.snp.bottom).offset(2)
+        }
+        
+        fifthStackView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(fourthStackView.snp.bottom).offset(2)
+        }
+        
+        sixthStackView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(fifthStackView.snp.bottom).offset(2)
+        }
+        
+        lastStackView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(sixthStackView.snp.bottom).offset(10)
         }
     }
     

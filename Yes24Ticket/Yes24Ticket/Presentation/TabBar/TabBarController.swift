@@ -24,6 +24,7 @@ final class TabBarController: UITabBarController {
         tabBar.do {
             $0.backgroundColor = .black0
             $0.tintColor = .white0
+            $0.isTranslucent = false
         }
     }
     

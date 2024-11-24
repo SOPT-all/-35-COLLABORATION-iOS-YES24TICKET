@@ -10,7 +10,7 @@ import UIKit
 final class WhatsHotHeaderView: UICollectionReusableView {
     
     private let titleLabel = UILabel().then {
-        $0.text = "WAHT'S HOT"
+        $0.text = "WHAT'S HOT"
         $0.font = .customFont(.head_eb_20)
         $0.textColor = .black0
     }
