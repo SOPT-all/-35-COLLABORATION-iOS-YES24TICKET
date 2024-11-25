@@ -18,21 +18,21 @@ final class ConcertCategoryView: UIView {
         super.init(frame: frame)
         backgroundColor = .white
         
-        setupUI()
-        setupLayout()
+        setUI()
+        setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupUI() {
+    private func setUI() {
         addSubview(closedSearchBarView)
         addSubview(customNavBar)
         addSubview(tabNavigationBar)
     }
     
-    private func setupLayout() {
+    private func setLayout() {
         closedSearchBarView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
             $0.height.equalTo(47)
