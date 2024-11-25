@@ -8,16 +8,16 @@
 import UIKit
 
 final class ConcertCategoryViewController: UIViewController {
-
+    
     private let concertCategoryView = ConcertCategoryView()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setUI()
         setLayout()
     }
-
+    
     private func setUI() {
         view.addSubview(concertCategoryView)
         
