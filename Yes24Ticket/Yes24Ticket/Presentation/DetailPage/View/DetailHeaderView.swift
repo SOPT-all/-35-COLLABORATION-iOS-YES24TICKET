@@ -67,23 +67,11 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setUI()
-        setStyle()
         setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setStyle() {
-        ticketDetailView.addBorders(
-            edges: [
-                .top,
-                .bottom
-            ],
-            color: .gray200,
-            width: 1.0
-        )
     }
     
     private func setUI() {

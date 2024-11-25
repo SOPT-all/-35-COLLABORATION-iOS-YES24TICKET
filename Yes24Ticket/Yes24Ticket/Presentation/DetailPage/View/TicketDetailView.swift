@@ -143,6 +143,15 @@ final class TicketDetailView: UIView {
         
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        addBorders(
+            edges: [.top, .bottom],
+            color: .gray200,
+            width: 1
+        )
+    }
+    
     func configure(with configuration: ConcertConfiguration) {
         standingPriceLabel.text = configuration.pricing[0].price
         pinnedPriceLabel.text = configuration.pricing[1].price
