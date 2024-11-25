@@ -50,5 +50,6 @@ final class ConcertCategoryView: UIView {
             $0.height.equalTo(40)
         }
     }
+    
 }
 
