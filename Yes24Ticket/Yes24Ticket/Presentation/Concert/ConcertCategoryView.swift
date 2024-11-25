@@ -28,7 +28,8 @@ final class ConcertCategoryView: UIView {
     }
     
     private func setUI() {
-        [   closedSearchBarView,
+        [
+            closedSearchBarView,
             customNavBar,
             tabNavigationBar
         ].forEach {

@@ -79,7 +79,13 @@ final class CategoryTapNavigationBar: UIView {
     }
     
     private func setUI() {
-        [recommendButton, rankingButton, listButton].forEach(addSubview)
+        [
+            recommendButton,
+            rankingButton,
+            listButton
+        ].forEach(
+            addSubview
+        )
     }
     
     private func setLayout() {
