@@ -32,6 +32,7 @@ final class APIService {
                         dto.datas.map(
                             {
                                 MainCellConfigurationWithURL(
+                                    id: $0.ticketID,
                                     title: $0.title,
                                     area: $0.area,
                                     date: $0.period,
@@ -42,6 +43,7 @@ final class APIService {
                     )
                 )
             case .failure(let error):
+                dump(error)
                 completion(.failure(handleError(error)))
             }
         }
@@ -69,6 +71,7 @@ final class APIService {
                         dto.ranking.map(
                             {
                                 TicketRankCellConfigurationWithURL(
+                                    id: $0.ticketID,
                                     imageURL: $0.imgURL,
                                     rank: $0.rank
                                 )
@@ -104,6 +107,7 @@ final class APIService {
                         dto.ads.map(
                             {
                                 AdCellConfigurationWithURL(
+                                    id: $0.adsID,
                                     imageURL: $0.adsImg
                                 )
                             }
@@ -138,6 +142,7 @@ final class APIService {
                         dto.datas.map(
                             {
                                 WhatsHotCellConfigurationWithURL(
+                                    id: $0.ticketID,
                                     title: $0.ticketTitle,
                                     area: $0.ticketArea,
                                     date: $0.ticketDate,
@@ -156,10 +161,10 @@ final class APIService {
     
     func fetchImage(
         from urlString: String,
-        completion: @escaping (Result<Data, ExampleError>) -> Void
+        completion: @escaping (Data?) -> Void
     ) {
         guard let url = URL(string: urlString) else {
-            completion(.failure(.wrongPath))
+            completion(nil)
             return
         }
         
@@ -168,10 +173,10 @@ final class APIService {
             .responseData { response in
                 switch response.result {
                 case .success(let data):
-                    completion(.success(data))
+                    completion(data)
                 case .failure(let error):
-                    print("error: \(error.localizedDescription)")
-                    completion(.failure(.unknown))
+                    dump(error)
+                    completion(nil)
                 }
             }
     }

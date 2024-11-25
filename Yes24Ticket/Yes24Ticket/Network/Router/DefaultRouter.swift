@@ -74,7 +74,7 @@ extension DefaultRouter: Router {
     var encoding: (any ParameterEncoding)? {
         switch self {
         default:
-            JSONEncoding.default
+            nil
         }
     }
     
