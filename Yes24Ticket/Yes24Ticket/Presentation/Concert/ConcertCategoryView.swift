@@ -17,9 +17,9 @@ final class ConcertCategoryView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
         
         setUI()
+        setStyle()
         setLayout()
     }
     
@@ -31,6 +31,10 @@ final class ConcertCategoryView: UIView {
         [closedSearchBarView, customNavBar, tabNavigationBar].forEach {
             addSubview($0)
         }
+    }
+    
+    private func setStyle(){
+        backgroundColor = .white
     }
     
     private func setLayout() {
