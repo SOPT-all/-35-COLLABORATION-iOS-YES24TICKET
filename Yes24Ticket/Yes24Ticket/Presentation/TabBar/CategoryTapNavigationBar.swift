@@ -37,8 +37,9 @@ final class CategoryTapNavigationBar: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupUI()
-        setupLayout()
+        setUI()
+        setStyle()
+        setLayout()
     }
     
     override func layoutSubviews() {
@@ -53,14 +54,18 @@ final class CategoryTapNavigationBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupUI() {
+    private func setStyle() {
+        backgroundColor = .white
+    }
+    
+    private func setUI() {
         backgroundColor = .white
         addSubview(recommendButton)
         addSubview(rankingButton)
         addSubview(listButton)
     }
     
-    private func setupLayout() {
+    private func setLayout() {
         recommendButton.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.bottom.equalToSuperview()
