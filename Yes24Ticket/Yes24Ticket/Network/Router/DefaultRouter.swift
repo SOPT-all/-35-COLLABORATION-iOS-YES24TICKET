@@ -10,8 +10,10 @@ import Foundation
 
 enum DefaultRouter {
     
-    case postExample(dto: RequestExampleDTO)
-    case getExample
+    case getMain
+    case getRank
+    case getADs
+    case getHots
     
 }
 
@@ -23,18 +25,26 @@ extension DefaultRouter: Router {
     
     var path: String {
         switch self {
-        case .postExample:
-            "/example"
-        case .getExample:
-            "/get/example"
+        case .getMain:
+            "/tickets/main"
+        case .getRank:
+            "/tickets/ranked"
+        case .getADs:
+            "/ads"
+        case .getHots:
+            "/tickets/hot"
         }
     }
     
     var method: HTTPMethod {
         switch self {
-        case .postExample:
-                .post
-        case .getExample:
+        case .getMain:
+                .get
+        case .getRank:
+                .get
+        case .getADs:
+                .get
+        case .getHots:
                 .get
         }
     }
@@ -50,19 +60,21 @@ extension DefaultRouter: Router {
     
     var parameters: [String : Any] {
         switch self {
-        case .postExample(let dto):
-            return dto.asDictionary()
-        case .getExample:
-            return [:]
+        case .getMain:
+            [:]
+        case .getRank:
+            [:]
+        case .getADs:
+            [:]
+        case .getHots:
+            [:]
         }
     }
     
     var encoding: (any ParameterEncoding)? {
         switch self {
-        case .postExample:
+        default:
             JSONEncoding.default
-        case .getExample:
-            URLEncoding.default
         }
     }
     
