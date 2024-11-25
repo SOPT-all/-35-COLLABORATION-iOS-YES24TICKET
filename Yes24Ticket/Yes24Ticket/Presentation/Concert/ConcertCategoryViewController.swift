@@ -8,11 +8,16 @@
 import UIKit
 
 final class ConcertCategoryViewController: UIViewController {
-    
+
+    private let concertCategoryView = ConcertCategoryView()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let concertCategoryView = ConcertCategoryView()
+
+        setUI()
+    }
+
+    private func setUI() {
         view.addSubview(concertCategoryView)
         
         concertCategoryView.snp.makeConstraints {
@@ -21,5 +26,3 @@ final class ConcertCategoryViewController: UIViewController {
     }
     
 }
-
-
