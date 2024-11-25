@@ -10,63 +10,80 @@ import UIKit
 import SnapKit
 import Then
 
-
 private let headerIdentifier = "DetailHeaderView"
 private let reuseIdentifier = "DetailTableViewCell"
 
-class TicketDetailController: UITableViewController {
-    
+final class TicketDetailController: UIViewController {
+
+    private let ticketDetailView = UITableView()
     private let titles = DetailTableViewTitle.allCases
-    
-    private func configureTableView() {
-        tableView.register(DetailHeaderView.self, forHeaderFooterViewReuseIdentifier: DetailHeaderView.reuseIdentifier)
-        tableView.register(DetailTableViewCell.self, forCellReuseIdentifier: DetailTableViewCell.identifier)
-    }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
+        setStyle()
+        setUI()
+        setLayout()
+    }
+
+    private func configureTableView() {
+        ticketDetailView.delegate = self
+        ticketDetailView.dataSource = self
+        ticketDetailView.register(
+            DetailHeaderView.self,
+            forHeaderFooterViewReuseIdentifier: DetailHeaderView.reuseIdentifier
+        )
+        ticketDetailView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+    }
+
+    private func setStyle() {
+        ticketDetailView.backgroundColor = .white
+    }
+
+    private func setUI() {
+        view.addSubview(ticketDetailView)
+    }
+
+    private func setLayout() {
+        ticketDetailView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(94)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
     }
     
-    
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+}
+
+extension TicketDetailController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return titles.count
     }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailTableViewCell.identifier, for: indexPath) as? DetailTableViewCell else {
-            
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier) else {
             return UITableViewCell()
         }
-        let title = titles[indexPath.row].rawValue
-        cell.configure(with: title)
-        
+        cell.textLabel?.text = titles[indexPath.row].rawValue
         return cell
     }
-    
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: DetailHeaderView.reuseIdentifier) as? DetailHeaderView else {
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let header = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: DetailHeaderView.reuseIdentifier
+        ) as? DetailHeaderView else {
             return nil
         }
-        
         header.configure(with: .mockData)
-        
         return header
     }
-    
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 422
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 425
     }
-    
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return .leastNormalMagnitude
     }
-    
 }
 
 #Preview {
