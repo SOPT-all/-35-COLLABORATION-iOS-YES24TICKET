@@ -42,6 +42,7 @@ final class CategoryTapNavigationBar: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
         recommendButton.addBorders(edges: [.top], color: .gray200, width: 1)
         rankingButton.addBorders(edges: [.top, .bottom, .left], color: .gray200, width: 1)
         listButton.addBorders(edges: [.top, .bottom, .left], color: .gray200, width: 1)
