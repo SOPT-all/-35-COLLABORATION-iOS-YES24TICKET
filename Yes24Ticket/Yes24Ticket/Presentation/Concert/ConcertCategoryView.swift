@@ -41,7 +41,7 @@ final class ConcertCategoryView: UIView {
         
         customNavBar.snp.makeConstraints {
             $0.top.equalTo(closedSearchBarView.snp.bottom).offset(57)
-            $0.leading.trailing.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(39.5)
         }
         
