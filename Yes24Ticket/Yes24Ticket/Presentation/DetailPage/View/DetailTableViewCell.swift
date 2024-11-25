@@ -36,8 +36,13 @@ class DetailTableViewCell: UITableViewCell {
             style: style,
             reuseIdentifier: reuseIdentifier
         )
+        setStyle()
         setUI()
         setLayout()
+    }
+    
+    private func setStyle() {
+        selectionStyle = .none
     }
     
     private func setUI() {
