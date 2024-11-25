@@ -37,7 +37,7 @@ final class TicketDetailController: UIViewController {
     }
     
     private func setStyle() {
-        ticketDetailView.backgroundColor = .white
+        ticketDetailView.separatorStyle = .none
     }
     
     private func setUI() {

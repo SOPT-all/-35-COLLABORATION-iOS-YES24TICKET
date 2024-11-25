@@ -140,6 +140,7 @@ final class TicketDetailView: UIView {
             $0.top.equalTo(performanceTimeLabel.snp.bottom).offset(10)
             $0.leading.equalToSuperview().offset(14)
         }
+        
     }
     
     func configure(with configuration: ConcertConfiguration) {

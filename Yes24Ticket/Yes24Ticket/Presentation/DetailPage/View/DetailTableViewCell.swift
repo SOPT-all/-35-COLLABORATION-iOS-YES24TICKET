@@ -27,29 +27,25 @@ class DetailTableViewCell: UITableViewCell {
         $0.image = .icArrowRight16
     }
     
+    private let seperatorView = UIView().then {
+        $0.backgroundColor = .gray200
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(
             style: style,
             reuseIdentifier: reuseIdentifier
         )
         setUI()
-        setStyle()
         setLayout()
     }
     
     private func setUI() {
         [
             titleLabel,
-            arrowImageView
+            arrowImageView,
+            seperatorView
         ].forEach { contentView.addSubview($0) }
-    }
-    
-    private func setStyle() {
-        addBorders(
-            edges: [.bottom],
-            color: .gray200,
-            width: 1
-        )
     }
     
     private func setLayout() {
@@ -62,6 +58,11 @@ class DetailTableViewCell: UITableViewCell {
             $0.top.equalToSuperview().offset(13.5)
             $0.trailing.equalToSuperview().inset(7)
             $0.width.height.equalTo(16)
+        }
+        
+        seperatorView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(1)
         }
     }
     
