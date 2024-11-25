@@ -28,7 +28,10 @@ class DetailTableViewCell: UITableViewCell {
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
         setUI()
         setStyle()
         setLayout()
@@ -42,7 +45,11 @@ class DetailTableViewCell: UITableViewCell {
     }
     
     private func setStyle() {
-        addBorders(edges: [.bottom], color: .gray200, width: 1)
+        addBorders(
+            edges: [.bottom],
+            color: .gray200,
+            width: 1
+        )
     }
     
     private func setLayout() {
@@ -54,6 +61,7 @@ class DetailTableViewCell: UITableViewCell {
         arrowImageView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(13.5)
             $0.trailing.equalToSuperview().inset(7)
+            $0.width.height.equalTo(16)
         }
     }
     
