@@ -9,8 +9,14 @@ import UIKit
 
 final class HomeViewController: UIViewController {
     
+    private let apiService = APIService()
     private weak var mainBadgeDelegate: FooterBadgeDelegate?
     private weak var adBadgeDelegate: FooterBadgeDelegate?
+    
+    private var mainCellConfigurations: [MainCellConfiguration] = []
+    private var ticketRankCellConfigurations: [TicketRankCellConfiguration] = []
+    private var adCellConfigurations: [AdCellConfiguration] = []
+    private var whatsHotCellConfigurations: [WhatsHotCellConfiguration] = []
     
     private lazy var mainCollectionView = UICollectionView(
         frame: .zero,
@@ -71,6 +77,15 @@ final class HomeViewController: UIViewController {
         $0.delegate = self
     }
     
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        fetchData()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setStyle()
@@ -90,6 +105,149 @@ final class HomeViewController: UIViewController {
         mainCollectionView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).inset(61-44)
             $0.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+    
+    private func fetchData() {
+        fetchMainSection()
+        fetchRankSection()
+        fetchAdSection()
+        fetchWhatsHotSection()
+    }
+    
+    private func fetchMainSection() {
+        apiService.fetchMainSection { [weak self] result in
+            switch result {
+            case .success(let modelArrayWithURL):
+                var models: [MainCellConfiguration] = []
+                let group = DispatchGroup()
+                modelArrayWithURL.forEach { modelWithURL in
+                    group.enter()
+                    self?.apiService.fetchImage(from: modelWithURL.imageURL) { data in
+                        if let data, let image = UIImage(data: data) {
+                            models.append(
+                                .init(
+                                    id: modelWithURL.id,
+                                    title: modelWithURL.title,
+                                    area: modelWithURL.area,
+                                    date: modelWithURL.date,
+                                    image: image
+                                )
+                            )
+                        }
+                        group.leave()
+                    }
+                }
+                group.notify(queue: .main) {
+                    self?.mainCellConfigurations = models.sorted(by: { left, right in
+                        left.id < right.id
+                    })
+                    self?.mainCollectionView.reloadData()
+                }
+            case .failure(let failure):
+                dump(failure)
+            }
+        }
+    }
+    
+    private func fetchRankSection() {
+        apiService.fetchRankSection { [weak self] result in
+            switch result {
+            case .success(let modelArrayWithURL):
+                var models: [TicketRankCellConfiguration] = []
+                let group = DispatchGroup()
+                modelArrayWithURL.forEach { modelWithURL in
+                    group.enter()
+                    self?.apiService.fetchImage(from: modelWithURL.imageURL) { data in
+                        if let data, let image = UIImage(data: data) {
+                            models.append(
+                                .init(
+                                    id: modelWithURL.id,
+                                    image: image,
+                                    rank: modelWithURL.rank
+                                )
+                            )
+                        }
+                        group.leave()
+                    }
+                }
+                group.notify(queue: .main) {
+                    self?.ticketRankCellConfigurations = models.sorted(by: { left, right in
+                        left.rank < right.rank
+                    })
+                    self?.mainCollectionView.reloadData()
+                }
+            case .failure(let failure):
+                dump(failure)
+            }
+        }
+    }
+    
+    private func fetchAdSection() {
+        apiService.fetchAdSection { [weak self] result in
+            switch result {
+            case .success(let modelArrayWithURL):
+                var models: [AdCellConfiguration] = []
+                let group = DispatchGroup()
+                modelArrayWithURL.forEach { modelWithURL in
+                    group.enter()
+                    self?.apiService.fetchImage(from: modelWithURL.imageURL) { data in
+                        if let data, let image = UIImage(data: data) {
+                            models.append(
+                                .init(
+                                    id: modelWithURL.id,
+                                    image: image
+                                )
+                            )
+                        }
+                        group.leave()
+                    }
+                }
+                group.notify(queue: .main) {
+                    self?.adCellConfigurations = models.sorted(by: { left, right in
+                        left.id < right.id
+                    })
+                    self?.mainCollectionView.reloadData()
+                }
+            case .failure(let failure):
+                dump(failure)
+            }
+        }
+    }
+    
+    private func fetchWhatsHotSection() {
+        apiService.fetchWhatsHotSection { [weak self] result in
+            switch result {
+            case .success(let modelArrayWithURL):
+                var models: [WhatsHotCellConfiguration] = []
+                let group = DispatchGroup()
+                modelArrayWithURL.forEach { modelWithURL in
+                    group.enter()
+                    self?.apiService.fetchImage(from: modelWithURL.imageURL) { data in
+                        if let data, let image = UIImage(data: data) {
+                            models.append(
+                                .init(
+                                    id: modelWithURL.id,
+                                    title: modelWithURL.title,
+                                    area: modelWithURL.area,
+                                    date: modelWithURL.date,
+                                    comment: modelWithURL.comment,
+                                    image: image
+                                )
+                            )
+                        }
+                        group.leave()
+                    }
+                }
+                group.notify(queue: .main) {
+                    self?.whatsHotCellConfigurations = models.sorted(by: { left, right in
+                        left.id < right.id
+                    })
+                    self?.mainCollectionView.reloadData()
+                }
+            case .failure(let failure):
+                dump(failure)
+            }
         }
     }
     
@@ -365,15 +523,15 @@ extension HomeViewController: UICollectionViewDataSource {
     ) -> Int {
         switch section {
         case 0:
-            MainCellConfiguration.mockData.count
+            mainCellConfigurations.count
         case 1:
             CategoryCellConfiguration.mockData.count
         case 2:
-            TicketRankCellConfiguration.mockData.count
+            ticketRankCellConfigurations.count
         case 3:
-            AdCellConfiguration.mockData.count
+            adCellConfigurations.count
         case 4:
-            WhatsHotCellConfiguration.mockData.count
+            whatsHotCellConfigurations.count
         default:
             0
         }
@@ -393,9 +551,8 @@ extension HomeViewController: UICollectionViewDataSource {
             ) as? IndexBadgeFooterView else {
                 return UICollectionReusableView()
             }
-            // TODO: API 데이터로 수정
             footer.setDimMode(isWhite: true)
-            footer.setMaxIndex(MainCellConfiguration.mockData.count)
+            footer.setMaxIndex(mainCellConfigurations.count)
             mainBadgeDelegate = footer
             
             return footer
@@ -432,8 +589,7 @@ extension HomeViewController: UICollectionViewDataSource {
             ) as? IndexBadgeFooterView else {
                 return UICollectionReusableView()
             }
-            // TODO: API 데이터로 수정
-            footer.setMaxIndex(AdCellConfiguration.mockData.count)
+            footer.setMaxIndex(adCellConfigurations.count)
             footer.setDimMode(isWhite: false)
             adBadgeDelegate = footer
             
@@ -480,7 +636,7 @@ extension HomeViewController: UICollectionViewDataSource {
             ) as? MainCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            cell.configure(MainCellConfiguration.mockData[indexPath.row])
+            cell.configure(mainCellConfigurations[indexPath.row])
             
             return cell
         case 1:
@@ -500,7 +656,7 @@ extension HomeViewController: UICollectionViewDataSource {
             ) as? TicketRankCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            cell.configure(TicketRankCellConfiguration.mockData[indexPath.row])
+            cell.configure(ticketRankCellConfigurations[indexPath.row])
             
             return cell
         case 3:
@@ -510,7 +666,7 @@ extension HomeViewController: UICollectionViewDataSource {
             ) as? AdCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            cell.configure(AdCellConfiguration.mockData[indexPath.row])
+            cell.configure(adCellConfigurations[indexPath.row])
             
             return cell
         case 4:
@@ -520,7 +676,7 @@ extension HomeViewController: UICollectionViewDataSource {
             ) as? WhatsHotCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            cell.configure(WhatsHotCellConfiguration.mockData[indexPath.row])
+            cell.configure(whatsHotCellConfigurations[indexPath.row])
             
             return cell
         default:

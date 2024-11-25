@@ -9,6 +9,7 @@ import UIKit
 
 struct WhatsHotCellConfiguration {
     
+    let id: Int
     let title: String
     let area: String
     let date: String
@@ -21,6 +22,7 @@ extension WhatsHotCellConfiguration {
     
     static let mockData: [WhatsHotCellConfiguration] = [
         .init(
+            id: 0,
             title: "이무진 전국투어 콘서트",
             area: "대구, 창원",
             date: "2024.12 - 2025.01",
@@ -28,6 +30,7 @@ extension WhatsHotCellConfiguration {
             image: .icSitBlue18
         ),
         .init(
+            id: 1,
             title: "타카하타 이사오",
             area: "서울",
             date: "2024.12 - 2025.01",
@@ -35,6 +38,7 @@ extension WhatsHotCellConfiguration {
             image: .icSitMint18
         ),
         .init(
+            id: 2,
             title: "이무진 전국투어 콘서트",
             area: "대구, 창원",
             date: "2024.12 - 2025.01",

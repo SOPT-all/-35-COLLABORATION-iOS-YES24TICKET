@@ -21,10 +21,15 @@ final class TabBarController: UITabBarController {
     }
     
     private func setStyle() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor.black0
         tabBar.do {
             $0.backgroundColor = .black0
             $0.tintColor = .white0
             $0.isTranslucent = false
+            $0.standardAppearance = appearance
+            $0.scrollEdgeAppearance = appearance
         }
     }
     
