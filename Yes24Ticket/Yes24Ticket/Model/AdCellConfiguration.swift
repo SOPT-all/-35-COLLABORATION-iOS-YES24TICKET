@@ -9,6 +9,7 @@ import UIKit
 
 struct AdCellConfiguration {
     
+    let id: Int
     let image: UIImage
     
 }
@@ -16,9 +17,9 @@ struct AdCellConfiguration {
 extension AdCellConfiguration {
     
     static let mockData: [AdCellConfiguration] = [
-        .init(image: .icSitBlue18),
-        .init(image: .icnArrayRed18I),
-        .init(image: .icnFillUpI)
+        .init(id: 0, image: .icSitBlue18),
+        .init(id: 1, image: .icnArrayRed18I),
+        .init(id: 2, image: .icnFillUpI)
     ]
     
 }
