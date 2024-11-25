@@ -15,11 +15,15 @@ final class ConcertCategoryViewController: UIViewController {
         super.viewDidLoad()
 
         setUI()
+        setLayout()
     }
 
     private func setUI() {
         view.addSubview(concertCategoryView)
         
+    }
+    
+    private func setLayout(){
         concertCategoryView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
