@@ -7,6 +7,7 @@
 
 struct WhatsHotCellConfigurationWithURL {
     
+    let id: Int
     let title: String
     let area: String
     let date: String

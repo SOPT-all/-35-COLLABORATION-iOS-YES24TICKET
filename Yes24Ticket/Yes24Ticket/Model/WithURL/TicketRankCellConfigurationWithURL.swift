@@ -7,6 +7,7 @@
 
 struct TicketRankCellConfigurationWithURL {
     
+    let id: Int
     let imageURL: String
     let rank: Int
     

@@ -7,6 +7,7 @@
 
 struct AdCellConfigurationWithURL {
     
+    let id: Int
     let imageURL: String
     
 }
