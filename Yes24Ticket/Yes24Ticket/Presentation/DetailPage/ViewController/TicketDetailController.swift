@@ -34,7 +34,10 @@ final class TicketDetailController: UIViewController {
             DetailHeaderView.self,
             forHeaderFooterViewReuseIdentifier: DetailHeaderView.reuseIdentifier
         )
-        ticketDetailView.register(DetailTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        ticketDetailView.register(
+            DetailTableViewCell.self,
+            forCellReuseIdentifier: reuseIdentifier
+        )
     }
     
     
@@ -48,7 +51,7 @@ final class TicketDetailController: UIViewController {
     
     private func setLayout() {
         ticketDetailView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(120)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(61)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
@@ -57,33 +60,57 @@ final class TicketDetailController: UIViewController {
 }
 
 extension TicketDetailController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
         return InfoConfiguration.mockData.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? DetailTableViewCell else {
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: reuseIdentifier,
+            for: indexPath
+        ) as? DetailTableViewCell else {
             return UITableViewCell()
         }
-        cell.configure(with: InfoConfiguration.mockData[indexPath.row], isExpanded: isExpanded)
+        cell.configure(with: InfoConfiguration.mockData[indexPath.row])
+        
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
         if indexPath.row == 0 {
             isExpanded.toggle()
-            tableView.reloadRows(at: [indexPath], with: .automatic)
+            InfoConfiguration.mockData[indexPath.row].isExpanded?.toggle()
+            tableView.reloadRows(
+                at: [indexPath],
+                with: .automatic
+            )
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(
+        _ tableView: UITableView,
+        heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
         if isExpanded && indexPath.row == 0 {
             return UITableView.automaticDimension
         }
         return 45
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(
+        _ tableView: UITableView,
+        viewForHeaderInSection section: Int
+    ) -> UIView? {
         guard let header = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: DetailHeaderView.reuseIdentifier
         ) as? DetailHeaderView else {
@@ -93,9 +120,13 @@ extension TicketDetailController: UITableViewDelegate, UITableViewDataSource {
         return header
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 425
+    func tableView(
+        _ tableView: UITableView,
+        heightForHeaderInSection section: Int
+    ) -> CGFloat {
+        return 422
     }
+    
 }
 
 #Preview {

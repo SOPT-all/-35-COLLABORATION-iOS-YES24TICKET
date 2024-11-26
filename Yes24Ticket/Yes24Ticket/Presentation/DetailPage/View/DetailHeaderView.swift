@@ -96,13 +96,12 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         }
         
         backButton.snp.makeConstraints {
-            $0.top.equalTo(headerDetailView.snp.top).offset(8)
+            $0.top.equalTo(headerDetailView.snp.top).inset(8)
             $0.leading.equalToSuperview().offset(10)
-            $0.width.height.equalTo(24)
         }
         
         headerDetailView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(8)
+            $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(260)
         }

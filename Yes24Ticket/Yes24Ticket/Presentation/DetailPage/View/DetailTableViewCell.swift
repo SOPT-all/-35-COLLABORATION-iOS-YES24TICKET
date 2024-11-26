@@ -23,8 +23,16 @@ class DetailTableViewCell: UITableViewCell {
         $0.textColor = .gray700
     }
     
+    private let dottedLayer = CAShapeLayer().then {
+        $0.strokeColor = UIColor.gray200.cgColor
+        $0.lineWidth = 1
+        $0.lineDashPattern = [4, 2]
+        $0.fillColor = nil
+    }
+    
     private let dottedLineView = UIView().then {
         $0.backgroundColor = .clear
+        $0.isHidden = true
     }
     
     private let detailLabel = UILabel().then {
@@ -32,15 +40,6 @@ class DetailTableViewCell: UITableViewCell {
         $0.textColor = .gray600
         $0.numberOfLines = 0
         $0.isHidden = true
-    }
-    
-    private let linkLabel = UILabel().then {
-        $0.text = "HYPE UP FESTIVAL 바로가기"
-        $0.font = UIFont.customFont(.body_b_12)
-        $0.textColor = .blue
-        $0.isHidden = true
-        $0.textAlignment = .left
-        $0.isUserInteractionEnabled = true
     }
     
     private let arrowImageView = UIImageView().then {
@@ -66,17 +65,24 @@ class DetailTableViewCell: UITableViewCell {
     override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
         
-    }
-    
-    private func addDottedLine(to view: UIView) {
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.strokeColor = UIColor.gray200.cgColor
-        shapeLayer.lineWidth = 1
-        shapeLayer.lineDashPattern = [4, 2]
-        shapeLayer.fillColor = nil
-        shapeLayer.frame = view.bounds
-        shapeLayer.path = UIBezierPath(rect: view.bounds).cgPath
-        view.layer.addSublayer(shapeLayer)
+        dottedLayer.frame = dottedLineView.bounds
+        dottedLineView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+        let path = UIBezierPath()
+        path.move(
+            to: CGPoint(
+                x: 0,
+                y: dottedLineView.bounds.height / 2
+            )
+        )
+        path.addLine(
+            to: CGPoint(
+                x: dottedLineView.bounds.width,
+                y: dottedLineView.bounds.height / 2
+            )
+        )
+        
+        dottedLineView.layer.addSublayer(dottedLayer)
+        dottedLayer.path = path.cgPath
     }
     
     private func setStyle() {
@@ -89,9 +95,10 @@ class DetailTableViewCell: UITableViewCell {
             detailLabel,
             arrowImageView,
             seperatorView,
-            detailLabel,
-            linkLabel
-        ].forEach { contentView.addSubview($0) }
+            dottedLineView
+        ].forEach {
+            contentView.addSubview($0)
+        }
     }
     
     private func setLayout() {
@@ -116,27 +123,28 @@ class DetailTableViewCell: UITableViewCell {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.height.equalTo(1)
         }
+        
+        dottedLineView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(13.5)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(1)
+        }
     }
     
-    func configure(with data: InfoConfiguration, isExpanded: Bool) {
+    func configure(with data: InfoConfiguration) {
         titleLabel.text = data.title
-        detailLabel.text = data.details
-        detailLabel.isHidden = !isExpanded
-        if titleLabel.text == "알립니다" {
+        if let isExpanded = data.isExpanded {
+            detailLabel.text = data.details
             arrowImageView.image = isExpanded ? .icArrowUp16 : .icArrowDown16
-            linkLabel.isHidden = !isExpanded
-            dottedLineView.isHidden = !isExpanded
-            
-            // 점선 적용
-            if isExpanded {
-                addDottedLine(to: dottedLineView)
-            } else {
-                dottedLineView.layer.sublayers?.removeAll() // 점선 제거
+            [
+                detailLabel,
+                dottedLineView
+            ].forEach {
+                $0.isHidden = !isExpanded
             }
         } else {
-            arrowImageView.image = .icArrowRight16
-            linkLabel.isHidden = true
             dottedLineView.isHidden = true
+            arrowImageView.image = .icArrowRight16
         }
     }
     
