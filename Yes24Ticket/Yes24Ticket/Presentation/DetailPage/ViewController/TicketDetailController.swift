@@ -10,9 +10,6 @@ import UIKit
 import SnapKit
 import Then
 
-private let headerIdentifier = "DetailHeaderView"
-private let reuseIdentifier = "DetailTableViewCell"
-
 final class TicketDetailController: UIViewController {
     
     private lazy var ticketDetailView = UITableView(
@@ -27,11 +24,15 @@ final class TicketDetailController: UIViewController {
             forHeaderFooterViewReuseIdentifier: DetailHeaderView.reuseIdentifier
         )
         $0.register(
+            TableViewFooter.self,
+            forHeaderFooterViewReuseIdentifier: TableViewFooter.identifier
+        )
+        $0.register(
             DetailTableViewCell.self,
-            forCellReuseIdentifier: reuseIdentifier
+            forCellReuseIdentifier: DetailTableViewCell.identifier
         )
     }
-    
+
     private var isExpanded = false
     
     override func viewDidLoad() {
@@ -73,7 +74,7 @@ extension TicketDetailController: UITableViewDelegate, UITableViewDataSource {
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: reuseIdentifier,
+            withIdentifier: DetailTableViewCell.identifier,
             for: indexPath
         ) as? DetailTableViewCell else {
             return UITableViewCell()
@@ -104,6 +105,7 @@ extension TicketDetailController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 0 && isExpanded {
             return 161 + 45
         }
+        
         return 45
     }
     
@@ -117,6 +119,7 @@ extension TicketDetailController: UITableViewDelegate, UITableViewDataSource {
             return nil
         }
         header.configure(with: ConcertConfiguration.mockData)
+        
         return header
     }
     
@@ -131,20 +134,20 @@ extension TicketDetailController: UITableViewDelegate, UITableViewDataSource {
         _ tableView: UITableView,
         viewForFooterInSection section: Int
     ) -> UIView? {
-        if section == 0 && isExpanded {
-            return ExpandedView()
+        guard let footer = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: TableViewFooter.identifier
+        ) as? TableViewFooter else {
+            return nil
         }
-        return nil
+        
+        return footer
     }
     
     func tableView(
         _ tableView: UITableView,
         heightForFooterInSection section: Int
     ) -> CGFloat {
-        if section == 0 && isExpanded {
-            return 161
-        }
-        return 0
+        return 179
     }
     
 }
