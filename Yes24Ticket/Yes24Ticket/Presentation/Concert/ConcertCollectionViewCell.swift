@@ -8,57 +8,53 @@
 import UIKit
 
 import SnapKit
+import Then
 
-class ConcertCollectionViewCell: UICollectionViewCell {
+final class ConcertCollectionViewCell: UICollectionViewCell {
+    
     static let reuseIdentifier = "ConcertCollectionViewCell"
-
-    let bigImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        return imageView
-    }()
     
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = .gray900
-        label.numberOfLines = 1
-        label.textAlignment = .center
-        return label
-    }()
+    private let bigImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+    }
     
-    let subtitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = .gray800
-        label.textAlignment = .center
-        return label
-    }()
+    private let titleLabel = UILabel().then {
+        $0.font = .customFont(.title_b_13)
+        $0.textColor = .gray900
+        $0.numberOfLines = 1
+        $0.textAlignment = .center
+    }
     
-    let dateLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = .gray300
-        label.textAlignment = .center
-        return label
-    }()
+    private let subtitleLabel = UILabel().then {
+        $0.font = .customFont(.caption_m_11)
+        $0.textColor = .gray800
+        $0.textAlignment = .center
+    }
+    
+    private let dateLabel = UILabel().then {
+        $0.font = .customFont(.caption_m_11)
+        $0.textColor = .gray300
+        $0.textAlignment = .center
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupLayout()
+        setUI()
+        setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupLayout() {
-        contentView.addSubview(bigImageView)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(subtitleLabel)
-        contentView.addSubview(dateLabel)
-        
+    private func setUI() {
+        [bigImageView, titleLabel, subtitleLabel, dateLabel].forEach {
+            contentView.addSubview($0)
+        }
+    }
+    
+    private func setLayout() {
         bigImageView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(8)
             $0.centerX.equalToSuperview()
@@ -80,5 +76,12 @@ class ConcertCollectionViewCell: UICollectionViewCell {
             $0.top.equalTo(subtitleLabel.snp.bottom).offset(5)
             $0.left.right.equalToSuperview().inset(8)
         }
+    }
+    
+    func configure(image: UIImage?, title: String, subtitle: String, date: String) {
+        bigImageView.image = image
+        titleLabel.text = title
+        subtitleLabel.text = subtitle
+        dateLabel.text = date
     }
 }
