@@ -15,31 +15,31 @@ private let reuseIdentifier = "DetailTableViewCell"
 
 final class TicketDetailController: UIViewController {
     
-    private let ticketDetailView = UITableView(frame: .zero, style: .grouped)
-    private var isExpanded = false
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureTableView()
-        setStyle()
-        setUI()
-        setLayout()
-    }
-    
-    private func configureTableView() {
-        ticketDetailView.delegate = self
-        ticketDetailView.dataSource = self
-        ticketDetailView.rowHeight = UITableView.automaticDimension
-        ticketDetailView.register(
+    private lazy var ticketDetailView = UITableView(
+        frame: .zero,
+        style: .grouped
+    ).then {
+        $0.delegate = self
+        $0.dataSource = self
+        $0.rowHeight = UITableView.automaticDimension
+        $0.register(
             DetailHeaderView.self,
             forHeaderFooterViewReuseIdentifier: DetailHeaderView.reuseIdentifier
         )
-        ticketDetailView.register(
+        $0.register(
             DetailTableViewCell.self,
             forCellReuseIdentifier: reuseIdentifier
         )
     }
     
+    private var isExpanded = false
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setStyle()
+        setUI()
+        setLayout()
+    }
     
     private func setStyle() {
         ticketDetailView.separatorStyle = .none
@@ -101,8 +101,8 @@ extension TicketDetailController: UITableViewDelegate, UITableViewDataSource {
         _ tableView: UITableView,
         heightForRowAt indexPath: IndexPath
     ) -> CGFloat {
-        if isExpanded && indexPath.row == 0 {
-            return UITableView.automaticDimension
+        if indexPath.row == 0 && isExpanded {
+            return 161 + 45
         }
         return 45
     }
@@ -127,8 +127,24 @@ extension TicketDetailController: UITableViewDelegate, UITableViewDataSource {
         return 422
     }
     
-}
-
-#Preview {
-    TicketDetailController()
+    func tableView(
+        _ tableView: UITableView,
+        viewForFooterInSection section: Int
+    ) -> UIView? {
+        if section == 0 && isExpanded {
+            return ExpandedView()
+        }
+        return nil
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        heightForFooterInSection section: Int
+    ) -> CGFloat {
+        if section == 0 && isExpanded {
+            return 161
+        }
+        return 0
+    }
+    
 }

@@ -34,8 +34,7 @@ final class ExpandedView: UIView {
     private let linkLabel = UILabel().then {
         $0.text = "HYPE UP FESTIVAL 바로가기"
         $0.font = UIFont.customFont(.body_b_12)
-        $0.textColor = .blue
-        $0.isHidden = true
+        $0.textColor = .chipPurple
         $0.textAlignment = .left
     }
     

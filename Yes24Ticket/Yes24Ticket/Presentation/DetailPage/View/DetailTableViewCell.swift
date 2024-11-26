@@ -18,6 +18,12 @@ class DetailTableViewCell: UITableViewCell {
     
     static let identifier: String = "DetailTableViewCell"
     
+    private let headerView = UIView()
+    
+    private let expandedView = ExpandedView().then {
+        $0.isHidden = true
+    }
+    
     private let titleLabel = UILabel().then {
         $0.font = UIFont.customFont(.title_b_15)
         $0.textColor = .gray700
@@ -35,13 +41,6 @@ class DetailTableViewCell: UITableViewCell {
         $0.isHidden = true
     }
     
-    private let detailLabel = UILabel().then {
-        $0.font = UIFont.customFont(.body_b_12)
-        $0.textColor = .gray600
-        $0.numberOfLines = 0
-        $0.isHidden = true
-    }
-    
     private let arrowImageView = UIImageView().then {
         $0.image = .icArrowRight16
     }
@@ -52,7 +51,10 @@ class DetailTableViewCell: UITableViewCell {
     
     private var detailLabelHeightConstraint: Constraint?
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override init(
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
+    ) {
         super.init(
             style: style,
             reuseIdentifier: reuseIdentifier
@@ -64,9 +66,10 @@ class DetailTableViewCell: UITableViewCell {
     
     override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
-        
         dottedLayer.frame = dottedLineView.bounds
-        dottedLineView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+        dottedLineView.layer.sublayers?.forEach {
+            $0.removeFromSuperlayer()
+        }
         let path = UIBezierPath()
         path.move(
             to: CGPoint(
@@ -80,7 +83,6 @@ class DetailTableViewCell: UITableViewCell {
                 y: dottedLineView.bounds.height / 2
             )
         )
-        
         dottedLineView.layer.addSublayer(dottedLayer)
         dottedLayer.path = path.cgPath
     }
@@ -91,26 +93,34 @@ class DetailTableViewCell: UITableViewCell {
     
     private func setUI() {
         [
+            headerView,
+            expandedView
+        ].forEach(contentView.addSubview)
+        
+        [
             titleLabel,
-            detailLabel,
             arrowImageView,
             seperatorView,
             dottedLineView
-        ].forEach {
-            contentView.addSubview($0)
-        }
+        ].forEach(headerView.addSubview)
     }
     
     private func setLayout() {
+        headerView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(45)
+        }
+        
+        expandedView.snp.makeConstraints {
+            $0.top.equalTo(headerView.snp.bottom).offset(1)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(161)
+            $0.bottom.equalToSuperview()
+        }
+        
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(13.5)
             $0.leading.equalToSuperview().offset(10)
-        }
-        
-        detailLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom)
-            $0.horizontalEdges.equalTo(titleLabel)
-            $0.bottom.equalToSuperview()
         }
         
         arrowImageView.snp.makeConstraints {
@@ -134,17 +144,14 @@ class DetailTableViewCell: UITableViewCell {
     func configure(with data: InfoConfiguration) {
         titleLabel.text = data.title
         if let isExpanded = data.isExpanded {
-            detailLabel.text = data.details
             arrowImageView.image = isExpanded ? .icArrowUp16 : .icArrowDown16
-            [
-                detailLabel,
-                dottedLineView
-            ].forEach {
-                $0.isHidden = !isExpanded
-            }
+            expandedView.isHidden = !isExpanded
+            dottedLineView.isHidden = !isExpanded
+            seperatorView.isHidden = isExpanded
         } else {
             dottedLineView.isHidden = true
             arrowImageView.image = .icArrowRight16
+            seperatorView.isHidden = false
         }
     }
     
