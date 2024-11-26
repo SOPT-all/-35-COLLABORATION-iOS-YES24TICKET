@@ -23,11 +23,24 @@ class DetailTableViewCell: UITableViewCell {
         $0.textColor = .gray700
     }
     
+    private let dottedLineView = UIView().then {
+        $0.backgroundColor = .clear
+    }
+    
     private let detailLabel = UILabel().then {
         $0.font = UIFont.customFont(.body_b_12)
         $0.textColor = .gray600
         $0.numberOfLines = 0
         $0.isHidden = true
+    }
+    
+    private let linkLabel = UILabel().then {
+        $0.text = "HYPE UP FESTIVAL 바로가기"
+        $0.font = UIFont.customFont(.body_b_12)
+        $0.textColor = .blue
+        $0.isHidden = true
+        $0.textAlignment = .left
+        $0.isUserInteractionEnabled = true
     }
     
     private let arrowImageView = UIImageView().then {
@@ -50,6 +63,22 @@ class DetailTableViewCell: UITableViewCell {
         setLayout()
     }
     
+    override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
+        
+    }
+    
+    private func addDottedLine(to view: UIView) {
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.strokeColor = UIColor.gray200.cgColor
+        shapeLayer.lineWidth = 1
+        shapeLayer.lineDashPattern = [4, 2]
+        shapeLayer.fillColor = nil
+        shapeLayer.frame = view.bounds
+        shapeLayer.path = UIBezierPath(rect: view.bounds).cgPath
+        view.layer.addSublayer(shapeLayer)
+    }
+    
     private func setStyle() {
         selectionStyle = .none
     }
@@ -59,7 +88,9 @@ class DetailTableViewCell: UITableViewCell {
             titleLabel,
             detailLabel,
             arrowImageView,
-            seperatorView
+            seperatorView,
+            detailLabel,
+            linkLabel
         ].forEach { contentView.addSubview($0) }
     }
     
@@ -93,8 +124,19 @@ class DetailTableViewCell: UITableViewCell {
         detailLabel.isHidden = !isExpanded
         if titleLabel.text == "알립니다" {
             arrowImageView.image = isExpanded ? .icArrowUp16 : .icArrowDown16
+            linkLabel.isHidden = !isExpanded
+            dottedLineView.isHidden = !isExpanded
+            
+            // 점선 적용
+            if isExpanded {
+                addDottedLine(to: dottedLineView)
+            } else {
+                dottedLineView.layer.sublayers?.removeAll() // 점선 제거
+            }
         } else {
-            return
+            arrowImageView.image = .icArrowRight16
+            linkLabel.isHidden = true
+            dottedLineView.isHidden = true
         }
     }
     
