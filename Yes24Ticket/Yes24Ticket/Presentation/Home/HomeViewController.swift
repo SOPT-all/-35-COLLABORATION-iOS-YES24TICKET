@@ -77,6 +77,14 @@ final class HomeViewController: UIViewController {
         $0.delegate = self
     }
     
+    private lazy var scrollUpFloatingButton = ScrollUpFloatingButton().then {
+        $0.addTarget(
+            self,
+            action: #selector(scrollUpFloatingButtonTapped),
+            for: .touchUpInside
+        )
+    }
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         fetchData()
@@ -98,13 +106,23 @@ final class HomeViewController: UIViewController {
     }
     
     private func setUI() {
-        view.addSubview(mainCollectionView)
+        [
+            mainCollectionView,
+            scrollUpFloatingButton
+        ].forEach {
+            view.addSubview($0)
+        }
     }
     
     private func setLayout() {
         mainCollectionView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).inset(61-44)
             $0.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        scrollUpFloatingButton.snp.makeConstraints {
+            $0.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(10)
+            $0.size.equalTo(30)
         }
     }
     
@@ -491,6 +509,10 @@ final class HomeViewController: UIViewController {
         return section
     }
     
+    @objc private func scrollUpFloatingButtonTapped() {
+        mainCollectionView.contentOffset.y = 0
+    }
+    
 }
 
 extension HomeViewController: UICollectionViewDelegate {
@@ -507,6 +529,10 @@ extension HomeViewController: UICollectionViewDelegate {
         default:
             break
         }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollUpFloatingButton.isHidden = scrollView.contentOffset.y == 0
     }
     
 }
