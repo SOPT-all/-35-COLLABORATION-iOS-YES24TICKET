@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import Then
 
 final class ConcertCategoryView: UIView {
     
@@ -15,8 +16,11 @@ final class ConcertCategoryView: UIView {
     private let customNavBar = ConcertNavigationBar()
     private let tabNavigationBar = CategoryTapNavigationBar()
     
-    private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
+    private let concerts = MockData.concerts
+
+    private lazy var collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(0.5),
                 heightDimension: .absolute(320)
@@ -32,24 +36,24 @@ final class ConcertCategoryView: UIView {
                 subitems: [item, item]
             )
             group.interItemSpacing = .fixed(10)
-
+            
             let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0)
-
-            return section
-        }
-
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear
-        collectionView.register(ConcertCollectionViewCell.self, forCellWithReuseIdentifier: ConcertCollectionViewCell.reuseIdentifier)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        return collectionView
-    }()
+            section.contentInsets = NSDirectionalEdgeInsets(
+                top: 10,
+                leading: 0,
+                bottom: 10,
+                trailing: 0
+            )
+        return section
+    }).then {
+        $0.backgroundColor = .clear
+        $0.register(ConcertCollectionViewCell.self, forCellWithReuseIdentifier: ConcertCollectionViewCell.reuseIdentifier)
+        $0.dataSource = self
+        $0.delegate = self
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setUI()
         setStyle()
         setLayout()
@@ -70,7 +74,7 @@ final class ConcertCategoryView: UIView {
         }
     }
     
-    private func setStyle(){
+    private func setStyle() {
         backgroundColor = .white
     }
     
@@ -94,15 +98,18 @@ final class ConcertCategoryView: UIView {
         
         collectionView.snp.makeConstraints {
             $0.top.equalTo(tabNavigationBar.snp.bottom).offset(16)
-            $0.horizontalEdges.bottom.equalToSuperview().inset(16)
+            $0.horizontalEdges.bottom.equalToSuperview()
         }
     }
     
 }
 
 extension ConcertCategoryView: UICollectionViewDataSource, UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        return concerts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -110,16 +117,13 @@ extension ConcertCategoryView: UICollectionViewDataSource, UICollectionViewDeleg
             return UICollectionViewCell()
         }
         
-        cell.bigImageView.image = UIImage(named: "kim")
-        cell.titleLabel.text = "이무진 전국투어 콘서트"
-        cell.subtitleLabel.text = "대구, 청원"
-        cell.dateLabel.text = "2024. 12. 07 - 12. 08"
-        
+        let concert = concerts[indexPath.row]
+        cell.configure(
+            image: concert.image,
+            title: concert.title,
+            subtitle: concert.subtitle,
+            date: concert.date
+        )
         return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    }
 }
-
-
