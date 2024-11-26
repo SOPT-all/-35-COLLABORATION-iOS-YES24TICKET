@@ -13,10 +13,29 @@ final class HomeViewController: UIViewController {
     private weak var mainBadgeDelegate: FooterBadgeDelegate?
     private weak var adBadgeDelegate: FooterBadgeDelegate?
     
-    private var mainCellConfigurations: [MainCellConfiguration] = []
-    private var ticketRankCellConfigurations: [TicketRankCellConfiguration] = []
-    private var adCellConfigurations: [AdCellConfiguration] = []
-    private var whatsHotCellConfigurations: [WhatsHotCellConfiguration] = []
+    private var mainCellConfigurations: [MainCellConfiguration] = [] {
+        didSet {
+            mainCollectionView.reloadData()
+        }
+    }
+    
+    private var ticketRankCellConfigurations: [TicketRankCellConfiguration] = [] {
+        didSet {
+            mainCollectionView.reloadData()
+        }
+    }
+    
+    private var adCellConfigurations: [AdCellConfiguration] = [] {
+        didSet {
+            mainCollectionView.reloadData()
+        }
+    }
+    
+    private var whatsHotCellConfigurations: [WhatsHotCellConfiguration] = [] {
+        didSet {
+            mainCollectionView.reloadData()
+        }
+    }
     
     private lazy var mainCollectionView = UICollectionView(
         frame: .zero,
@@ -28,6 +47,10 @@ final class HomeViewController: UIViewController {
         $0.showsVerticalScrollIndicator = false
         $0.clipsToBounds = true
         $0.bounces = false
+        $0.register(
+            UICollectionViewCell.self,
+            forCellWithReuseIdentifier: UICollectionViewCell.cellIdentifier
+        )
         $0.register(
             MainCollectionViewCell.self,
             forCellWithReuseIdentifier: MainCollectionViewCell.cellIdentifier
@@ -160,7 +183,6 @@ final class HomeViewController: UIViewController {
                     self?.mainCellConfigurations = models.sorted(by: { left, right in
                         left.id < right.id
                     })
-                    self?.mainCollectionView.reloadData()
                 }
             case .failure(let failure):
                 dump(failure)
@@ -193,7 +215,6 @@ final class HomeViewController: UIViewController {
                     self?.ticketRankCellConfigurations = models.sorted(by: { left, right in
                         left.rank < right.rank
                     })
-                    self?.mainCollectionView.reloadData()
                 }
             case .failure(let failure):
                 dump(failure)
@@ -225,7 +246,6 @@ final class HomeViewController: UIViewController {
                     self?.adCellConfigurations = models.sorted(by: { left, right in
                         left.id < right.id
                     })
-                    self?.mainCollectionView.reloadData()
                 }
             case .failure(let failure):
                 dump(failure)
@@ -261,7 +281,6 @@ final class HomeViewController: UIViewController {
                     self?.whatsHotCellConfigurations = models.sorted(by: { left, right in
                         left.id < right.id
                     })
-                    self?.mainCollectionView.reloadData()
                 }
             case .failure(let failure):
                 dump(failure)
@@ -510,7 +529,7 @@ final class HomeViewController: UIViewController {
     }
     
     @objc private func scrollUpFloatingButtonTapped() {
-        mainCollectionView.contentOffset.y = 0
+        self.mainCollectionView.contentOffset.y = 0
     }
     
 }
@@ -549,15 +568,15 @@ extension HomeViewController: UICollectionViewDataSource {
     ) -> Int {
         switch section {
         case 0:
-            mainCellConfigurations.count
+            mainCellConfigurations.count == 0 ? 1 : mainCellConfigurations.count
         case 1:
             CategoryCellConfiguration.mockData.count
         case 2:
-            ticketRankCellConfigurations.count
+            ticketRankCellConfigurations.count == 0 ? 1 : ticketRankCellConfigurations.count
         case 3:
-            adCellConfigurations.count
+            adCellConfigurations.count == 0 ? 1 : adCellConfigurations.count
         case 4:
-            whatsHotCellConfigurations.count
+            whatsHotCellConfigurations.count == 0 ? 1 : whatsHotCellConfigurations.count
         default:
             0
         }
@@ -656,15 +675,25 @@ extension HomeViewController: UICollectionViewDataSource {
     ) -> UICollectionViewCell {
         switch indexPath.section {
         case 0:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: MainCollectionViewCell.cellIdentifier,
-                for: indexPath
-            ) as? MainCollectionViewCell else {
-                return UICollectionViewCell()
+            if mainCellConfigurations.count == 0 {
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: UICollectionViewCell.cellIdentifier,
+                    for: indexPath
+                )
+                cell.backgroundColor = .white0
+                
+                return cell
+            } else {
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: MainCollectionViewCell.cellIdentifier,
+                    for: indexPath
+                ) as? MainCollectionViewCell else {
+                    return UICollectionViewCell()
+                }
+                cell.configure(mainCellConfigurations[indexPath.row])
+                
+                return cell
             }
-            cell.configure(mainCellConfigurations[indexPath.row])
-            
-            return cell
         case 1:
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: CategoryCollectionViewCell.cellIdentifier,
@@ -676,35 +705,65 @@ extension HomeViewController: UICollectionViewDataSource {
             
             return cell
         case 2:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: TicketRankCollectionViewCell.cellIdentifier,
-                for: indexPath
-            ) as? TicketRankCollectionViewCell else {
-                return UICollectionViewCell()
+            if ticketRankCellConfigurations.count == 0 {
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: UICollectionViewCell.cellIdentifier,
+                    for: indexPath
+                )
+                cell.backgroundColor = .white0
+                
+                return cell
+            } else {
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: TicketRankCollectionViewCell.cellIdentifier,
+                    for: indexPath
+                ) as? TicketRankCollectionViewCell else {
+                    return UICollectionViewCell()
+                }
+                cell.configure(ticketRankCellConfigurations[indexPath.row])
+                
+                return cell
             }
-            cell.configure(ticketRankCellConfigurations[indexPath.row])
-            
-            return cell
         case 3:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: AdCollectionViewCell.cellIdentifier,
-                for: indexPath
-            ) as? AdCollectionViewCell else {
-                return UICollectionViewCell()
+            if adCellConfigurations.count == 0 {
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: UICollectionViewCell.cellIdentifier,
+                    for: indexPath
+                )
+                cell.backgroundColor = .white0
+                
+                return cell
+            } else {
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: AdCollectionViewCell.cellIdentifier,
+                    for: indexPath
+                ) as? AdCollectionViewCell else {
+                    return UICollectionViewCell()
+                }
+                cell.configure(adCellConfigurations[indexPath.row])
+                
+                return cell
             }
-            cell.configure(adCellConfigurations[indexPath.row])
-            
-            return cell
         case 4:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: WhatsHotCollectionViewCell.cellIdentifier,
-                for: indexPath
-            ) as? WhatsHotCollectionViewCell else {
-                return UICollectionViewCell()
+            if whatsHotCellConfigurations.count == 0 {
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: UICollectionViewCell.cellIdentifier,
+                    for: indexPath
+                )
+                cell.backgroundColor = .white0
+                
+                return cell
+            } else {
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: WhatsHotCollectionViewCell.cellIdentifier,
+                    for: indexPath
+                ) as? WhatsHotCollectionViewCell else {
+                    return UICollectionViewCell()
+                }
+                cell.configure(whatsHotCellConfigurations[indexPath.row])
+                
+                return cell
             }
-            cell.configure(whatsHotCellConfigurations[indexPath.row])
-            
-            return cell
         default:
             return UICollectionViewCell()
         }
