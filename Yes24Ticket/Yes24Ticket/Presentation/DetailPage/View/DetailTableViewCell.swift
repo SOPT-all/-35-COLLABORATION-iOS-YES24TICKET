@@ -23,6 +23,13 @@ class DetailTableViewCell: UITableViewCell {
         $0.textColor = .gray700
     }
     
+    private let detailLabel = UILabel().then {
+        $0.font = UIFont.customFont(.body_b_12)
+        $0.textColor = .gray600
+        $0.numberOfLines = 0
+        $0.isHidden = true
+    }
+    
     private let arrowImageView = UIImageView().then {
         $0.image = .icArrowRight16
     }
@@ -30,6 +37,8 @@ class DetailTableViewCell: UITableViewCell {
     private let seperatorView = UIView().then {
         $0.backgroundColor = .gray200
     }
+    
+    private var detailLabelHeightConstraint: Constraint?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(
@@ -48,6 +57,7 @@ class DetailTableViewCell: UITableViewCell {
     private func setUI() {
         [
             titleLabel,
+            detailLabel,
             arrowImageView,
             seperatorView
         ].forEach { contentView.addSubview($0) }
@@ -57,6 +67,12 @@ class DetailTableViewCell: UITableViewCell {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(13.5)
             $0.leading.equalToSuperview().offset(10)
+        }
+        
+        detailLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom)
+            $0.horizontalEdges.equalTo(titleLabel)
+            $0.bottom.equalToSuperview()
         }
         
         arrowImageView.snp.makeConstraints {
@@ -71,8 +87,15 @@ class DetailTableViewCell: UITableViewCell {
         }
     }
     
-    func configure(with title: String) {
-        titleLabel.text = title
+    func configure(with data: InfoConfiguration, isExpanded: Bool) {
+        titleLabel.text = data.title
+        detailLabel.text = data.details
+        detailLabel.isHidden = !isExpanded
+        if titleLabel.text == "알립니다" {
+            arrowImageView.image = isExpanded ? .icArrowUp16 : .icArrowDown16
+        } else {
+            return
+        }
     }
     
 }
