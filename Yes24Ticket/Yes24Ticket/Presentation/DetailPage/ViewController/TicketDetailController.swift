@@ -32,7 +32,45 @@ final class TicketDetailController: UIViewController {
             forCellReuseIdentifier: DetailTableViewCell.identifier
         )
     }
-
+    
+    private lazy var reservationButton = UIButton().then {
+        $0.setTitle(
+            "예매하기",
+            for: .normal
+        )
+        $0.setTitleColor(
+            .white0,
+            for: .normal
+        )
+        $0.backgroundColor = .red100
+        $0.addTarget(
+            self,
+            action: #selector(
+                reservationButtonTapped
+            ),
+            for: .touchUpInside
+        )
+        $0.addBorders(
+            edges: [.all],
+            color: .red200,
+            width: 1
+        )
+        $0.titleLabel?.font = UIFont.customFont(.button_eb_18)
+    }
+    
+    private let buttonBackgroundView = UIView().then {
+        $0.backgroundColor = .white0
+        $0.addBorders(
+            edges: [
+                .top,
+                .left,
+                .right
+            ],
+            color: .gray200,
+            width: 1
+        )
+    }
+    
     private var isExpanded = false
     
     override func viewDidLoad() {
@@ -47,7 +85,10 @@ final class TicketDetailController: UIViewController {
     }
     
     private func setUI() {
-        view.addSubview(ticketDetailView)
+        [ ticketDetailView,
+          buttonBackgroundView]
+            .forEach(view.addSubview)
+        buttonBackgroundView.addSubview(reservationButton)
     }
     
     private func setLayout() {
@@ -56,6 +97,23 @@ final class TicketDetailController: UIViewController {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
+        
+        buttonBackgroundView.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(71)
+        }
+        
+        reservationButton.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(12)
+            $0.horizontalEdges.equalToSuperview().inset(10)
+            $0.height.equalTo(50)
+        }
+    }
+    
+    @objc
+    private func reservationButtonTapped() {
+        //TODO: 추 후 Navigation 연결 로직 추가
     }
     
 }
