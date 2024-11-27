@@ -20,7 +20,6 @@ struct Concert {
 struct MockData {
     
     static let concerts: [Concert] = [
-        
         Concert(
             image: UIImage(named: "kim"),
             title: "이무진 전국투어 콘서트",
@@ -82,4 +81,5 @@ struct MockData {
             date: "2025. 01. 20 - 01. 21"
         )
     ]
+    
 }
