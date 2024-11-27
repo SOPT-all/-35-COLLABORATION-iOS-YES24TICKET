@@ -9,14 +9,18 @@ import Foundation
 import UIKit
 
 struct Concert {
+    
     let image: UIImage?
     let title: String
     let subtitle: String
     let date: String
+    
 }
 
 struct MockData {
+    
     static let concerts: [Concert] = [
+        
         Concert(
             image: UIImage(named: "kim"),
             title: "이무진 전국투어 콘서트",
