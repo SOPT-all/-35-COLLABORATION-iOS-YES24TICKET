@@ -50,22 +50,22 @@ final class TicketDetailController: UIViewController {
             ),
             for: .touchUpInside
         )
-        $0.addBorders(
-            edges: [.all],
-            color: .red200,
-            width: 1
-        )
         $0.titleLabel?.font = UIFont.customFont(.button_eb_18)
     }
     
     private let buttonBackgroundView = UIView().then {
         $0.backgroundColor = .white0
-        $0.addBorders(
-            edges: [
-                .top,
-                .left,
-                .right
-            ],
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        reservationButton.addBorders(
+            edges: [.all],
+            color: .red200,
+            width: 1
+        )
+        buttonBackgroundView.addBorders(
+            edges: [.top],
             color: .gray200,
             width: 1
         )
