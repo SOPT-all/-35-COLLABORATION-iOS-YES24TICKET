@@ -49,7 +49,12 @@ final class ConcertCollectionViewCell: UICollectionViewCell {
     }
     
     private func setUI() {
-        [bigImageView, titleLabel, subtitleLabel, dateLabel].forEach {
+        [
+            bigImageView,
+            titleLabel,
+            subtitleLabel,
+            dateLabel
+        ].forEach {
             contentView.addSubview($0)
         }
     }
