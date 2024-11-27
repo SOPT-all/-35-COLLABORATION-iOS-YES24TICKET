@@ -78,10 +78,10 @@ final class ConcertCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configure(image: UIImage?, title: String, subtitle: String, date: String) {
-        bigImageView.image = image
-        titleLabel.text = title
-        subtitleLabel.text = subtitle
-        dateLabel.text = date
+    func configure(with model: Concert) {
+        bigImageView.image = model.image
+        titleLabel.text = model.title
+        subtitleLabel.text = model.subtitle
+        dateLabel.text = model.date
     }
 }
