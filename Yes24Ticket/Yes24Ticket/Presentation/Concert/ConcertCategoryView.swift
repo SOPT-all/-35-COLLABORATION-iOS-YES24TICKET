@@ -105,6 +105,7 @@ final class ConcertCategoryView: UIView {
 }
 
 extension ConcertCategoryView: UICollectionViewDataSource, UICollectionViewDelegate {
+   
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
@@ -118,12 +119,8 @@ extension ConcertCategoryView: UICollectionViewDataSource, UICollectionViewDeleg
         }
         
         let concert = concerts[indexPath.row]
-        cell.configure(
-            image: concert.image,
-            title: concert.title,
-            subtitle: concert.subtitle,
-            date: concert.date
-        )
+        cell.configure(with: concert)
         return cell
     }
+    
 }
