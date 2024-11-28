@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         let rootController = TabBarNavigationController(
-            rootViewController: TabBarController()
+            rootViewController: TicketDetailController()
         )
         
         window?.rootViewController = rootController
