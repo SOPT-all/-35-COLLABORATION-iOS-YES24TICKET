@@ -21,7 +21,7 @@ final class TicketDetailController: UIViewController {
         $0.rowHeight = UITableView.automaticDimension
         $0.register(
             DetailHeaderView.self,
-            forHeaderFooterViewReuseIdentifier: DetailHeaderView.reuseIdentifier
+            forHeaderFooterViewReuseIdentifier: DetailHeaderView.identifier
         )
         $0.register(
             TableViewFooter.self,
@@ -174,7 +174,7 @@ extension TicketDetailController: UITableViewDelegate, UITableViewDataSource {
         viewForHeaderInSection section: Int
     ) -> UIView? {
         guard let header = tableView.dequeueReusableHeaderFooterView(
-            withIdentifier: DetailHeaderView.reuseIdentifier
+            withIdentifier: DetailHeaderView.identifier
         ) as? DetailHeaderView else {
             return nil
         }

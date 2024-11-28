@@ -11,9 +11,7 @@ import SnapKit
 import Then
 
 final class DetailHeaderView: UITableViewHeaderFooterView {
-    
-    static let reuseIdentifier: String = "DetailHeaderView"
-    
+        
     private let backgroundImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.image = .icHeart36

@@ -8,9 +8,7 @@
 import UIKit
 
 final class TableViewFooter: UITableViewHeaderFooterView {
-    
-    static let identifier = "TableViewFooter"
-    
+        
     private let footer = Footer()
     
     override init(reuseIdentifier: String?) {
