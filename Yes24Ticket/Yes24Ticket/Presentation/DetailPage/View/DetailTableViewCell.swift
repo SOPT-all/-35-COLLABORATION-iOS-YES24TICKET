@@ -12,10 +12,6 @@ import Then
 
 final class DetailTableViewCell: UITableViewCell {
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-        
     private let headerView = UIView()
     
     private let expandedView = ExpandedView().then {
@@ -47,8 +43,6 @@ final class DetailTableViewCell: UITableViewCell {
         $0.backgroundColor = .gray200
     }
     
-    private var detailLabelHeightConstraint: Constraint?
-    
     override init(
         style: UITableViewCell.CellStyle,
         reuseIdentifier: String?
@@ -60,6 +54,10 @@ final class DetailTableViewCell: UITableViewCell {
         setStyle()
         setUI()
         setLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func layoutSublayers(of layer: CALayer) {

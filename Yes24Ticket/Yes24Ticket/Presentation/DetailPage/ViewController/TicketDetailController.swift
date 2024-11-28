@@ -45,9 +45,7 @@ final class TicketDetailController: UIViewController {
         $0.backgroundColor = .red100
         $0.addTarget(
             self,
-            action: #selector(
-                reservationButtonTapped
-            ),
+            action: #selector(reservationButtonTapped),
             for: .touchUpInside
         )
         $0.titleLabel?.font = UIFont.customFont(.button_eb_18)
@@ -87,9 +85,8 @@ final class TicketDetailController: UIViewController {
     private func setUI() {
         [
             ticketDetailView,
-          buttonBackgroundView
-        ]
-            .forEach(view.addSubview)
+            buttonBackgroundView
+        ].forEach(view.addSubview)
         buttonBackgroundView.addSubview(reservationButton)
     }
     
