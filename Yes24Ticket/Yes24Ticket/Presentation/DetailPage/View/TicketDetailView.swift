@@ -143,10 +143,13 @@ final class TicketDetailView: UIView {
         
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
         addBorders(
-            edges: [.top, .bottom],
+            edges: [
+                .top,
+                .bottom
+            ],
             color: .gray200,
             width: 1
         )
