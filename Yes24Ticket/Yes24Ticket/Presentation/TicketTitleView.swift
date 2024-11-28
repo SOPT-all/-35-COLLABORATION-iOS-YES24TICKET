@@ -38,7 +38,11 @@ final class TicketTitleView: UIView {
     
     private func setStyle() {
         self.backgroundColor = .gray50
-        addBorders(edges: [.bottom], color: .gray200, width: 1)
+        addBorders(
+            edges: [.bottom],
+            color: .gray200,
+            width: 1
+        )
     }
     
     private func setUI() {
