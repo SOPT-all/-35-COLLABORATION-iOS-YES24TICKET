@@ -10,14 +10,12 @@ import UIKit
 import SnapKit
 import Then
 
-class DetailTableViewCell: UITableViewCell {
+final class DetailTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    static let identifier: String = "DetailTableViewCell"
-    
+        
     private let headerView = UIView()
     
     private let expandedView = ExpandedView().then {

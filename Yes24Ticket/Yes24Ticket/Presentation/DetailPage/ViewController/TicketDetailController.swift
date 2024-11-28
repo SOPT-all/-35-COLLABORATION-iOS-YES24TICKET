@@ -85,8 +85,10 @@ final class TicketDetailController: UIViewController {
     }
     
     private func setUI() {
-        [ ticketDetailView,
-          buttonBackgroundView]
+        [
+            ticketDetailView,
+          buttonBackgroundView
+        ]
             .forEach(view.addSubview)
         buttonBackgroundView.addSubview(reservationButton)
     }

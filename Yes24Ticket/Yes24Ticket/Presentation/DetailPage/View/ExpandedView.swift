@@ -11,6 +11,7 @@ import SnapKit
 import Then
 
 final class ExpandedView: UIView {
+    
     private let firstLabel = UILabel().then {
         $0.text = "※ 본 공연은 네이버 쿠폰이 적용되지 않습니다."
         $0.font = UIFont.customFont(.body_b_12)
