@@ -17,7 +17,6 @@ final class ConcertCategoryViewController: UIViewController {
         setUI()
         setLayout()
         setupActions()
-        
     }
     
     private func setUI() {
@@ -35,52 +34,56 @@ final class ConcertCategoryViewController: UIViewController {
     }
     
     @objc private func showFilterModal() {
-        let modalViewController = UIViewController()
-        modalViewController.view.backgroundColor = .white
-        modalViewController.modalPresentationStyle = .pageSheet
-        modalViewController.modalTransitionStyle = .coverVertical
-        
-        if let sheet = modalViewController.sheetPresentationController {
-            sheet.detents = [
-                .custom(resolver: { _ in 179 })
-            ]
+        let modalViewController = UIViewController().then {
+            $0.view.backgroundColor = .white
+            $0.modalPresentationStyle = .pageSheet
+            $0.modalTransitionStyle = .coverVertical
+            if let sheet = $0.sheetPresentationController {
+                sheet.detents = [
+                    .custom(resolver: { _ in 179 })
+                ]
+            }
         }
         
-        let titleLabel = UILabel()
-        titleLabel.text = "정렬 순서"
-        titleLabel.font = .customFont(.title_b_15)
-        titleLabel.textColor = .gray900
+        let titleLabel = UILabel().then {
+            $0.text = "정렬 순서"
+            $0.font = .customFont(.title_b_15)
+            $0.textColor = .gray900
+        }
         
-        let buttonStackView = UIStackView()
-        buttonStackView.axis = .horizontal
-        buttonStackView.distribution = .fillEqually
-        buttonStackView.spacing = 16
+        let buttonStackView = UIStackView().then {
+            $0.axis = .horizontal
+            $0.distribution = .fillEqually
+            $0.spacing = 16
+        }
         
         let buttons = ["인기순", "랭킹순", "리뷰 많은순", "종료 임박순"].map { title -> UIButton in
-            let button = UIButton(type: .system)
-            button.setTitle(title, for: .normal)
-            button.setTitleColor(.gray300, for: .normal)
-            button.titleLabel?.font = .customFont(.button_b_13)
-            button.layer.borderColor = UIColor.gray150.cgColor
-            button.layer.borderWidth = 1
-            button.layer.cornerRadius = 4
-            
-            button.addTarget(self, action: #selector(updateFilterButton(_:)), for: .touchUpInside)
-            return button
+            UIButton(type: .system).then {
+                $0.setTitle(title, for: .normal)
+                $0.setTitleColor(.gray300, for: .normal)
+                $0.titleLabel?.font = .customFont(.button_b_13)
+                $0.layer.borderColor = UIColor.gray150.cgColor
+                $0.layer.borderWidth = 1
+                $0.layer.cornerRadius = 4
+                $0.addTarget(self, action: #selector(updateFilterButton(_:)), for: .touchUpInside)
+            }
         }
         
         buttons.forEach { buttonStackView.addArrangedSubview($0) }
         
-        let closeButton = UIButton(type: .system)
-        closeButton.setImage(UIImage(named: "icn_x_18"), for: .normal)
-        closeButton.tintColor = .black
-        closeButton.addTarget(self, action: #selector(dismissModal), for: .touchUpInside)
+        let closeButton = UIButton(type: .system).then {
+            $0.setImage(UIImage(named: "icn_x_18"), for: .normal)
+            $0.tintColor = .black
+            $0.addTarget(self, action: #selector(dismissModal), for: .touchUpInside)
+        }
         
-        let contentView = UIView()
+        let contentView = UIView().then {
+            $0.addSubview(titleLabel)
+            $0.addSubview(buttonStackView)
+            $0.addSubview(closeButton)
+        }
+        
         modalViewController.view.addSubview(contentView)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(buttonStackView)
-        contentView.addSubview(closeButton)
         
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -106,6 +109,7 @@ final class ConcertCategoryViewController: UIViewController {
         present(modalViewController, animated: true, completion: nil)
     }
     
+    
     @objc private func dismissModal() {
         dismiss(animated: true, completion: nil)
     }
@@ -120,5 +124,5 @@ final class ConcertCategoryViewController: UIViewController {
         
         dismiss(animated: true, completion: nil)
     }
-
+    
 }
