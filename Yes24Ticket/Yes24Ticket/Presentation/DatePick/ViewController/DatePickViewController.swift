@@ -11,6 +11,11 @@ final class DatePickViewController: UIViewController {
     
     private let apiService = APIService()
     
+    private lazy var navigationView = DatePicViewCustomNav().then {
+        $0.popViewControllerDelegate = self
+    }
+    private let ticketTitleView = TicketTitleView()
+    
     private let prevMonthButton = UIButton().then {
         $0.setImage(
             .btnArrowBoxLeftDisabledA,
@@ -164,6 +169,8 @@ final class DatePickViewController: UIViewController {
     
     private func setUI() {
         [
+            navigationView,
+            ticketTitleView,
             prevMonthButton,
             calendarTitleLabel,
             nextMonthButton,
@@ -180,9 +187,20 @@ final class DatePickViewController: UIViewController {
     }
     
     private func setLayout() {
+        navigationView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(39)
+        }
+        
+        ticketTitleView.snp.makeConstraints {
+            $0.top.equalTo(navigationView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(47)
+        }
+        
         calendarTitleLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(23.5)
+            $0.top.equalTo(ticketTitleView.snp.bottom).offset(20)
         }
         
         prevMonthButton.snp.makeConstraints {
@@ -352,6 +370,14 @@ extension DatePickViewController: UITableViewDelegate, UITableViewDataSource {
         cell.configure(tableViewData[indexPath.row])
         
         return cell
+    }
+    
+}
+
+extension DatePickViewController: PopViewControllerDelegate {
+    
+    func popFromNavigationController() {
+        navigationController?.popViewController(animated: true)
     }
     
 }

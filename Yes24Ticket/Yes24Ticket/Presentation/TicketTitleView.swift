@@ -36,13 +36,17 @@ final class TicketTitleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setStyle() {
-        self.backgroundColor = .gray50
+    override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
         addBorders(
             edges: [.bottom],
             color: .gray200,
             width: 1
         )
+    }
+    
+    private func setStyle() {
+        backgroundColor = .gray50
     }
     
     private func setUI() {
@@ -60,7 +64,7 @@ final class TicketTitleView: UIView {
         }
         
         subtitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(2)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(2)
             $0.leading.equalToSuperview().offset(10)
         }
         

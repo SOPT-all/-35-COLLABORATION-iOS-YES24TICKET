@@ -9,6 +9,8 @@ import UIKit
 
 final class DatePicViewCustomNav: UIView {
     
+    weak var popViewControllerDelegate: PopViewControllerDelegate?
+    
     private let leftImageView = UIImageView().then {
         $0.image = UIImage(resource: .union)
     }
@@ -40,7 +42,7 @@ final class DatePicViewCustomNav: UIView {
     private let registerLabel = UILabel().then {
         $0.text = "예매하기"
         $0.font = UIFont.customFont(.title_b_15)
-        $0.textColor = .gray50
+        $0.textColor = .coolgray50
     }
     
     private let dateSelectLabel = UILabel().then {
@@ -61,7 +63,7 @@ final class DatePicViewCustomNav: UIView {
     }
     
     private func setStyle() {
-        self.backgroundColor = .gray200
+        self.backgroundColor = .coolgray100
     }
     
     private func setUI() {
@@ -102,11 +104,11 @@ final class DatePicViewCustomNav: UIView {
     }
     
     @objc private func backButtonTapped() {
-        //TODO: 추 후 연결
+        popViewControllerDelegate?.popFromNavigationController()
     }
     
     @objc private func closeButtonTapped() {
-        //TODO: 추 후 연결
+        popViewControllerDelegate?.popFromNavigationController()
     }
     
 }
