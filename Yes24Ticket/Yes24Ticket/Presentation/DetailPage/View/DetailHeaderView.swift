@@ -11,9 +11,7 @@ import SnapKit
 import Then
 
 final class DetailHeaderView: UITableViewHeaderFooterView {
-    
-    private static let reuseIdentifier: String = "DetailHeaderView"
-    
+        
     private let backgroundImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.image = .icHeart36
@@ -67,23 +65,11 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setUI()
-        setStyle()
         setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setStyle() {
-        ticketDetailView.addBorders(
-            edges: [
-                .top,
-                .bottom
-            ],
-            color: .gray200,
-            width: 1.0
-        )
     }
     
     private func setUI() {
@@ -108,13 +94,12 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
         }
         
         backButton.snp.makeConstraints {
-            $0.top.equalTo(headerDetailView.snp.top).offset(8)
+            $0.top.equalTo(headerDetailView.snp.top).inset(8)
             $0.leading.equalToSuperview().offset(10)
-            $0.width.height.equalTo(24)
         }
         
         headerDetailView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(8)
+            $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
             $0.height.equalTo(260)
         }

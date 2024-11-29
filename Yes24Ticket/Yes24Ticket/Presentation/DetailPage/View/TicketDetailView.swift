@@ -140,6 +140,19 @@ final class TicketDetailView: UIView {
             $0.top.equalTo(performanceTimeLabel.snp.bottom).offset(10)
             $0.leading.equalToSuperview().offset(14)
         }
+        
+    }
+    
+    override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
+        addBorders(
+            edges: [
+                .top,
+                .bottom
+            ],
+            color: .gray200,
+            width: 1
+        )
     }
     
     func configure(with configuration: ConcertConfiguration) {

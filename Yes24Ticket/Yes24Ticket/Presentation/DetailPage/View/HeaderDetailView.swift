@@ -72,17 +72,13 @@ final class HeaderDetailView: UIView {
     }
     
     private let locationValue = UIButton().then {
-        var configuration = UIButton.Configuration.plain()
-        configuration.baseForegroundColor = .blue100
-        configuration.image = UIImage(resource: .icArrowRightBlue16)
-        configuration.imagePlacement = .trailing
-        let title = "YES24 LIVE HALL"
-        let attributedString = AttributedString(
-            title,
-            attributes: AttributeContainer([.font: UIFont.customFont(.body_b_13)])
-        )
-        configuration.attributedTitle = attributedString
-        $0.configuration = configuration
+        $0.setTitle("YES24 LIVE HALL", for: .normal)
+        $0.setTitleColor(.blue100, for: .normal)
+        $0.titleLabel?.font = UIFont.customFont(.body_b_13)
+        $0.setImage(UIImage(resource: .icArrowRightBlue16), for: .normal)
+        $0.tintColor = .blue100
+        $0.imageView?.contentMode = .scaleAspectFit
+        $0.semanticContentAttribute = .forceRightToLeft
         $0.contentHorizontalAlignment = .leading
     }
     
@@ -207,7 +203,7 @@ final class HeaderDetailView: UIView {
         
         locationValue.snp.makeConstraints {
             $0.centerY.equalTo(locationLabel)
-            $0.leading.equalTo(genreValue).offset(-12)
+            $0.leading.equalTo(genreValue)
         }
         
         ageLabel.snp.makeConstraints {
