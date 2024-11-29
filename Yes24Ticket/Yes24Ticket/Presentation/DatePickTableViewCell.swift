@@ -19,17 +19,21 @@ final class DatePickTableViewCell: UITableViewCell {
         $0.textColor = .red100
     }
     
-    private let seatBackgroundView = UIView().then {
+    private lazy var seatCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: createCollectionViewLayout()
+    ).then {
+        $0.delegate = self
+        $0.dataSource = self
+        $0.register(
+            RemainSeatCollectionViewCell.self,
+            forCellWithReuseIdentifier: RemainSeatCollectionViewCell.cellIdentifier
+        )
         $0.backgroundColor = .gray50
         $0.layer.cornerRadius = 4
     }
     
-    private let seatStackView =  UIStackView().then {
-        $0.axis = .horizontal
-        $0.spacing = 38
-        $0.alignment = .fill
-        $0.distribution = .equalSpacing
-    }
+    private var collectionViewConfiguration: [SeatConfiguration] = []
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -42,13 +46,72 @@ final class DatePickTableViewCell: UITableViewCell {
     }
     
     private func setUI() {
-        
+        [
+            selectButton,
+            ticketTimeLabel,
+            seatCollectionView
+        ].forEach(addSubview)
     }
     
     private func setLayout() {
+        selectButton.snp.makeConstraints {
+            $0.top.equalToSuperview()
+                .offset(10)
+            $0.trailing.equalToSuperview().inset(15.5)
+        }
         
+        ticketTimeLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(10)
+            $0.leading.equalToSuperview().offset(15.5)
+        }
+        
+        seatCollectionView.snp.makeConstraints {
+            $0.top.equalTo(selectButton.snp.bottom).offset(10)
+            $0.horizontalEdges.equalToSuperview().inset(15.5)
+            $0.height.equalTo(50)
+        }
     }
     
+    private func createCollectionViewLayout() -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = .init(width: 148, height: 16)
+        layout.sectionInset = .init(
+            top: 15,
+            left: 8,
+            bottom: 15,
+            right: 8
+        )
+        
+        return layout
+    }
     
+    func configure(_ configuration: availableTimeConfiguration) {
+        ticketTimeLabel.text = configuration.availableTime
+        collectionViewConfiguration = configuration.seatAvailability
+        seatCollectionView.reloadData()
+    }
+    
+}
+
+extension DatePickTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        collectionViewConfiguration.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: RemainSeatCollectionViewCell.cellIdentifier,
+            for: indexPath
+        ) as? RemainSeatCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        cell.configure(
+            type: collectionViewConfiguration[indexPath.row].type,
+            remaining: collectionViewConfiguration[indexPath.row].remaining
+        )
+        
+        return cell
+    }
     
 }
