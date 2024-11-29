@@ -94,7 +94,7 @@ final class ConcertCollectionViewCell: UICollectionViewCell {
     
     func configure(with model: Concert) {
         titleLabel.text = model.title
-        subtitleLabel.text = model.subtitle
+        subtitleLabel.text = model.area
         dateLabel.text = model.date
         
         if let imageURL = model.imageURL {

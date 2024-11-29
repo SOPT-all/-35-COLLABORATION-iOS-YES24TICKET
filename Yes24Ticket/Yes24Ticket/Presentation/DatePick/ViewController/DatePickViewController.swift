@@ -9,6 +9,8 @@ import UIKit
 
 final class DatePickViewController: UIViewController {
     
+    private let apiService = APIService()
+    
     private let prevMonthButton = UIButton().then {
         $0.setImage(
             .btnArrowBoxLeftDisabledA,
@@ -103,11 +105,40 @@ final class DatePickViewController: UIViewController {
         $0.textColor = .gray400
     }
     
+    private let seatSelectHeaderView = DatePickTableHeaderView()
+    
+    private lazy var seatSelectTableView = UITableView().then {
+        $0.delegate = self
+        $0.dataSource = self
+        $0.register(
+            DatePickTableViewCell.self,
+            forCellReuseIdentifier: DatePickTableViewCell.identifier
+        )
+    }
+    
+    private var tableViewData: [AvailableTimeConfiguration] = []
+    
+    private let id: Int
+    
+    init(id: Int) {
+        self.id = id
+        super.init(nibName: nil, bundle: nil)
+        fetchData()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setStyle()
         setUI()
         setLayout()
+    }
+    
+    private func fetchData() {
+        // TODO: API 연결
     }
     
     private func setStyle() {
@@ -124,7 +155,9 @@ final class DatePickViewController: UIViewController {
             possibleBadgeView,
             possibleLabel,
             chooseBadgeView,
-            choseLabel
+            choseLabel,
+            seatSelectHeaderView,
+            seatSelectTableView
         ].forEach(view.addSubview)
         weekStackViewBorderView.addSubview(weekStackView)
     }
@@ -183,6 +216,17 @@ final class DatePickViewController: UIViewController {
             $0.centerY.equalTo(choseLabel)
             $0.trailing.equalTo(possibleLabel.snp.leading).offset(-3)
             $0.size.equalTo(9)
+        }
+        
+        seatSelectHeaderView.snp.makeConstraints {
+            $0.top.equalTo(possibleLabel.snp.bottom).offset(77.5)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        
+        seatSelectTableView.snp.makeConstraints {
+            $0.top.equalTo(seatSelectHeaderView.snp.bottom)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
     
@@ -261,6 +305,32 @@ extension DatePickViewController: UICollectionViewDelegate, UICollectionViewData
         } else {
             return true
         }
+    }
+    
+}
+
+extension DatePickViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
+        return tableViewData.count
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: DatePickTableViewCell.identifier,
+            for: indexPath
+        ) as? DatePickTableViewCell else {
+            return UITableViewCell()
+        }
+        cell.configure(tableViewData[indexPath.row])
+        
+        return cell
     }
     
 }

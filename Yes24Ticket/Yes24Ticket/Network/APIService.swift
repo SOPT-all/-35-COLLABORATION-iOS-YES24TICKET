@@ -159,6 +159,45 @@ final class APIService {
         }
     }
     
+    func fetchConcert(
+        sort: ConcertSortCase?,
+        completion: @escaping (
+            Result<[Concert], APIServiceError>
+        ) -> Void
+    ) {
+        AF.request(
+            DefaultRouter.getConcert(dto: ConcertRequestDTO(sortBy: sort))
+        )
+        .validate()
+        .responseDecodable(of: ConcertsDTO.self) { [weak self] response in
+            guard let self else {
+                completion(.failure(.deallocated))
+                return
+            }
+            
+            switch response.result {
+            case .success(let dto):
+                completion(
+                    .success(
+                        dto.concerts.map(
+                            {
+                                Concert(
+                                    id: $0.concertID,
+                                    imageURL: $0.concertImg,
+                                    title: $0.concertTitle,
+                                    area: $0.concertArea,
+                                    date: $0.concertDate
+                                )
+                            }
+                        )
+                    )
+                )
+            case .failure(let error):
+                completion(.failure(handleError(error)))
+            }
+        }
+    }
+    
     func fetchImage(
         from urlString: String,
         completion: @escaping (Data?) -> Void

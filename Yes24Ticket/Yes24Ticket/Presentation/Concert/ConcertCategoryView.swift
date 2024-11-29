@@ -21,6 +21,8 @@ final class ConcertCategoryView: UIView {
     private let tabNavigationBar = CategoryTapNavigationBar()
     
     weak var popViewControllerDelegate: PopViewControllerDelegate?
+    
+    weak var pushViewControllerDelegate: PushViewControllerDelegate?
   
     private var concerts: [Concert] = []
     private let apiService = APIService()
@@ -39,9 +41,9 @@ final class ConcertCategoryView: UIView {
     }
     
     func updateConcerts(_ newConcerts: [Concert]) {
-            self.concerts = newConcerts
-            self.collectionView.reloadData()
-        }
+        self.concerts = newConcerts
+        self.collectionView.reloadData()
+    }
     
     private lazy var collectionView = UICollectionView(
         frame: .zero,
@@ -95,7 +97,6 @@ final class ConcertCategoryView: UIView {
         setUI()
         setStyle()
         setLayout()
-        fetchConcertData()
     }
     
     required init?(coder: NSCoder) {
@@ -150,28 +151,6 @@ final class ConcertCategoryView: UIView {
         
         bringSubviewToFront(filterButton)
     }
-    
-    private func fetchConcertData() {
-        apiService.fetchMainSection { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case .success(let mainSection):
-                self.concerts = mainSection.map {
-                    Concert(
-                        imageURL: $0.imageURL,
-                        title: $0.title,
-                        subtitle: $0.area,
-                        date: $0.date
-                    )
-                }
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            case .failure(let error):
-                print("Error fetching concert data: \(error)")
-            }
-        }
-    }
 
 }
       
@@ -210,6 +189,14 @@ extension ConcertCategoryView: UICollectionViewDataSource, UICollectionViewDeleg
             return footerView
         }
         return UICollectionReusableView()
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        let concert = concerts[indexPath.row]
+        pushViewControllerDelegate?.pushViewController(id: concert.id)
     }
     
 }

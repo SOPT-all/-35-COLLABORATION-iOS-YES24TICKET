@@ -85,7 +85,7 @@ final class DatePickTableViewCell: UITableViewCell {
         return layout
     }
     
-    func configure(_ configuration: availableTimeConfiguration) {
+    func configure(_ configuration: AvailableTimeConfiguration) {
         ticketTimeLabel.text = configuration.availableTime
         collectionViewConfiguration = configuration.seatAvailability
         seatCollectionView.reloadData()

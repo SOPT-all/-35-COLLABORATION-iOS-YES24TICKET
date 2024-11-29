@@ -1,5 +1,5 @@
 //
-//  availableTimeConfiguration.swift
+//  AvailableTimeConfiguration.swift
 //  Yes24Ticket
 //
 //  Created by 송여경 on 11/29/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct availableTimeConfiguration {
+struct AvailableTimeConfiguration {
     
     let date: String
     let availableTime: String
@@ -22,9 +22,9 @@ struct SeatConfiguration {
     
 }
 
-extension availableTimeConfiguration {
+extension AvailableTimeConfiguration {
 
-    static let mockData: [availableTimeConfiguration] = [
+    static let mockData: [AvailableTimeConfiguration] = [
         .init(
             date: "2024-11-20",
             availableTime: "오후 13:00",

@@ -15,6 +15,7 @@ final class TabBarNavigationController: UINavigationController {
     
     private let containerView = UIView().then {
         $0.backgroundColor = .black0
+        $0.isHidden = true
     }
     
     private let logoButton = UIButton().then {
@@ -24,7 +25,7 @@ final class TabBarNavigationController: UINavigationController {
     }
     
     private let closedSearchBarView = ClosedSearchBarView().then {
-        $0.isHidden = true
+        $0.isHidden = false
     }
     
     private let openSearchBarView = SearchBarView()

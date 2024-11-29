@@ -14,6 +14,7 @@ enum DefaultRouter {
     case getRank
     case getADs
     case getHots
+    case getConcert(dto: ConcertRequestDTO)
     
 }
 
@@ -33,6 +34,8 @@ extension DefaultRouter: Router {
             "/ads"
         case .getHots:
             "/tickets/hot"
+        case .getConcert:
+            "/tickets/list"
         }
     }
     
@@ -45,6 +48,8 @@ extension DefaultRouter: Router {
         case .getADs:
                 .get
         case .getHots:
+                .get
+        case .getConcert:
                 .get
         }
     }
@@ -68,11 +73,15 @@ extension DefaultRouter: Router {
             [:]
         case .getHots:
             [:]
+        case .getConcert(let dto):
+            dto.asDictionary()
         }
     }
     
     var encoding: (any ParameterEncoding)? {
         switch self {
+        case .getConcert:
+            URLEncoding.default
         default:
             nil
         }
