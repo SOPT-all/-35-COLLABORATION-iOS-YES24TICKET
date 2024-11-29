@@ -49,6 +49,14 @@ final class ConcertCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        bigImageView.image = nil
+        titleLabel.text = ""
+        subtitleLabel.text = ""
+        dateLabel.text = ""
+    }
+    
     private func setUI() {
         [
             bigImageView,

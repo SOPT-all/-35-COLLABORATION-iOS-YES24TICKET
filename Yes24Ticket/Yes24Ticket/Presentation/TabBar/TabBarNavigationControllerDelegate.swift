@@ -10,4 +10,3 @@ protocol TabBarNavigationControllerDelegate: AnyObject {
     func searchBarChange()
     
 }
-
