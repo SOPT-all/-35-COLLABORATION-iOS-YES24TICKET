@@ -38,11 +38,11 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
     
     private func setUI() {
         addSubview(dayLabel)
-        let gesture = UITapGestureRecognizer(
-            target: self,
-            action: #selector(selectToggle)
-        )
-        addGestureRecognizer(gesture)
+//        let gesture = UITapGestureRecognizer(
+//            target: self,
+//            action: #selector(selectToggle)
+//        )
+//        addGestureRecognizer(gesture)
     }
     
     private func setLayout() {
@@ -51,16 +51,16 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func configure(day: String) {
+    func configure(day: String, isSelectable: Bool) {
         dayLabel.text = day
+        backgroundColor = isSelectable ? .blue50 : .white0
+        dayLabel.textColor = .black0
+        isUserInteractionEnabled = isSelectable
     }
     
-    @objc private func selectToggle() {
-        backgroundColor = backgroundColor == .blue50 ? .red100 : .blue50
-        dayLabel.textColor = backgroundColor == .blue50 ? .black0 : .white0
-        if isSelected {
-            isSelected.toggle()
-        }
-    }
+//    @objc private func selectToggle() {
+//        backgroundColor = backgroundColor == .blue50 ? .red100 : .blue50
+//        dayLabel.textColor = backgroundColor == .blue50 ? .black0 : .white0
+//    }
     
 }

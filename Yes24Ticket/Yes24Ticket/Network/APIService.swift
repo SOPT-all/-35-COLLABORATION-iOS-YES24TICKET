@@ -198,6 +198,92 @@ final class APIService {
         }
     }
     
+    func fetchAvailableDate(
+        id: Int,
+        completion: @escaping (
+            Result<AvailableDates, APIServiceError>
+        ) -> Void
+    ) {
+        AF.request(
+            DefaultRouter.getAvailableDate(id: id)
+        )
+        .validate()
+        .responseDecodable(of: AvailableDateDTO.self) { [weak self] response in
+            guard let self else {
+                completion(.failure(.deallocated))
+                return
+            }
+            
+            switch response.result {
+            case .success(let dto):
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd"
+                
+                if let id = Int(dto.concertID) {
+                       completion(
+                        .success(
+                            .init(
+                                id: id,
+                                dates: dto.performanceTimes.compactMap({ formatter.date(from: $0) })
+                            )
+                        )
+                       )
+                   } else {
+                       
+                   }
+            case .failure(let error):
+                completion(.failure(handleError(error)))
+            }
+        }
+    }
+    
+    func fetchRemainSeats(
+        concertID: Int,
+        performanceTime: String,
+        completion: @escaping (
+            Result<[AvailableTimeConfiguration], APIServiceError>
+        ) -> Void
+    ) {
+        AF.request(
+            DefaultRouter.getRemainTickets(
+                dto: RequestRemainTicketsDTO(
+                    concertID: "\(concertID)",
+                    performanceTime: performanceTime
+                )
+            )
+        )
+        .validate()
+        .responseDecodable(of: RemainTicketsDTO.self) { [weak self] response in
+            guard let self else {
+                completion(.failure(.deallocated))
+                return
+            }
+            
+            switch response.result {
+            case .success(let dto):
+                completion(
+                    .success(
+                        dto.data.map(
+                            {
+                                AvailableTimeConfiguration(
+                                    availableTime: $0.performanceTime,
+                                    seatAvailability: $0.remainingSeats.map {
+                                        .init(
+                                            type: $0.type,
+                                            remaining: $0.remaining
+                                        )
+                                    }
+                                )
+                            }
+                        )
+                    )
+                )
+            case .failure(let error):
+                completion(.failure(handleError(error)))
+            }
+        }
+    }
+    
     func fetchImage(
         from urlString: String,
         completion: @escaping (Data?) -> Void

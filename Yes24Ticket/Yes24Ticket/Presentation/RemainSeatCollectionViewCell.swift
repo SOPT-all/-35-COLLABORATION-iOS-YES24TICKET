@@ -79,6 +79,10 @@ final class RemainSeatCollectionViewCell: UICollectionViewCell {
             seatLabel.textColor = .gray250
             seatDetailLabel.textColor = .gray250
             seatRemainLabel.textColor = .gray250
+        } else {
+            seatLabel.textColor = .gray700
+            seatDetailLabel.textColor = .gray700
+            seatRemainLabel.textColor = .gray700
         }
     }
     

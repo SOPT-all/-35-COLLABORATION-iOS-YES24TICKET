@@ -105,7 +105,9 @@ final class DatePickViewController: UIViewController {
         $0.textColor = .gray400
     }
     
-    private let seatSelectHeaderView = DatePickTableHeaderView()
+    private let seatSelectHeaderView = DatePickTableHeaderView().then {
+        $0.isHidden = true
+    }
     
     private lazy var seatSelectTableView = UITableView().then {
         $0.delegate = self
@@ -114,6 +116,7 @@ final class DatePickViewController: UIViewController {
             DatePickTableViewCell.self,
             forCellReuseIdentifier: DatePickTableViewCell.identifier
         )
+        $0.isHidden = true
     }
     
     private var tableViewData: [AvailableTimeConfiguration] = []
@@ -139,7 +142,21 @@ final class DatePickViewController: UIViewController {
     
     private func fetchData() {
         // TODO: API 연결
+        apiService.fetchAvailableDate(id: id) { [weak self] result in
+            switch result {
+            case .success(let success):
+                
+                let calendar = Calendar.current
+                self?.availableDatesDays = success.dates.map { calendar.component(.day, from: $0) }
+                dump(self?.availableDatesDays)
+                self?.calendarCollectionView.reloadData()
+            case .failure(let failure):
+                dump(failure)
+            }
+        }
     }
+    
+    private var availableDatesDays: [Int] = []
     
     private func setStyle() {
         
@@ -221,6 +238,7 @@ final class DatePickViewController: UIViewController {
         seatSelectHeaderView.snp.makeConstraints {
             $0.top.equalTo(possibleLabel.snp.bottom).offset(77.5)
             $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(32)
         }
         
         seatSelectTableView.snp.makeConstraints {
@@ -278,12 +296,13 @@ extension DatePickViewController: UICollectionViewDelegate, UICollectionViewData
         }
         // TODO: API 호출 결과로 로직 변경
         if indexPath.row >= 5 {
-            cell.configure(day: "\(indexPath.row - 4)")
-        }
-        if indexPath.row != 14 {
-            cell.isUserInteractionEnabled = false
+            if availableDatesDays.contains(indexPath.row - 4) {
+                cell.configure(day: "\(indexPath.row - 4)", isSelectable: true)
+            } else {
+                cell.configure(day: "\(indexPath.row - 4)", isSelectable: false)
+            }
         } else {
-            cell.isSelected = false
+            cell.configure(day: "", isSelectable: false)
         }
         
         return cell
@@ -291,19 +310,21 @@ extension DatePickViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(
         _ collectionView: UICollectionView,
-        shouldSelectItemAt indexPath: IndexPath
-    ) -> Bool {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? CalendarCollectionViewCell else {
-            return true
-        }
-        if cell.isSelected {
-            collectionView.deselectItem(
-                at: indexPath,
-                animated: true
-            )
-            return false
-        } else {
-            return true
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        apiService.fetchRemainSeats(
+            concertID: id,
+            performanceTime: "2024-11-\(indexPath.row - 4)"
+        ) { [weak self] result in
+            switch result {
+            case .success(let remainSeats):
+                self?.tableViewData = remainSeats
+                self?.seatSelectHeaderView.isHidden = false
+                self?.seatSelectTableView.isHidden = false
+                self?.seatSelectTableView.reloadData()
+            case .failure(let failure):
+                dump(failure)
+            }
         }
     }
     
