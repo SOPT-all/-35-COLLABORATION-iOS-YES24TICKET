@@ -529,7 +529,7 @@ final class HomeViewController: UIViewController {
     }
     
     @objc private func scrollUpFloatingButtonTapped() {
-        self.mainCollectionView.contentOffset.y = 0
+        mainCollectionView.contentOffset.y = 0
     }
     
 }
@@ -767,6 +767,35 @@ extension HomeViewController: UICollectionViewDataSource {
         default:
             return UICollectionViewCell()
         }
+    }
+    
+}
+
+
+protocol UseCase {
+    
+    func execute()
+    
+}
+
+struct UseCaseImpl: UseCase {
+    
+    func execute() {
+        
+    }
+    
+}
+
+final class ViewModel {
+    
+    private let useCase: UseCase
+    
+    init(useCase: UseCase) {
+        self.useCase = useCase
+    }
+    
+    func executeUseCase() {
+        useCase.execute()
     }
     
 }

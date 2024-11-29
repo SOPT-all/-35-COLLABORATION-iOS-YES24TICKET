@@ -92,7 +92,7 @@ final class TicketDetailView: UIView {
     }
     
     private func setStyle() {
-        self.backgroundColor = .gray100
+        backgroundColor = .gray100
     }
     
     private func setLayout() {
