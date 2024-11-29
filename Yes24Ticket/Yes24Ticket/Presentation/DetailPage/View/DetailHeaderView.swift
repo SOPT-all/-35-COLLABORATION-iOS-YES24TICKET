@@ -11,10 +11,11 @@ import SnapKit
 import Then
 
 final class DetailHeaderView: UITableViewHeaderFooterView {
-        
+    
+    weak var popViewControllerDelegate: PopViewControllerDelegate?
+    
     private let backgroundImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
-        $0.image = .icHeart36
     }
     
     private let headerDetailView = HeaderDetailView()
@@ -127,17 +128,22 @@ final class DetailHeaderView: UITableViewHeaderFooterView {
     }
     
     @objc private func handleDismiss() {
-        // TODO: 추 후 연결 예정
+        popViewControllerDelegate?.popFromNavigationController()
     }
     
     @objc private func likeButtonTapped() {
+        if likeButton.isSelected {
+            likeLabel.text = "\(Int(likeLabel.text ?? "")! - 1)"
+        } else {
+            likeLabel.text = "\(Int(likeLabel.text ?? "")! + 1)"
+        }
         likeButton.isSelected.toggle()
-        // TODO: 추 후 로직 연결 예정
     }
     
     func configure(with configuration: ConcertConfiguration) {
         headerDetailView.configure(with: configuration)
         ticketDetailView.configure(with: configuration)
+        backgroundImageView.image = configuration.image
     }
     
 }

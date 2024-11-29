@@ -12,10 +12,6 @@ import Then
 
 final class ClosedSearchBarView: UIView {
     
-    private let statusBarView = UIView().then {
-        $0.backgroundColor = .black
-    }
-    
     private let containerView = UIView().then {
         $0.backgroundColor = .black
     }
@@ -49,22 +45,16 @@ final class ClosedSearchBarView: UIView {
     }
     
     private func setUI() {
-        addSubview(statusBarView)
         addSubview(containerView)
         containerView.addSubview(logoButton)
         containerView.addSubview(searchButton)
     }
     
     private func setLayout() {
-        statusBarView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.height.equalTo(44)
-        }
-        
         containerView.snp.makeConstraints {
-            $0.top.equalTo(statusBarView.snp.bottom)
+            $0.top.leading.trailing.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(61)
+            $0.height.equalTo(47)
         }
         
         logoButton.snp.makeConstraints {

@@ -13,6 +13,8 @@ final class HomeViewController: UIViewController {
     private weak var mainBadgeDelegate: FooterBadgeDelegate?
     private weak var adBadgeDelegate: FooterBadgeDelegate?
     
+    weak var navigationControllerDelegate: TabBarNavigationControllerDelegate?
+    
     private var mainCellConfigurations: [MainCellConfiguration] = [] {
         didSet {
             mainCollectionView.reloadData()
@@ -115,6 +117,11 @@ final class HomeViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationControllerDelegate?.searchBarOpen()
     }
     
     override func viewDidLoad() {
@@ -529,7 +536,7 @@ final class HomeViewController: UIViewController {
     }
     
     @objc private func scrollUpFloatingButtonTapped() {
-        self.mainCollectionView.contentOffset.y = 0
+        mainCollectionView.contentOffset.y = 0
     }
     
 }
@@ -543,7 +550,12 @@ extension HomeViewController: UICollectionViewDelegate {
         switch indexPath.section {
         case 1:
             if indexPath.row == 0 {
-                // TODO: present Concert ViewController
+                let concertCategoryViewController = ConcertCategoryViewController()
+                concertCategoryViewController.navigationControllerDelegate = self
+                navigationController?.pushViewController(
+                    concertCategoryViewController,
+                    animated: true
+                )
             }
         default:
             break
@@ -767,6 +779,18 @@ extension HomeViewController: UICollectionViewDataSource {
         default:
             return UICollectionViewCell()
         }
+    }
+    
+}
+
+extension HomeViewController: TabBarNavigationControllerDelegate {
+    
+    func searchBarOpen() {
+        navigationControllerDelegate?.searchBarOpen()
+    }
+    
+    func searchBarClose() {
+        navigationControllerDelegate?.searchBarClose()
     }
     
 }

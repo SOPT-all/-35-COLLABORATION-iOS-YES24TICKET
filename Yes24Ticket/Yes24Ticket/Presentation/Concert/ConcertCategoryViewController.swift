@@ -11,14 +11,36 @@ import Alamofire
 
 final class ConcertCategoryViewController: UIViewController {
     
-    private let concertCategoryView = ConcertCategoryView()
-    private var currentSortKey: String? 
+    private lazy var concertCategoryView = ConcertCategoryView().then {
+        $0.popViewControllerDelegate = self
+        $0.pushViewControllerDelegate = self
+    }
+    
+    weak var navigationControllerDelegate: TabBarNavigationControllerDelegate?
+  
+    private var currentSortKey: ConcertSortCase?
+    
+    private let apiService = APIService()
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        requestConcertsWithSortKey()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
         setLayout()
         setupActions()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationControllerDelegate?.searchBarClose()
     }
     
     private func setUI() {
@@ -116,65 +138,51 @@ final class ConcertCategoryViewController: UIViewController {
     @objc private func filterButtonTapped(_ sender: UIButton) {
         guard let title = sender.title(for: .normal) else { return }
         
-        let sortKey: String
         switch title {
-        case "인기순": sortKey = "popular"
-        case "랭킹순": sortKey = "ranking"
-        case "리뷰 많은순": sortKey = "reviews"
-        case "종료 임박순": sortKey = "endingSoon"
-        default: return
+        case "인기순":
+            currentSortKey = .popular
+        case "랭킹순":
+            currentSortKey = .ranking
+        case "리뷰 많은순":
+            currentSortKey = .reviews
+        case "종료 임박순":
+            currentSortKey = .endingSoon
+        default:
+            break
         }
         
-        if currentSortKey == sortKey {
-        } else {
-            currentSortKey = sortKey
-        }
-        
-        requestConcertsWithSortKey(sortKey)
+        requestConcertsWithSortKey()
     }
     
-    private func requestConcertsWithSortKey(_ sortKey: String) {
-        let urlString = "https://api.example.com/tickets/list?sortBy=\(sortKey)"
-        guard let url = URL(string: urlString) else {
-            return
-        }
-        
-        AF.request(url)
-            .validate()
-            .responseDecodable(of: ConcertDTO.self) { [weak self] response in
-                guard let self = self else { return }
-                switch response.result {
-                case .success(let dto):
-                    let concerts = dto.results.map {
-                        Concert(
-                            imageURL: $0.imgURL,
-                            title: $0.title,
-                            subtitle: $0.area,
-                            date: $0.period
-                        )
-                    }
-                    DispatchQueue.main.async {
-                        self.concertCategoryView.updateConcerts(concerts)
-                    }
-                case .failure(let error):
-                    if let data = response.data {
-                        print("API Response Failure with data: \(String(data: data, encoding: .utf8) ?? "No data")")
-                    }
-                    print("Error: \(error)")
+    private func requestConcertsWithSortKey() {
+        apiService.fetchConcert(
+            sort: currentSortKey
+        ) { [weak self] response in
+                switch response {
+                case .success(let concerts):
+                    dump(concerts)
+                    self?.updateFilterButtonUI()
+                    self?.concertCategoryView.updateConcerts(concerts)
+                case .failure(let failure):
+                    dump(failure)
                 }
             }
         
-        updateFilterButtonUI(for: sortKey)
     }
     
-    private func updateFilterButtonUI(for sortKey: String) {
+    private func updateFilterButtonUI() {
         let selectedTitle: String
-        switch sortKey {
-        case "popular": selectedTitle = "인기순"
-        case "ranking": selectedTitle = "랭킹순"
-        case "reviews": selectedTitle = "리뷰 많은순"
-        case "endingSoon": selectedTitle = "종료 임박순"
-        default: return
+        switch currentSortKey {
+        case .popular:
+            selectedTitle = "인기순"
+        case .ranking:
+            selectedTitle = "랭킹순"
+        case .reviews:
+            selectedTitle = "리뷰 많은순"
+        case .endingSoon:
+            selectedTitle = "종료 임박순"
+        default:
+            return
         }
         
         concertCategoryView.filterButton.setTitle(selectedTitle, for: .normal)
@@ -185,4 +193,20 @@ final class ConcertCategoryViewController: UIViewController {
         
         dismiss(animated: true, completion: nil)
     }
+    
+}
+
+extension ConcertCategoryViewController: PopViewControllerDelegate, PushViewControllerDelegate {
+    
+    func popFromNavigationController() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func pushViewController(id: Int) {
+        navigationController?.pushViewController(
+            TicketDetailController(id: id),
+            animated: true
+        )
+    }
+    
 }

@@ -15,6 +15,7 @@ final class TabBarNavigationController: UINavigationController {
     
     private let containerView = UIView().then {
         $0.backgroundColor = .black0
+        $0.isHidden = true
     }
     
     private let logoButton = UIButton().then {
@@ -23,7 +24,11 @@ final class TabBarNavigationController: UINavigationController {
         $0.configuration = configuration
     }
     
-    private let searchBarView = SearchBarView()
+    private let closedSearchBarView = ClosedSearchBarView().then {
+        $0.isHidden = false
+    }
+    
+    private let openSearchBarView = SearchBarView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,13 +44,14 @@ final class TabBarNavigationController: UINavigationController {
     private func setUI() {
         [
             statusBarView,
-            containerView
+            containerView,
+            closedSearchBarView
         ].forEach {
             view.addSubview($0)
         }
         [
             logoButton,
-            searchBarView
+            openSearchBarView
         ].forEach {
             containerView.addSubview($0)
         }
@@ -62,18 +68,37 @@ final class TabBarNavigationController: UINavigationController {
             $0.height.equalTo(61)
         }
         
+        closedSearchBarView.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(47)
+        }
+        
         logoButton.snp.makeConstraints {
             $0.top.leading.bottom.equalTo(containerView).inset(8)
             $0.width.equalTo(100)
             $0.height.equalTo(45)
         }
         
-        searchBarView.snp.makeConstraints {
+        openSearchBarView.snp.makeConstraints {
             $0.top.equalTo(logoButton.snp.top).inset(6.5)
             $0.leading.equalTo(logoButton.snp.trailing).offset(8)
             $0.trailing.equalTo(containerView.snp.trailing).inset(12.06)
             $0.bottom.equalTo(logoButton.snp.bottom).inset(6.5)
         }
+    }
+    
+}
+
+extension TabBarNavigationController: TabBarNavigationControllerDelegate {
+    
+    func searchBarOpen() {
+        containerView.isHidden = false
+        closedSearchBarView.isHidden = true
+    }
+    
+    func searchBarClose() {
+        containerView.isHidden = true
+        closedSearchBarView.isHidden = false
     }
     
 }

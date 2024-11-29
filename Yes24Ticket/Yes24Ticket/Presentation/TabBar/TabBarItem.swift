@@ -27,7 +27,7 @@ enum TabBarItem: CaseIterable {
 
 extension TabBarItem {
     
-    private var viewController: UIViewController {
+    var viewController: UIViewController {
         switch self {
         case .home:
             HomeViewController()
@@ -40,7 +40,7 @@ extension TabBarItem {
         }
     }
     
-    private var tabBarItem: UITabBarItem {
+    var tabBarItem: UITabBarItem {
         let item = UITabBarItem(
             title: title,
             image: image?.withRenderingMode(.alwaysTemplate),

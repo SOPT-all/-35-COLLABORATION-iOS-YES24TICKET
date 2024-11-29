@@ -12,20 +12,22 @@ import Then
 
 final class ConcertNavigationBar: UIView {
     
-    private let backButton = UIButton().then {
+    weak var popViewControllerDelegate: PopViewControllerDelegate?
+    
+    private lazy var backButton = UIButton().then {
         $0.setImage(
             UIImage(resource: .icnArrowLeft24),
             for: .normal
         )
         $0.addTarget(
-            ConcertNavigationBar.self,
+            self,
             action: #selector(handleDismiss),
             for: .touchUpInside
         )
     }
     
     @objc private func handleDismiss() {
-        // TODO: ViewController에서 dismiss를 호출하거나 NavigationController pop을 연결합니다.
+        popViewControllerDelegate?.popFromNavigationController()
     }
     
     private let concertTitleLabel = UILabel().then {
