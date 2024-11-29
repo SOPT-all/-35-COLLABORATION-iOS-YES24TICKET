@@ -16,6 +16,9 @@ final class ConcertCategoryView: UIView {
     private let customNavBar = ConcertNavigationBar()
     private let tabNavigationBar = CategoryTapNavigationBar()
     
+    private var concerts: [Concert] = []
+    private let apiService = APIService()
+    
     let filterButton = UIButton().then {
         $0.setTitle("정렬", for: .normal)
         $0.setTitleColor(.gray300, for: .normal)
@@ -29,7 +32,10 @@ final class ConcertCategoryView: UIView {
         $0.semanticContentAttribute = .forceRightToLeft
     }
     
-    private let concerts = MockData.concerts
+    func updateConcerts(_ newConcerts: [Concert]) {
+            self.concerts = newConcerts
+            self.collectionView.reloadData()
+        }
     
     private lazy var collectionView = UICollectionView(
         frame: .zero,
@@ -83,6 +89,7 @@ final class ConcertCategoryView: UIView {
         setUI()
         setStyle()
         setLayout()
+        fetchConcertData()
     }
     
     required init?(coder: NSCoder) {
@@ -137,6 +144,29 @@ final class ConcertCategoryView: UIView {
         
         bringSubviewToFront(filterButton)
     }
+    
+    private func fetchConcertData() {
+        apiService.fetchMainSection { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let mainSection):
+                self.concerts = mainSection.map {
+                    Concert(
+                        imageURL: $0.imageURL,
+                        title: $0.title,
+                        subtitle: $0.area,
+                        date: $0.date
+                    )
+                }
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Error fetching concert data: \(error)")
+            }
+        }
+    }
+
 }
 
 extension ConcertCategoryView: UICollectionViewDataSource, UICollectionViewDelegate {

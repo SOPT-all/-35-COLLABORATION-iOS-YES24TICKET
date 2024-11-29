@@ -7,13 +7,15 @@
 
 import UIKit
 
+import Alamofire
+
 final class ConcertCategoryViewController: UIViewController {
     
     private let concertCategoryView = ConcertCategoryView()
+    private var currentSortKey: String? 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setUI()
         setLayout()
         setupActions()
@@ -39,9 +41,7 @@ final class ConcertCategoryViewController: UIViewController {
             $0.modalPresentationStyle = .pageSheet
             $0.modalTransitionStyle = .coverVertical
             if let sheet = $0.sheetPresentationController {
-                sheet.detents = [
-                    .custom(resolver: { _ in 179 })
-                ]
+                sheet.detents = [.custom(resolver: { _ in 179 })]
             }
         }
         
@@ -65,7 +65,7 @@ final class ConcertCategoryViewController: UIViewController {
                 $0.layer.borderColor = UIColor.gray150.cgColor
                 $0.layer.borderWidth = 1
                 $0.layer.cornerRadius = 4
-                $0.addTarget(self, action: #selector(updateFilterButton(_:)), for: .touchUpInside)
+                $0.addTarget(self, action: #selector(filterButtonTapped(_:)), for: .touchUpInside)
             }
         }
         
@@ -109,20 +109,80 @@ final class ConcertCategoryViewController: UIViewController {
         present(modalViewController, animated: true, completion: nil)
     }
     
-    
     @objc private func dismissModal() {
         dismiss(animated: true, completion: nil)
     }
     
-    @objc private func updateFilterButton(_ sender: UIButton) {
-        concertCategoryView.filterButton.setTitle(sender.currentTitle, for: .normal)
+    @objc private func filterButtonTapped(_ sender: UIButton) {
+        guard let title = sender.title(for: .normal) else { return }
+        
+        let sortKey: String
+        switch title {
+        case "인기순": sortKey = "popular"
+        case "랭킹순": sortKey = "ranking"
+        case "리뷰 많은순": sortKey = "reviews"
+        case "종료 임박순": sortKey = "endingSoon"
+        default: return
+        }
+        
+        if currentSortKey == sortKey {
+        } else {
+            currentSortKey = sortKey
+        }
+        
+        requestConcertsWithSortKey(sortKey)
+    }
+    
+    private func requestConcertsWithSortKey(_ sortKey: String) {
+        let urlString = "https://api.example.com/tickets/list?sortBy=\(sortKey)"
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        
+        AF.request(url)
+            .validate()
+            .responseDecodable(of: ConcertDTO.self) { [weak self] response in
+                guard let self = self else { return }
+                switch response.result {
+                case .success(let dto):
+                    let concerts = dto.results.map {
+                        Concert(
+                            imageURL: $0.imgURL,
+                            title: $0.title,
+                            subtitle: $0.area,
+                            date: $0.period
+                        )
+                    }
+                    DispatchQueue.main.async {
+                        self.concertCategoryView.updateConcerts(concerts)
+                    }
+                case .failure(let error):
+                    if let data = response.data {
+                        print("API Response Failure with data: \(String(data: data, encoding: .utf8) ?? "No data")")
+                    }
+                    print("Error: \(error)")
+                }
+            }
+        
+        updateFilterButtonUI(for: sortKey)
+    }
+    
+    private func updateFilterButtonUI(for sortKey: String) {
+        let selectedTitle: String
+        switch sortKey {
+        case "popular": selectedTitle = "인기순"
+        case "ranking": selectedTitle = "랭킹순"
+        case "reviews": selectedTitle = "리뷰 많은순"
+        case "endingSoon": selectedTitle = "종료 임박순"
+        default: return
+        }
+        
+        concertCategoryView.filterButton.setTitle(selectedTitle, for: .normal)
         concertCategoryView.filterButton.layer.borderColor = UIColor.red100.cgColor
         concertCategoryView.filterButton.setTitleColor(.red100, for: .normal)
         concertCategoryView.filterButton.backgroundColor = .red50
-        
         concertCategoryView.filterButton.setImage(UIImage(named: "icn_array_red_18_i"), for: .normal)
         
         dismiss(animated: true, completion: nil)
     }
-    
 }
