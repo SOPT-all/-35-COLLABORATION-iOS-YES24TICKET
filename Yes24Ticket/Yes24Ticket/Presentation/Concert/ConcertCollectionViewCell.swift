@@ -17,6 +17,7 @@ final class ConcertCollectionViewCell: UICollectionViewCell {
     private let bigImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
+        $0.image = UIImage(named: "placeholder") 
     }
     
     private let titleLabel = UILabel().then {
@@ -84,9 +85,33 @@ final class ConcertCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with model: Concert) {
-        bigImageView.image = model.image
         titleLabel.text = model.title
         subtitleLabel.text = model.subtitle
         dateLabel.text = model.date
+        
+        if let imageURL = model.imageURL {
+            loadImage(from: imageURL)
+        } else {
+            bigImageView.image = UIImage(named: "placeholder")
+        }
+    }
+    
+    private func loadImage(from urlString: String) {
+        guard let url = URL(string: urlString) else {
+            bigImageView.image = UIImage(named: "placeholder")
+            return
+        }
+        
+        DispatchQueue.global(qos: .background).async {
+            if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    self.bigImageView.image = image
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.bigImageView.image = UIImage(named: "placeholder")
+                }
+            }
+        }
     }
 }
