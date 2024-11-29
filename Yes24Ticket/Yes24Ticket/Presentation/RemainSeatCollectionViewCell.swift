@@ -1,5 +1,5 @@
 //
-//  remainSeatCustomView.swift
+//  RemainSeatCollectionViewCell.swift
 //  Yes24Ticket
 //
 //  Created by 송여경 on 11/29/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class remainSeatCustomView: UIView {
+final class RemainSeatCollectionViewCell: UICollectionViewCell {
     
     private let seatLabel = UILabel().then {
         $0.text = "스탠딩"
@@ -37,12 +37,13 @@ final class remainSeatCustomView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func layoutSublayers(of layer: CALayer) {
+        super.layoutSublayers(of: layer)
         addBorders(
             edges: [.bottom],
             color: .gray250,
             width: 1
+            
         )
     }
     
@@ -71,20 +72,14 @@ final class remainSeatCustomView: UIView {
         }
     }
     
-}
-
-#Preview {
-    let containerView = UIView()
-    let view = remainSeatCustomView()
-    
-    containerView.addSubview(view)
-    containerView.backgroundColor = .black
-    view.snp.makeConstraints {
-        $0.height.equalTo(19)
-        $0.width.equalTo(148)
-        $0.top.equalTo(containerView).offset(127)
-        $0.leading.equalTo(containerView).offset(16)
+    func configure(type: String, remaining: String) {
+        seatDetailLabel.text = type
+        seatRemainLabel.text = "\(remaining)석"
+        if remaining == "0" {
+            seatLabel.textColor = .gray250
+            seatDetailLabel.textColor = .gray250
+            seatRemainLabel.textColor = .gray250
+        }
     }
     
-    return containerView
 }
