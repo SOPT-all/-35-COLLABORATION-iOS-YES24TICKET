@@ -2,12 +2,19 @@
 | 35기 AND SOPT 합동세미나 모바일 앱 7팀 - YES24TICKET 🎫
 
 극강의 효율을 자랑하는 YES24TICKET iOS팀 입니다.🔋
+
 ![아요](https://hackmd.io/_uploads/H1rvqDwMkg.png)
+
+| 홈 | 추천 공연 | 상세정보 | 표 선택 |
+|:-:|:-:|:-:|:-:|
+|![Simulator Screen Recording - iPhone 13 iOS 18 0 - 2024-11-30 at 02 19 43](https://github.com/user-attachments/assets/b1399da0-3ac7-4684-847c-68c785907fee)| ![Simulator Screen Recording - iPhone 13 iOS 18 0 - 2024-11-30 at 02 20 17](https://github.com/user-attachments/assets/03256c70-327d-41b4-81bb-734d768ffe6f)|![Simulator Screen Recording - iPhone 13 iOS 18 0 - 2024-11-30 at 02 20 38](https://github.com/user-attachments/assets/ddd0a15d-e6a2-458d-9282-b8f52e79bcec) |![Simulator Screen Recording - iPhone 13 iOS 18 0 - 2024-11-30 at 02 31 07](https://github.com/user-attachments/assets/0ff9814b-dc36-447c-b459-1f00bd83fc69)|
+
+
 
 ## 🎫 Team Members
 
 <div align=center>
-  Team iOS는 미쳤습니다. - 조성민
+  Team iOS는 미쳤습니다
   
 <img width="200px" src="https://github.com/0gonge.png"/> | <img width="200px" src="https://github.com/SungMinCho-Kor.png"/> | <img width="200px" src="https://github.com/lalaurrel.png"/> |
 |:-----:|:-----:|:-----:|
@@ -20,11 +27,13 @@
 ## 🎫 Tech
 | 라이브러리 |
 | :-: | 
-| ![Alamofire](https://img.shields.io/badge/Alamofirre-5.10.1-orange) ![Kingfisher](https://img.shields.io/badge/Kingfisher-7.12.0-blue) ![SnapKit](https://img.shields.io/badge/SnapKit-5.7.1-purple) ![Then](https://img.shields.io/badge/Then-3.0.0-lightgreen) |
+| ![Alamofire](https://img.shields.io/badge/Alamofirre-5.10.1-orange) ![SnapKit](https://img.shields.io/badge/SnapKit-5.7.1-purple) ![Then](https://img.shields.io/badge/Then-3.0.0-lightgreen) |
 
 
 ## 🎫 CodingConvention
+
 https://github.com/StyleShare/swift-style-guide
+
 주석은 없습니다 → 클린코드 지향
 
 
