@@ -284,6 +284,55 @@ final class APIService {
         }
     }
     
+    func fetchTicketDetail(
+        id: Int,
+        completion: @escaping (
+            Result<ConcertConfigurationWithURL, APIServiceError>
+        ) -> Void
+    ) {
+        AF.request(
+            DefaultRouter.getTicketDetail(id: id)
+        )
+        .validate()
+        .responseDecodable(of: TicketDetailDTO.self) { [weak self] response in
+            guard let self else {
+                completion(.failure(.deallocated))
+                return
+            }
+            
+            switch response.result {
+            case .success(let dto):
+                completion(
+                    .success(
+                        .init(
+                            imageURL: dto.concert.concertImg,
+                            title: dto.concert.concertTitle,
+                            genre: "단독",
+                            date: dto.concert.concertDate,
+                            area: dto.concert.concertArea,
+                            age: dto.concert.concertAge,
+                            duration: dto.concert.concertDuration,
+                            hypertext: dto.concert.hypertext,
+                            hyperlink: dto.concert.hyperlink,
+                            notice: dto.concert.notice,
+                            performanceTime: dto.concert.performanceTimes,
+                            pricing: dto.concert.ticketPricing.map {
+                                .init(
+                                    type: $0.type,
+                                    price: $0.price,
+                                    color: Int($0.color)!
+                                )
+                            }
+                        
+                        )
+                    )
+                )
+            case .failure(let error):
+                completion(.failure(handleError(error)))
+            }
+        }
+    }
+    
     func fetchImage(
         from urlString: String,
         completion: @escaping (Data?) -> Void

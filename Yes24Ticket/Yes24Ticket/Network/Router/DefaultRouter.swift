@@ -17,6 +17,7 @@ enum DefaultRouter {
     case getConcert(dto: ConcertRequestDTO)
     case getAvailableDate(id: Int)
     case getRemainTickets(dto: RequestRemainTicketsDTO)
+    case getTicketDetail(id: Int)
     
 }
 
@@ -42,6 +43,8 @@ extension DefaultRouter: Router {
             "/tickets/availableDate/\(id)"
         case .getRemainTickets:
             "/tickets/availableTimeSlots"
+        case .getTicketDetail(let id):
+            "/tickets/details/\(id)"
         }
     }
     
@@ -61,6 +64,8 @@ extension DefaultRouter: Router {
                 .get
         case .getRemainTickets:
                 .post
+        case .getTicketDetail:
+                .get
         }
     }
     
@@ -89,6 +94,8 @@ extension DefaultRouter: Router {
             [:]
         case .getRemainTickets(let dto):
             dto.asDictionary()
+        case .getTicketDetail:
+            [:]
         }
     }
     

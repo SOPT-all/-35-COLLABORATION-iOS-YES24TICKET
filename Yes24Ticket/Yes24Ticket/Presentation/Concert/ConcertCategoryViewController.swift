@@ -204,7 +204,7 @@ extension ConcertCategoryViewController: PopViewControllerDelegate, PushViewCont
     
     func pushViewController(id: Int) {
         navigationController?.pushViewController(
-            DatePickViewController(id: id),
+            TicketDetailController(id: id),
             animated: true
         )
     }

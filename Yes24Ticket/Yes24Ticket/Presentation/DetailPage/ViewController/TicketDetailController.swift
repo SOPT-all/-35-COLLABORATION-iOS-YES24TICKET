@@ -12,6 +12,8 @@ import Then
 
 final class TicketDetailController: UIViewController {
     
+    private let apiService = APIService()
+    
     private lazy var ticketDetailView = UITableView(
         frame: .zero,
         style: .grouped
@@ -55,6 +57,20 @@ final class TicketDetailController: UIViewController {
         $0.backgroundColor = .white0
     }
     
+    private let id: Int
+    
+    private var configuration: ConcertConfiguration?
+    
+    init(id: Int) {
+        self.id = id
+        super.init(nibName: nil, bundle: nil)
+        fetchData()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         reservationButton.addBorders(
@@ -92,7 +108,7 @@ final class TicketDetailController: UIViewController {
     
     private func setLayout() {
         ticketDetailView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(61)
+            $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
@@ -112,7 +128,40 @@ final class TicketDetailController: UIViewController {
     
     @objc
     private func reservationButtonTapped() {
-        //TODO: 추 후 Navigation 연결 로직 추가
+        navigationController?.pushViewController(
+            DatePickViewController(id: id),
+            animated: true
+        )
+    }
+    
+    private func fetchData() {
+        apiService.fetchTicketDetail(id: id) { [weak self] result in
+            switch result {
+            case .success(let modelWithURL):
+                self?.apiService.fetchImage(from: modelWithURL.imageURL) { [weak self] imageData in
+                    if let imageData = imageData,
+                        let image = UIImage(data: imageData) {
+                        self?.configuration = .init(
+                            image: image,
+                            title: modelWithURL.title,
+                            genre: modelWithURL.genre,
+                            date: modelWithURL.date,
+                            area: modelWithURL.area,
+                            age: modelWithURL.age,
+                            duration: modelWithURL.duration,
+                            hypertext: modelWithURL.hypertext,
+                            hyperlink: modelWithURL.hyperlink,
+                            notice: modelWithURL.notice,
+                            performanceTime: modelWithURL.performanceTime,
+                            pricing: modelWithURL.pricing
+                        )
+                        self?.ticketDetailView.reloadData()
+                    }
+                }
+            case .failure(let failure):
+                dump(failure)
+            }
+        }
     }
     
 }
@@ -175,7 +224,12 @@ extension TicketDetailController: UITableViewDelegate, UITableViewDataSource {
         ) as? DetailHeaderView else {
             return nil
         }
-        header.configure(with: ConcertConfiguration.mockData)
+        if let configuration = configuration {
+            header.configure(with: configuration)
+        } else {
+            header.configure(with: ConcertConfiguration.mockData)
+        }
+        header.popViewControllerDelegate = self
         
         return header
     }
@@ -205,6 +259,14 @@ extension TicketDetailController: UITableViewDelegate, UITableViewDataSource {
         heightForFooterInSection section: Int
     ) -> CGFloat {
         return 179
+    }
+    
+}
+
+extension TicketDetailController: PopViewControllerDelegate {
+    
+    func popFromNavigationController() {
+        navigationController?.popViewController(animated: true)
     }
     
 }
