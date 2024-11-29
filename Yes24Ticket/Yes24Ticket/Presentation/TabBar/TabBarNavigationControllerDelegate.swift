@@ -7,6 +7,7 @@
 
 protocol TabBarNavigationControllerDelegate: AnyObject {
     
-    func searchBarChange()
+    func searchBarOpen()
+    func searchBarClose()
     
 }

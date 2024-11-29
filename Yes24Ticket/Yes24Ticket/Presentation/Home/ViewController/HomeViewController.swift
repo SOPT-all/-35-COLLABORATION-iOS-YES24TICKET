@@ -121,7 +121,7 @@ final class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationControllerDelegate?.searchBarChange()
+        navigationControllerDelegate?.searchBarOpen()
     }
     
     override func viewDidLoad() {
@@ -785,8 +785,12 @@ extension HomeViewController: UICollectionViewDataSource {
 
 extension HomeViewController: TabBarNavigationControllerDelegate {
     
-    func searchBarChange() {
-        navigationControllerDelegate?.searchBarChange()
+    func searchBarOpen() {
+        navigationControllerDelegate?.searchBarOpen()
+    }
+    
+    func searchBarClose() {
+        navigationControllerDelegate?.searchBarClose()
     }
     
 }

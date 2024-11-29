@@ -40,7 +40,7 @@ final class ConcertCategoryViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationControllerDelegate?.searchBarChange()
+        navigationControllerDelegate?.searchBarClose()
     }
     
     private func setUI() {

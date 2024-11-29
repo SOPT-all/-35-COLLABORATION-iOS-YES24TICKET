@@ -61,8 +61,12 @@ final class TabBarController: UITabBarController {
 
 extension TabBarController: TabBarNavigationControllerDelegate {
     
-    func searchBarChange() {
-        navigationControllerDelegtae?.searchBarChange()
+    func searchBarOpen() {
+        navigationControllerDelegtae?.searchBarOpen()
+    }
+    
+    func searchBarClose() {
+        navigationControllerDelegtae?.searchBarClose()
     }
     
 }

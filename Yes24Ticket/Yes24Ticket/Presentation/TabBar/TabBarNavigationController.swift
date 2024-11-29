@@ -91,9 +91,14 @@ final class TabBarNavigationController: UINavigationController {
 
 extension TabBarNavigationController: TabBarNavigationControllerDelegate {
     
-    func searchBarChange() {
-        containerView.isHidden.toggle()
-        closedSearchBarView.isHidden.toggle()
+    func searchBarOpen() {
+        containerView.isHidden = false
+        closedSearchBarView.isHidden = true
+    }
+    
+    func searchBarClose() {
+        containerView.isHidden = true
+        closedSearchBarView.isHidden = false
     }
     
 }
