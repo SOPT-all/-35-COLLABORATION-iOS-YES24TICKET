@@ -7,8 +7,6 @@
 
 import UIKit
 
-import FSCalendar
-
 final class CalendarCollectionViewCell: UICollectionViewCell {
     
     override var isSelected: Bool {
@@ -20,7 +18,7 @@ final class CalendarCollectionViewCell: UICollectionViewCell {
     
     private let dayLabel = UILabel().then {
         $0.font = .customFont(.button_sb_19)
-        $0.textColor = .black0
+        $0.textColor = .gray700
     }
     
     override init(frame: CGRect) {
