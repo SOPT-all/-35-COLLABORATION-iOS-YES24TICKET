@@ -13,6 +13,8 @@ final class HomeViewController: UIViewController {
     private weak var mainBadgeDelegate: FooterBadgeDelegate?
     private weak var adBadgeDelegate: FooterBadgeDelegate?
     
+    weak var navigationControllerDelegate: TabBarNavigationControllerDelegate?
+    
     private var mainCellConfigurations: [MainCellConfiguration] = [] {
         didSet {
             mainCollectionView.reloadData()
@@ -543,7 +545,12 @@ extension HomeViewController: UICollectionViewDelegate {
         switch indexPath.section {
         case 1:
             if indexPath.row == 0 {
-                // TODO: present Concert ViewController
+                let concertCategoryViewController = ConcertCategoryViewController()
+                concertCategoryViewController.navigationControllerDelegate = self
+                navigationController?.pushViewController(
+                    concertCategoryViewController,
+                    animated: true
+                )
             }
         default:
             break
@@ -771,31 +778,10 @@ extension HomeViewController: UICollectionViewDataSource {
     
 }
 
-
-protocol UseCase {
+extension HomeViewController: TabBarNavigationControllerDelegate {
     
-    func execute()
-    
-}
-
-struct UseCaseImpl: UseCase {
-    
-    func execute() {
-        
-    }
-    
-}
-
-final class ViewModel {
-    
-    private let useCase: UseCase
-    
-    init(useCase: UseCase) {
-        self.useCase = useCase
-    }
-    
-    func executeUseCase() {
-        useCase.execute()
+    func searchBarChange() {
+        navigationControllerDelegate?.searchBarChange()
     }
     
 }

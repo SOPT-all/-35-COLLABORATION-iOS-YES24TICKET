@@ -12,12 +12,17 @@ import SnapKit
 final class ConcertCategoryView: UIView {
     
     private let closedSearchBarView = ClosedSearchBarView()
-    private let customNavBar = ConcertNavigationBar()
+    
+    private lazy var customNavBar = ConcertNavigationBar().then {
+        $0.popViewControllerDelegate = self
+    }
+    
     private let tabNavigationBar = CategoryTapNavigationBar()
+    
+    weak var popViewControllerDelegate: PopViewControllerDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setUI()
         setStyle()
         setLayout()
@@ -38,7 +43,7 @@ final class ConcertCategoryView: UIView {
     }
     
     private func setStyle(){
-        backgroundColor = .white
+        backgroundColor = .white0
     }
     
     private func setLayout() {
@@ -62,3 +67,10 @@ final class ConcertCategoryView: UIView {
     
 }
 
+extension ConcertCategoryView: PopViewControllerDelegate {
+    
+    func popFromNavigationController() {
+        popViewControllerDelegate?.popFromNavigationController()
+    }
+    
+}
